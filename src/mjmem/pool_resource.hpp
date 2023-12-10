@@ -1,0 +1,62 @@
+// pool_resource.hpp
+
+// Copyright (c) Mateusz Jandura. All rights reserved.
+// SPDX-License-Identifier: Apache-2.0
+
+#pragma once
+#ifndef _MJMEM_POOL_RESOURCE_HPP_
+#define _MJMEM_POOL_RESOURCE_HPP_
+#include <mjmem/api.hpp>
+#include <mjmem/heap_allocator.hpp>
+
+namespace mjx {
+    class _MJMEM_API pool_resource { // memory block that serves as a pool resource
+    public:
+        using allocator_type = heap_allocator;
+        using size_type      = allocator_type::size_type;
+        using pointer        = allocator_type::pointer;
+        using const_pointer  = const pointer;
+
+        pool_resource() noexcept;
+        pool_resource(const pool_resource& _Other);
+        pool_resource(pool_resource&& _Other) noexcept;
+        ~pool_resource() noexcept;
+
+        explicit pool_resource(const size_type _Size);
+
+        pool_resource& operator=(const pool_resource& _Other);
+        pool_resource& operator=(pool_resource&& _Other) noexcept;
+
+        // checks whether the resource is empty
+        bool empty() const noexcept;
+
+        // returns the underlying resource data
+        pointer data() noexcept;
+        const_pointer data() const noexcept;
+        
+        // returns the resource size
+        size_type size() const noexcept;
+
+        // swaps two resources
+        void swap(pool_resource& _Other) noexcept;
+
+        // releases the underlying resource data
+        pointer release() noexcept;
+
+        // deallocates the underlying resource data
+        void destroy() noexcept;
+
+    private:
+        // copies other resource
+        void _Copy_resource(const_pointer _Data, const size_type _Size);
+        
+        // steals other resource
+        void _Steal_resource(pointer& _Data, size_type& _Size) noexcept;
+
+        allocator_type _Myal;
+        pointer _Mydata;
+        size_type _Mysize;
+    };
+} // namespace mjx
+
+#endif // _MJMEM_POOL_RESOURCE_HPP_
