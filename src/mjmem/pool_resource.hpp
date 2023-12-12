@@ -37,6 +37,9 @@ namespace mjx {
         // returns the resource size
         size_type size() const noexcept;
 
+        // checks whether _Data comes from this resource
+        bool contains(const_pointer _Data, const size_type _Size) const noexcept;
+
         // swaps two resources
         void swap(pool_resource& _Other) noexcept;
 
@@ -53,10 +56,12 @@ namespace mjx {
         // steals other resource
         void _Steal_resource(pointer& _Data, size_type& _Size) noexcept;
 
-        allocator_type _Myal;
         pointer _Mydata;
         size_type _Mysize;
     };
+
+    _MJMEM_API bool operator==(const pool_resource& _Left, const pool_resource& _Right);
+    _MJMEM_API bool operator!=(const pool_resource& _Left, const pool_resource& _Right);
 } // namespace mjx
 
 #endif // _MJMEM_POOL_RESOURCE_HPP_
