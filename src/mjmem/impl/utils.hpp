@@ -20,29 +20,28 @@ namespace mjx {
         template <bool _Shared>
         class _Lock_guard { // RAII class for SRWLOCK
         public:
-            _Lock_guard(void* _Lock) noexcept : _Mylock(_Lock) {
+            _Lock_guard(void* _Lock) noexcept : _Mylock(static_cast<SRWLOCK*>(_Lock)) {
                 if constexpr (_Shared) {
-                    ::AcquireSRWLockShared(static_cast<SRWLOCK*>(_Mylock));
+                    ::AcquireSRWLockShared(_Mylock);
                 } else {
-                    ::AcquireSRWLockExclusive(static_cast<SRWLOCK*>(_Mylock));
+                    ::AcquireSRWLockExclusive(_Mylock);
                 }
             }
 
             ~_Lock_guard() noexcept {
                 if constexpr (_Shared) {
-                    ::ReleaseSRWLockShared(static_cast<SRWLOCK*>(_Mylock));
+                    ::ReleaseSRWLockShared(_Mylock);
                 } else {
-                    ::ReleaseSRWLockExclusive(static_cast<SRWLOCK*>(_Mylock));
+                    ::ReleaseSRWLockExclusive(_Mylock);
                 }
             }
 
         private:
-            void* _Mylock;
+            SRWLOCK* _Mylock;
         };
 
         constexpr bool _Is_pow_of_2(const size_t _Value) noexcept {
             return _Value > 0 && (_Value & (_Value - 1)) == 0;
-            
         }
 
         constexpr size_t _Align_value(const size_t _Value, const size_t _Align) noexcept {

@@ -48,7 +48,7 @@ namespace mjx {
     public:
         using value_type      = allocator::value_type;
         using size_type       = allocator::size_type;
-        using difference_type = ptrdiff_t;
+        using difference_type = allocator::difference_type;
         using pointer         = allocator::pointer;
 
         explicit shared_allocator(allocator& _Al) noexcept;
