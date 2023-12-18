@@ -76,14 +76,14 @@ namespace mjx {
         return _Mysize;
     }
 
-    bool pool_resource::contains(const_pointer _Data, const size_type _Size) const noexcept {
-        if (empty() || !_Data || _Size == 0) {
+    bool pool_resource::contains(const_pointer _Block, const size_type _Size) const noexcept {
+        if (empty() || !_Block || _Size == 0) {
             return false;
         }
 
-        const unsigned char* const _Data_end      = static_cast<const unsigned char*>(_Data) + _Size;
-        const unsigned char* const _This_data_end = static_cast<const unsigned char*>(_Mydata) + _Mysize;
-        return _Data >= _Mydata && _Data_end <= _This_data_end;
+        const unsigned char* const _Block_end = static_cast<const unsigned char*>(_Block) + _Size;
+        const unsigned char* const _Data_end  = static_cast<const unsigned char*>(_Mydata) + _Mysize;
+        return _Block >= _Mydata && _Block_end <= _Data_end;
     }
 
     void pool_resource::swap(pool_resource& _Other) noexcept {

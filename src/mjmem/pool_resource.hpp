@@ -37,8 +37,8 @@ namespace mjx {
         // returns the resource size
         size_type size() const noexcept;
 
-        // checks whether _Data comes from this resource
-        bool contains(const_pointer _Data, const size_type _Size) const noexcept;
+        // checks whether the specified memory block comes from this resource
+        bool contains(const_pointer _Block, const size_type _Size) const noexcept;
 
         // swaps two resources
         void swap(pool_resource& _Other) noexcept;
