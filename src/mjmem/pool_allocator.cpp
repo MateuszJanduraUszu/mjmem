@@ -26,10 +26,11 @@ namespace mjx {
     pool_allocator::_List::_List() noexcept : _Myhead(nullptr), _Mytail(nullptr), _Mysize(0) {}
 
     pool_allocator::_List::~_List() noexcept {
-        if (_Myhead) { // deallocate list nodes
+        if (_Myhead) { // deallocate all nodes
             heap_allocator _Al;
             for (_List_node* _Node = _Myhead, *_Next; _Node != nullptr; _Node = _Next) {
                 _Next = _Node->_Next;
+                _Node->~_List_node();
                 _Al.deallocate(_Node, sizeof(_List));
             }
 
@@ -50,27 +51,62 @@ namespace mjx {
         _Al.deallocate(_Node, sizeof(_List_node));
     }
 
-    void pool_allocator::_List::_Delete_node(_List_node* const _Node) noexcept {
-        if (_Node->_Prev) { // unlink non-head
+    void pool_allocator::_List::_Unlink_node(_List_node* const _Node) noexcept {
+        if (_Node->_Prev) { // break connection with the previous node
             _Node->_Prev->_Next = _Node->_Next;
-        } else { // unlink the head
+        } else { // set a new head
             _Myhead = _Node->_Next;
         }
 
-        if (_Node->_Next) { // unlink non-tail
+        if (_Node->_Next) { // break connection with the next node
             _Node->_Next->_Prev = _Node->_Prev;
-        } else { // unlink the tail
+        } else { // set a new tail
             _Mytail = _Node->_Prev;
         }
+    }
 
+    void pool_allocator::_List::_Delete_node(_List_node* const _Node) noexcept {
+        _Unlink_node(_Node);
         _Deallocate_node(_Node);
         --_Mysize;
+    }
+
+    void pool_allocator::_List::_Insert_node(_List_node* const _New_node) noexcept {
+        _List_node* _Node = _Myhead;
+        while (_Node && _Node->_Size > _New_node->_Size) { // search for smaller block to insert before it
+            _Node = _Node->_Next;
+        }
+
+        if (_Node) { // insert before the tail
+            _New_node->_Next = _Node;
+            _New_node->_Prev = _Node->_Prev;
+            if (_Node->_Prev) { // insert after the head
+                _Node->_Prev->_Next = _New_node;
+            } else { // insert before the head
+                _Myhead = _New_node;
+            }
+
+            _Node->_Prev = _New_node;
+        } else { // insert after the tail
+            _New_node->_Prev = _Mytail;
+            _Mytail->_Next   = _New_node;
+            _Mytail          = _New_node;
+        }
+    }
+
+    void pool_allocator::_List::_Reinsert_node(_List_node* const _Node) noexcept {
+        _Unlink_node(_Node);
+        _Insert_node(_Node);
     }
 
     bool pool_allocator::_List::_Merge_block(const size_type _Off, const size_type _Size) noexcept {
         for (_List_node* _Node = _Myhead; _Node != nullptr; _Node = _Node->_Next) {
             if (_Node->_Off + _Node->_Size == _Off) { // found appropriate block, merge with it
                 _Node->_Size += _Size;
+                if (_Node->_Prev && _Node->_Prev->_Size < _Node->_Size) { // re-insert node to keep list sorted
+                    _Reinsert_node(_Node);
+                }
+
                 return true;
             }
         }
@@ -83,7 +119,7 @@ namespace mjx {
     }
 
     pool_allocator::size_type pool_allocator::_List::_Reserve_block(const size_type _Size) noexcept {
-        for (_List_node* _Node = _Myhead; _Node != nullptr; _Node = _Node->_Next) {
+        for (_List_node* _Node = _Mytail; _Node != nullptr; _Node = _Node->_Prev) {
             if (_Node->_Size >= _Size) { // found block of at least requested size, use it
                 const size_type _Off = _Node->_Off;
                 if (_Node->_Size == _Size) { // use the whole block
@@ -109,9 +145,7 @@ namespace mjx {
         _New_node->_Off             = _Off;
         _New_node->_Size            = _Size;
         if (_Mytail) { // allocate the next node
-            _New_node->_Prev = _Mytail;
-            _Mytail->_Next   = _New_node;
-            _Mytail          = _New_node;
+            _Insert_node(_New_node);
         } else { // allocate the first node
             _Myhead = _New_node;
             _Mytail = _New_node;

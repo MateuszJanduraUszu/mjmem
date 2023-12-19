@@ -59,7 +59,7 @@ namespace mjx {
             ~_List_node() noexcept = default;
         };
 
-        class _List { // list of free blocks
+        class _List { // sorted list of free blocks
         public:        
             _List() noexcept;
             ~_List() noexcept;
@@ -80,8 +80,17 @@ namespace mjx {
             // deallocates the specified node
             static void _Deallocate_node(_List_node* const _Node) noexcept;
 
+            // breaks connection between nodes connected with _Node
+            void _Unlink_node(_List_node* const _Node) noexcept;
+
             // unlinks and deallocates an existing node
             void _Delete_node(_List_node* const _Node) noexcept;
+
+            // inserts a new node
+            void _Insert_node(_List_node* const _New_node) noexcept;
+
+            // inserts an existing node again to keep list sorted
+            void _Reinsert_node(_List_node* const _Node) noexcept;
 
             // tries to merge the specified block to the existing one
             bool _Merge_block(const size_type _Off, const size_type _Size) noexcept;
