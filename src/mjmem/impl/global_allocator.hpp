@@ -6,20 +6,12 @@
 #pragma once
 #ifndef _MJMEM_IMPL_GLOBAL_ALLOCATOR_HPP_
 #define _MJMEM_IMPL_GLOBAL_ALLOCATOR_HPP_
+#include <atomic>
 #include <mjmem/allocator.hpp>
-#include <mjmem/heap_allocator.hpp>
-#include <new>
+#include <mjmem/dynamic_allocator.hpp>
 
 namespace mjx {
     namespace mjmem_impl {
-        struct _Alloc_pair { // stores normal and shared allocators
-            _Alloc_pair() noexcept : _Default(), _Normal(_Default), _Shared(_Default) {}
-
-            heap_allocator _Default; // the default allocator that has no state or associated resource
-            allocator& _Normal; // reference to one of heap_allocator, bitmap_allocator or pool_allocator
-            shared_allocator _Shared; // wraps _Normal to make allocation/deallocation thread-safe
-        };
-
         class _Global_alloc { // singleton class that stores global allocator
         public:
             ~_Global_alloc() noexcept {}
@@ -32,23 +24,19 @@ namespace mjx {
                 return _Obj;
             }
 
-            void _Set(allocator& _New_al) noexcept {
-                _Mypair._Normal = _New_al;
-                _Mypair._Shared.bind(_New_al);
-            }
-
             allocator& _Get() noexcept {
-                return _Mypair._Normal;
+                return *_Myal.load();
             }
 
-            shared_allocator& _Get_shared() noexcept {
-                return _Mypair._Shared;
+            void _Set(allocator& _New_al) noexcept {
+                _Myal.store(&_New_al);
             }
 
         private:
-            _Global_alloc() noexcept : _Mypair() {}
+            _Global_alloc() noexcept : _Mydef(), _Myal(&_Mydef) {}
 
-            _Alloc_pair _Mypair;
+            dynamic_allocator _Mydef; // the default allocator that has no state or associated resource
+            ::std::atomic<allocator*> _Myal; // pointer to the currently used allocator
         };
     } // namespace mjmem_impl
 } // namespace mjx
