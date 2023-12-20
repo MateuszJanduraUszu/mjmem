@@ -1,16 +1,17 @@
-// bitmap_allocator.cpp
+// block_allocator.cpp
 
 // Copyright (c) Mateusz Jandura. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
 #include <cstring>
-#include <mjmem/bitmap_allocator.hpp>
+#include <mjmem/block_allocator.hpp>
+#include <mjmem/dynamic_allocator.hpp>
 #include <mjmem/exception.hpp>
 #include <mjmem/impl/utils.hpp>
 #include <utility>
 
 namespace mjx {
-    bitmap_allocator::bitmap_allocator(pool_resource& _Resource, const size_type _Block_size)
+    block_allocator::block_allocator(pool_resource& _Resource, const size_type _Block_size)
         : _Myres(_Resource), _Myblock(_Block_size), _Mymap() {
 #ifdef _DEBUG
         _INTERNAL_ASSERT(
@@ -19,33 +20,33 @@ namespace mjx {
         _Setup_bitmap();
     }
 
-    bitmap_allocator::~bitmap_allocator() noexcept {}
+    block_allocator::~block_allocator() noexcept {}
 
-    bitmap_allocator::_Bitmap::_Bitmap() noexcept : _Buf{0}, _Size(0), _Free(0) {
+    block_allocator::_Bitmap::_Bitmap() noexcept : _Buf{0}, _Size(0), _Free(0) {
         // starts lifetime of small buffer by default
     }
 
-    bitmap_allocator::_Bitmap::~_Bitmap() noexcept {
+    block_allocator::_Bitmap::~_Bitmap() noexcept {
         if (_Size > _Small_buffer_size) { // deallocate larger buffer
-            heap_allocator _Al;
+            dynamic_allocator _Al;
             _Al.deallocate(_Ptr, _Size * sizeof(_Word_type));
         }
     }
 
-    bitmap_allocator::_Bitmap::_Word_type* bitmap_allocator::_Bitmap::_Get_words() noexcept {
+    block_allocator::_Bitmap::_Word_type* block_allocator::_Bitmap::_Get_words() noexcept {
         return _Size <= _Small_buffer_size ? _Buf : _Ptr;
     }
 
-    const bitmap_allocator::_Bitmap::_Word_type* bitmap_allocator::_Bitmap::_Get_words() const noexcept {
+    const block_allocator::_Bitmap::_Word_type* block_allocator::_Bitmap::_Get_words() const noexcept {
         return _Size <= _Small_buffer_size ? _Buf : _Ptr;
     }
 
-    bitmap_allocator::size_type
-        bitmap_allocator::_Bitmap::_Bits_per_last_word(const size_type _Max) const noexcept {
+    block_allocator::size_type
+        block_allocator::_Bitmap::_Bits_per_last_word(const size_type _Max) const noexcept {
         return _Bits_per_word - ((_Size * _Bits_per_word) % _Max);
     }
 
-    bitmap_allocator::size_type bitmap_allocator::_Bitmap::_Find_zero_bits(
+    block_allocator::size_type block_allocator::_Bitmap::_Find_zero_bits(
         const size_type _Count, const size_type _Max) const noexcept {
         const _Word_type* const _Words = _Get_words();
         size_type _Bits                = _Bits_per_word;
@@ -78,7 +79,7 @@ namespace mjx {
         return static_cast<size_type>(-1); // not found
     }
 
-    void bitmap_allocator::_Bitmap::_Set_bits(size_type _Off, size_type _Count) noexcept {
+    void block_allocator::_Bitmap::_Set_bits(size_type _Off, size_type _Count) noexcept {
         _Word_type* const _Words       = _Get_words();
         size_type _Word                = _Off / _Bits_per_word;
         size_type _Word_remaining_bits = (::std::min)(_Count, _Bits_per_word - (_Off % _Bits_per_word));
@@ -103,7 +104,7 @@ namespace mjx {
         }
     }
 
-    void bitmap_allocator::_Bitmap::_Zero_bits(size_type _Off, size_type _Count) noexcept {
+    void block_allocator::_Bitmap::_Zero_bits(size_type _Off, size_type _Count) noexcept {
         _Word_type* const _Words       = _Get_words();
         size_type _Word                = _Off / _Bits_per_word;
         size_type _Word_remaining_bits = (::std::min)(_Count, _Bits_per_word - (_Off % _Bits_per_word));
@@ -128,21 +129,29 @@ namespace mjx {
         }
     }
 
-    void bitmap_allocator::_Setup_bitmap() {
+    void block_allocator::_Setup_bitmap() {
         using _Word_type       = _Bitmap::_Word_type;
-        const size_type _Max   = max_size(); // required number of bits
-        const size_type _Words = (_Max + _Bitmap::_Bits_per_word - 1) / _Bitmap::_Bits_per_word;
+        const size_type _Bits  = _Max_blocks(); // required number of bits
+        const size_type _Words = (_Bits + _Bitmap::_Bits_per_word - 1) / _Bitmap::_Bits_per_word;
         if (_Words > _Bitmap::_Small_buffer_size) { // use larger buffer
-            heap_allocator _Al;
+            dynamic_allocator _Al;
             _Mymap._Ptr = static_cast<_Word_type*>(_Al.allocate(_Words * sizeof(_Word_type)));
             ::memset(_Mymap._Ptr, 0, _Words * sizeof(_Word_type)); // make sure each bit stores 0
         }
         
         _Mymap._Size = _Words;
-        _Mymap._Free = _Max;
+        _Mymap._Free = _Bits;
     }
 
-    bitmap_allocator::pointer bitmap_allocator::_Allocate_block() noexcept {
+    block_allocator::size_type block_allocator::_Required_block_count(const size_type _Bytes) const noexcept {
+        return mjmem_impl::_Align_value(_Bytes, _Myblock) / _Myblock;
+    }
+
+    block_allocator::size_type block_allocator::_Max_blocks() const noexcept {
+        return _Myres.size() / _Myblock;
+    }
+
+    block_allocator::pointer block_allocator::_Allocate_block() noexcept {
         if (_Mymap._Free == 0) { // no free blocks
             return nullptr;
         }
@@ -156,7 +165,7 @@ namespace mjx {
             }
 
             if (_Word == _Mymap._Size - 1) { // last word may use less bits
-                _Bits = _Mymap._Bits_per_last_word(max_size());
+                _Bits = _Mymap._Bits_per_last_word(_Max_blocks());
             }
 
             for (size_type _Bit = 0; _Bit < _Bitmap::_Bits_per_word; ++_Bit) {
@@ -171,12 +180,12 @@ namespace mjx {
         return nullptr;
     }
 
-    bitmap_allocator::pointer bitmap_allocator::_Allocate_n_blocks(const size_type _Count) noexcept {
+    block_allocator::pointer block_allocator::_Allocate_n_blocks(const size_type _Count) noexcept {
         if (_Mymap._Free < _Count) { // not enough free blocks
             return nullptr;
         }
         
-        const size_type _Off = _Mymap._Find_zero_bits(_Count, max_size());
+        const size_type _Off = _Mymap._Find_zero_bits(_Count, _Max_blocks());
         if (_Off == static_cast<size_type>(-1)) { // not enough space, break
             return nullptr;
         }
@@ -185,42 +194,39 @@ namespace mjx {
         return static_cast<pointer>(static_cast<unsigned char*>(_Myres.data()) + (_Off * _Myblock));
     }
 
-    bitmap_allocator::pointer bitmap_allocator::allocate(const size_type _Count) {
-        pointer _Ptr = _Count == 1 ? _Allocate_block() : _Allocate_n_blocks(_Count);
+    block_allocator::pointer block_allocator::allocate(const size_type _Count) {
+        const size_type _Blocks = _Required_block_count(_Count);
+        pointer _Ptr            = _Blocks == 1 ? _Allocate_block() : _Allocate_n_blocks(_Blocks);
         if (!_Ptr) { // not enough memory, raise an exception
             pool_exhausted::raise();
         }
 
-        _Mymap._Free -= _Count;
+        _Mymap._Free -= _Blocks;
         return _Ptr;
     }
 
-    bitmap_allocator::pointer bitmap_allocator::allocate_aligned(const size_type _Count, const size_type) {
-        // alignment has no meaning in bitmap allocator (allocates fixed-size blocks)
-        return allocate(_Count);
+    block_allocator::pointer
+        block_allocator::allocate_aligned(const size_type _Count, const size_type _Align) {
+#ifdef _DEBUG
+        _INTERNAL_ASSERT(mjmem_impl::_Is_pow_of_2(_Align), "alignment must be a power of 2");
+#endif // _DEBUG
+        return allocate(mjmem_impl::_Align_value(_Count, _Align));
     }
 
-    void bitmap_allocator::deallocate(pointer _Ptr, const size_type _Count) noexcept {
-        if (_Myres.contains(_Ptr, _Count * _Myblock)) { // _Ptr allocated from the associated resource
+    void block_allocator::deallocate(pointer _Ptr, const size_type _Count) noexcept {
+        const size_type _Blocks = _Required_block_count(_Count);
+        if (_Myres.contains(_Ptr, _Blocks * _Myblock)) { // _Ptr allocated from the associated resource
             _Mymap._Zero_bits((static_cast<unsigned char*>(_Ptr)
-                - static_cast<unsigned char*>(_Myres.data())) / _Myblock, _Count);
-            _Mymap._Free += _Count;
+                - static_cast<unsigned char*>(_Myres.data())) / _Myblock, _Blocks);
+            _Mymap._Free += _Blocks;
         }
     }
 
-    bitmap_allocator::size_type bitmap_allocator::max_size() const noexcept {
-        return _Myres.size() / _Myblock;
+    block_allocator::size_type block_allocator::max_size() const noexcept {
+        return _Myres.size();
     }
 
-    bool bitmap_allocator::is_equal(const allocator& _Al) const noexcept {
-        return _Myres == static_cast<const bitmap_allocator&>(_Al)._Myres;
-    }
-
-    bitmap_allocator::size_type bitmap_allocator::block_size() const noexcept {
-        return _Myblock;
-    }
-
-    bitmap_allocator::size_type bitmap_allocator::free_blocks() const noexcept {
-        return _Mymap._Free;
+    bool block_allocator::is_equal(const allocator& _Other) const noexcept {
+        return _Myres == static_cast<const block_allocator&>(_Other)._Myres;
     }
 } // namespace mjx

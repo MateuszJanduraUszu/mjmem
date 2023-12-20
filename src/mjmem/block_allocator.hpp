@@ -1,4 +1,4 @@
-// bitmap_allocator.hpp
+// block_allocator.hpp
 
 // Copyright (c) Mateusz Jandura. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
@@ -12,19 +12,19 @@
 #include <mjmem/pool_resource.hpp>
 
 namespace mjx {
-    class _MJMEM_API bitmap_allocator : public allocator { // bitmap allocator associated with a pool resource
+    class _MJMEM_API block_allocator : public allocator { // fixed-size block allocator
     public:
         using value_type      = allocator::value_type;
         using size_type       = allocator::size_type;
         using difference_type = allocator::difference_type;
         using pointer         = allocator::pointer;
 
-        bitmap_allocator(pool_resource& _Resource, const size_type _Block_size);
-        ~bitmap_allocator() noexcept override;
+        block_allocator(pool_resource& _Resource, const size_type _Block_size);
+        ~block_allocator() noexcept override;
 
-        bitmap_allocator()                                   = delete;
-        bitmap_allocator(const bitmap_allocator&)            = delete;
-        bitmap_allocator& operator=(const bitmap_allocator&) = delete;
+        block_allocator()                                  = delete;
+        block_allocator(const block_allocator&)            = delete;
+        block_allocator& operator=(const block_allocator&) = delete;
 
         // allocates uninitialized storage
         pointer allocate(const size_type _Count) override;
@@ -39,17 +39,17 @@ namespace mjx {
         size_type max_size() const noexcept override;
 
         // compares for equality with another allocator
-        bool is_equal(const allocator& _Al) const noexcept override;
-
-        // returns the allocation block size
-        size_type block_size() const noexcept;
-
-        // returns the number of free blocks
-        size_type free_blocks() const noexcept;
+        bool is_equal(const allocator& _Other) const noexcept override;
 
     private:
         // setups the bitmap
         void _Setup_bitmap();
+
+        // returns the least number of blocks that can hold _Bytes bytes
+        size_type _Required_block_count(const size_type _Bytes) const noexcept;
+
+        // returns the greatest number of blocks possible to allocate
+        size_type _Max_blocks() const noexcept;
 
         // allocates exactly one block
         pointer _Allocate_block() noexcept;
