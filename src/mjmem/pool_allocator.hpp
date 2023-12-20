@@ -11,7 +11,7 @@
 #include <mjmem/pool_resource.hpp>
 
 namespace mjx {
-    class _MJMEM_API pool_allocator : public allocator { // pool allocator associated with a pool resource
+    class _MJMEM_API pool_allocator : public allocator { // variable-size block allocator
     public:
         using value_type      = allocator::value_type;
         using size_type       = allocator::size_type;

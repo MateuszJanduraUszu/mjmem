@@ -19,7 +19,7 @@ namespace mjx {
     }
 
     pool_resource::pool_resource(const size_type _Size) : _Mydata(nullptr), _Mysize(0) {
-        allocator_type _Al;
+        dynamic_allocator _Al;
         _Mydata = _Al.allocate(_Size);
         _Mysize = _Size;
     }
@@ -47,7 +47,7 @@ namespace mjx {
     }
 
     void pool_resource::_Copy_resource(const_pointer _Data, const size_type _Size) {
-        allocator_type _Al;
+        dynamic_allocator _Al;
         _Mydata = _Al.allocate(_Size);
         _Mysize = _Size;
         ::memcpy(_Mydata, _Data, _Size);
@@ -81,9 +81,9 @@ namespace mjx {
             return false;
         }
 
-        const unsigned char* const _Block_end = static_cast<const unsigned char*>(_Block) + _Size;
-        const unsigned char* const _Data_end  = static_cast<const unsigned char*>(_Mydata) + _Mysize;
-        return _Block >= _Mydata && _Block_end <= _Data_end;
+        const unsigned char* const _Block_end      = static_cast<const unsigned char*>(_Block) + _Size;
+        const unsigned char* const _Root_block_end = static_cast<const unsigned char*>(_Mydata) + _Mysize;
+        return _Block >= _Mydata && _Block_end <= _Root_block_end;
     }
 
     void pool_resource::swap(pool_resource& _Other) noexcept {
@@ -100,7 +100,7 @@ namespace mjx {
 
     void pool_resource::destroy() noexcept {
         if (_Mydata && _Mysize > 0) {
-            allocator_type _Al;
+            dynamic_allocator _Al;
             _Al.deallocate(_Mydata, _Mysize);
             _Mydata = nullptr;
             _Mysize = 0;

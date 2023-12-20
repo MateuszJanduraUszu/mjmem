@@ -7,15 +7,16 @@
 #ifndef _MJMEM_POOL_RESOURCE_HPP_
 #define _MJMEM_POOL_RESOURCE_HPP_
 #include <mjmem/api.hpp>
-#include <mjmem/heap_allocator.hpp>
+#include <mjmem/dynamic_allocator.hpp>
 
 namespace mjx {
     class _MJMEM_API pool_resource { // memory block that serves as a pool resource
     public:
-        using allocator_type = heap_allocator;
-        using size_type      = allocator_type::size_type;
-        using pointer        = allocator_type::pointer;
-        using const_pointer  = const pointer;
+        using value_type      = allocator::value_type;
+        using size_type       = allocator::size_type;
+        using difference_type = allocator::difference_type;
+        using pointer         = allocator::pointer;
+        using const_pointer   = const pointer;
 
         pool_resource() noexcept;
         pool_resource(const pool_resource& _Other);
@@ -30,7 +31,7 @@ namespace mjx {
         // checks whether the resource is empty
         bool empty() const noexcept;
 
-        // returns the underlying resource data
+        // returns the resource data
         pointer data() noexcept;
         const_pointer data() const noexcept;
         

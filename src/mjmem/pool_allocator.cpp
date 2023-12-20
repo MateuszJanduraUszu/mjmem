@@ -3,6 +3,7 @@
 // Copyright (c) Mateusz Jandura. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+#include <mjmem/dynamic_allocator.hpp>
 #include <mjmem/exception.hpp>
 #include <mjmem/impl/utils.hpp>
 #include <mjmem/pool_allocator.hpp>
@@ -27,7 +28,7 @@ namespace mjx {
 
     pool_allocator::_List::~_List() noexcept {
         if (_Myhead) { // deallocate all nodes
-            heap_allocator _Al;
+            dynamic_allocator _Al;
             for (_List_node* _Node = _Myhead, *_Next; _Node != nullptr; _Node = _Next) {
                 _Next = _Node->_Next;
                 _Node->~_List_node();
@@ -41,12 +42,12 @@ namespace mjx {
     }
 
     pool_allocator::_List_node* pool_allocator::_List::_Create_node() {
-        heap_allocator _Al;
+        dynamic_allocator _Al;
         return ::new (_Al.allocate(sizeof(_List_node))) _List_node;
     }
     
     void pool_allocator::_List::_Deallocate_node(_List_node* const _Node) noexcept {
-        heap_allocator _Al;
+        dynamic_allocator _Al;
         _Node->~_List_node();
         _Al.deallocate(_Node, sizeof(_List_node));
     }
