@@ -12,20 +12,41 @@
 
 namespace mjx {
     template <class _Ty>
-    class object_allocator { // type-specific wrapper around global allocator
+    class object_allocator { // type-specific wrapper around the global allocator
     public:
+        static_assert(!::std::is_const_v<_Ty>, "T cannot be const");
+        static_assert(!::std::is_reference_v<_Ty>, "T cannot be a reference");
+        static_assert(!::std::is_function_v<_Ty>, "T cannot be a function object");
+        static_assert(!::std::is_volatile_v<_Ty>, "T cannot be volatile");
+
         using value_type      = _Ty;
         using size_type       = allocator::size_type;
         using difference_type = allocator::difference_type;
         using pointer         = _Ty*;
-    
+        using const_pointer   = const _Ty*;
+        using reference       = _Ty&;
+        using const_reference = const _Ty&;
+
+        template <class _Other>
+        struct rebind {
+            using other = object_allocator<_Other>;
+        };
+
         object_allocator() noexcept                        = default;
         object_allocator(const object_allocator&) noexcept = default;
         object_allocator(object_allocator&&) noexcept      = default;
         ~object_allocator() noexcept                       = default;
     
+        template <class _Other>
+        object_allocator(const object_allocator<_Other>&) noexcept {}
+
         object_allocator& operator=(const object_allocator&) noexcept = default;
         object_allocator& operator=(object_allocator&&) noexcept      = default;
+
+        template <class _Other>
+        object_allocator& operator=(const object_allocator<_Other>&) noexcept {
+            return *this;
+        }
 
         pointer allocate(const size_type _Count) {
             return static_cast<pointer>(::mjx::get_allocator().allocate(_Count * sizeof(_Ty)));
@@ -48,6 +69,16 @@ namespace mjx {
             return true; // always equal
         }
     };
+
+    template <class _Ty>
+    inline bool operator==(const object_allocator<_Ty>& _Left, const object_allocator<_Ty>& _Right) noexcept {
+        return true;
+    }
+
+    template <class _Ty>
+    inline bool operator!=(const object_allocator<_Ty>& _Left, const object_allocator<_Ty>& _Right) noexcept {
+        return false;
+    }
 
     template <class _Ty, class... _Types>
     inline _Ty* create_object(_Types&&... _Args) {
