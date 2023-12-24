@@ -95,6 +95,25 @@ namespace mjx {
         object_allocator<_Ty> _Al;
         _Al.deallocate(_Obj, 1);
     }
+
+    template <class _Ty>
+    inline _Ty* allocate_objects(const size_t _Count) {
+        object_allocator<_Ty> _Al;
+        return _Al.allocate(_Count);
+    }
+
+    template <class _Ty>
+    inline void delete_objects(
+        _Ty* const _Objects, const size_t _Count) noexcept(::std::is_nothrow_destructible_v<_Ty>) {
+        if constexpr (!::std::is_trivially_destructible_v<_Ty>) {
+            for (size_t _Idx = 0; _Idx < _Count; ++_Idx) {
+                _Objects[_Idx].~_Ty();
+            }
+        }
+
+        object_allocator<_Ty> _Al;
+        _Al.deallocate(_Objects, _Count);
+    }
 } // namespace mjx
 
 #endif // _MJMEM_OBJECT_ALLOCATOR_HPP_
