@@ -97,13 +97,13 @@ namespace mjx {
     }
 
     template <class _Ty>
-    inline _Ty* allocate_objects(const size_t _Count) {
+    inline _Ty* allocate_object_array(const size_t _Count) {
         object_allocator<_Ty> _Al;
         return _Al.allocate(_Count);
     }
 
     template <class _Ty>
-    inline void delete_objects(
+    inline void delete_object_array(
         _Ty* const _Objects, const size_t _Count) noexcept(::std::is_nothrow_destructible_v<_Ty>) {
         if constexpr (!::std::is_trivially_destructible_v<_Ty>) {
             for (size_t _Idx = 0; _Idx < _Count; ++_Idx) {
