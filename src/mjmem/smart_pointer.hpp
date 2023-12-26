@@ -381,7 +381,8 @@ namespace mjx {
     };
 
     template <class _Ty>
-    inline bool operator==(const unique_smart_array<_Ty>& _Left, const unique_smart_array<_Ty>& _Right) noexcept {
+    inline bool operator==(
+        const unique_smart_array<_Ty>& _Left, const unique_smart_array<_Ty>& _Right) noexcept {
         return _Left.get() == _Right.get();
     }
 
@@ -396,7 +397,8 @@ namespace mjx {
     }
 
     template <class _Ty>
-    inline bool operator!=(const unique_smart_array<_Ty>& _Left, const unique_smart_array<_Ty>& _Right) noexcept {
+    inline bool operator!=(
+        const unique_smart_array<_Ty>& _Left, const unique_smart_array<_Ty>& _Right) noexcept {
         return _Left.get() != _Right.get();
     }
 
@@ -413,6 +415,168 @@ namespace mjx {
     template <class _Ty, class... _Types>
     inline unique_smart_array<_Ty> make_unique_smart_array(const size_t _Size) {
         return unique_smart_array<_Ty>(::mjx::allocate_object_array<_Ty>(_Size), _Size);
+    }
+
+    class _MJMEM_API reference_counter { // thread-safe reference counter
+    public:
+        reference_counter() noexcept;
+        ~reference_counter() noexcept;
+
+        explicit reference_counter(const long _Refs) noexcept;
+        
+        reference_counter(const reference_counter&)            = delete;
+        reference_counter& operator=(const reference_counter&) = delete;
+
+        // increments the number of references
+        void increment() noexcept;
+
+        // decrements the number of references
+        long decrement() noexcept;
+
+        // returns the number of references
+        long use_count() const noexcept;
+
+        // checks whether the number of references is exactly 1
+        bool unique() const noexcept;
+
+    private:
+#pragma warning(suppress : 4251) // C4251: std::atomic<long> needs to have dll-interface
+        ::std::atomic<long> _Myrefs;
+    };
+
+    template <class _Ty>
+    class smart_ptr { // smart pointer with shared object ownership semantics
+    public:
+        using element_type = _Ty;
+        using pointer      = _Ty*;
+
+        smart_ptr() noexcept : _Myptr(nullptr), _Myctr(nullptr) {}
+
+        smart_ptr(nullptr_t) noexcept : _Myptr(nullptr), _Myctr(nullptr) {}
+
+        explicit smart_ptr(pointer _Ptr)
+            : _Myptr(_Ptr), _Myctr(::mjx::create_object<reference_counter>()) {}
+
+        smart_ptr(unique_smart_ptr<_Ty>&& _Sptr)
+            : _Myptr(_Sptr.release()), _Myctr(::mjx::create_object<reference_counter>()) {}
+
+        smart_ptr(const smart_ptr& _Other) noexcept : _Myptr(_Other._Myptr), _Myctr(_Other._Myctr) {
+            if (_Myctr) {
+                _Myctr->increment();
+            }
+        }
+
+        smart_ptr(smart_ptr&& _Other) noexcept : _Myptr(_Other._Myptr), _Myctr(_Other._Myctr) {
+            _Other._Myptr = nullptr;
+            _Other._Myctr = nullptr;
+        }
+
+        ~smart_ptr() noexcept {
+            _Release();
+        }
+
+        smart_ptr& operator=(const smart_ptr& _Other) noexcept {
+            smart_ptr(_Other).swap(*this);
+            return *this;
+        }
+
+        smart_ptr& operator=(smart_ptr&& _Other) noexcept {
+            smart_ptr(::std::move(_Other)).swap(*this);
+            return *this;
+        }
+
+        smart_ptr& operator=(unique_smart_ptr<_Ty>&& _Sptr) noexcept {
+            smart_ptr(::std::move(_Sptr)).swap(*this);
+            return *this;
+        }
+
+        explicit operator bool() const noexcept {
+            return _Myptr != nullptr;
+        }
+
+        element_type& operator*() const noexcept {
+            // the behavior is undefined if the stored pointer is null
+            return *_Myptr;
+        }
+
+        pointer operator->() const noexcept {
+            return _Myptr;
+        }
+
+        pointer get() const noexcept {
+            return _Myptr;
+        }
+
+        long use_count() const noexcept {
+            return _Myctr ? _Myctr->use_count() : 0;
+        }
+
+        bool unique() const noexcept {
+            return use_count() == 1;
+        }
+
+        void reset() noexcept {
+            smart_ptr().swap(*this);
+        }
+
+        void reset(pointer _New_ptr) {
+            smart_ptr(_New_ptr).swap(*this);
+        }
+
+        void swap(smart_ptr& _Other) noexcept {
+            ::std::swap(_Myptr, _Other._Myptr);
+            ::std::swap(_Myctr, _Other._Myctr);
+        }
+
+    private:
+        void _Release() noexcept {
+            if (_Myctr) {
+                if (_Myctr->decrement() == 0) {
+                    ::mjx::delete_object(_Myptr);
+                    ::mjx::delete_object(_Myctr);
+                    _Myptr = nullptr;
+                    _Myctr = nullptr;
+                }
+            }
+        }
+
+        pointer _Myptr;
+        reference_counter* _Myctr;
+    };
+
+    template <class _Ty>
+    inline bool operator==(const smart_ptr<_Ty>& _Left, const smart_ptr<_Ty>& _Right) noexcept {
+        return _Left.get() == _Right.get();
+    }
+
+    template <class _Ty>
+    inline bool operator==(const smart_ptr<_Ty>& _Left, nullptr_t) noexcept {
+        return !_Left;
+    }
+
+    template <class _Ty>
+    inline bool operator==(nullptr_t, const smart_ptr<_Ty>& _Right) noexcept {
+        return !_Right;
+    }
+
+    template <class _Ty>
+    inline bool operator!=(const smart_ptr<_Ty>& _Left, const smart_ptr<_Ty>& _Right) noexcept {
+        return _Left.get() != _Right.get();
+    }
+
+    template <class _Ty>
+    inline bool operator!=(const smart_ptr<_Ty>& _Left, nullptr_t) noexcept {
+        return static_cast<bool>(_Left);
+    }
+
+    template <class _Ty>
+    inline bool operator!=(nullptr_t, const smart_ptr<_Ty>& _Right) noexcept {
+        return static_cast<bool>(_Right);
+    }
+
+    template <class _Ty, class... _Types>
+    inline smart_ptr<_Ty> make_smart_ptr(_Types&&... _Args) {
+        return smart_ptr<_Ty>(::mjx::create_object<_Ty>(::std::forward<_Types>(_Args)...));
     }
 } // namespace mjx
 
