@@ -14,6 +14,7 @@ namespace mjx {
         TEST(smart_ptr, copy_construct) {
             smart_ptr<int> _Sptr0 = ::mjx::make_smart_ptr<int>(10);
             smart_ptr<int> _Sptr1 = _Sptr0;
+            EXPECT_EQ(_Sptr0, _Sptr1);
             EXPECT_EQ(_Sptr0.use_count(), 2);
             EXPECT_FALSE(_Sptr0.unique());
         }
@@ -27,10 +28,20 @@ namespace mjx {
             EXPECT_EQ(_Sptr1.use_count(), 1);
         }
 
+        TEST(smart_ptr, construct_from_unique) {
+            unique_smart_ptr<int> _Uptr = ::mjx::make_unique_smart_ptr<int>(10);
+            smart_ptr<int> _Sptr        = ::std::move(_Uptr);
+            EXPECT_EQ(_Uptr.get(), nullptr);
+            EXPECT_EQ(*_Sptr, 10);
+            EXPECT_EQ(_Sptr.use_count(), 1);
+            EXPECT_TRUE(_Sptr.unique());
+        }
+
         TEST(smart_ptr, copy_assign) {
             smart_ptr<int> _Sptr0 = ::mjx::make_smart_ptr<int>(10);
             smart_ptr<int> _Sptr1 = nullptr;
             _Sptr1                = _Sptr0;
+            EXPECT_EQ(_Sptr0, _Sptr1);
             EXPECT_EQ(_Sptr0.use_count(), 2);
             EXPECT_FALSE(_Sptr0.unique());
         }
@@ -43,6 +54,16 @@ namespace mjx {
             EXPECT_EQ(_Sptr0.use_count(), 0);
             EXPECT_EQ(*_Sptr1, 10);
             EXPECT_EQ(_Sptr1.use_count(), 1);
+        }
+
+        TEST(smart_ptr, assign_unique) {
+            unique_smart_ptr<int> _Uptr = ::mjx::make_unique_smart_ptr<int>(10);
+            smart_ptr<int> _Sptr        = nullptr;
+            _Sptr                       = ::std::move(_Uptr);
+            EXPECT_EQ(_Uptr.get(), nullptr);
+            EXPECT_EQ(*_Sptr, 10);
+            EXPECT_EQ(_Sptr.use_count(), 1);
+            EXPECT_TRUE(_Sptr.unique());
         }
 
         TEST(smart_ptr, reset) {

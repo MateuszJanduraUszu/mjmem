@@ -69,7 +69,7 @@ namespace mjx {
                 _Reported = true;
             }
 
-            EXPECT_EQ(_Reported, true);
+            EXPECT_TRUE(_Reported);
         }
     } // namespace test
 } // namespace mjx
