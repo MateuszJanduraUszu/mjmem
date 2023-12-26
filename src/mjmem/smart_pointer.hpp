@@ -578,6 +578,159 @@ namespace mjx {
     inline smart_ptr<_Ty> make_smart_ptr(_Types&&... _Args) {
         return smart_ptr<_Ty>(::mjx::create_object<_Ty>(::std::forward<_Types>(_Args)...));
     }
+
+    template <class _Ty>
+    class smart_array { // smart pointer with shared object ownership semantics (for arrays)
+    public:
+        using element_type = _Ty;
+        using pointer      = _Ty*;
+
+        smart_array() noexcept : _Myptr(nullptr), _Mysize(0), _Myctr(nullptr) {}
+
+        smart_array(nullptr_t) noexcept : _Myptr(nullptr), _Mysize(0), _Myctr(nullptr) {}
+
+        smart_array(pointer _Ptr, const size_t _Size)
+            : _Myptr(_Ptr), _Mysize(_Size), _Myctr(::mjx::create_object<reference_counter>()) {}
+
+        smart_array(unique_smart_array<_Ty>&& _Sarr) : _Myptr(nullptr), _Mysize(0), _Myctr(nullptr) {
+            const auto& _Array = _Sarr.release();
+            _Myptr             = _Array.ptr;
+            _Mysize            = _Array.size;
+            _Myctr             = ::mjx::create_object<reference_counter>();
+        }
+
+        smart_array(const smart_array& _Other) noexcept
+            : _Myptr(_Other._Myptr), _Mysize(_Other._Mysize), _Myctr(_Other._Myctr) {
+            if (_Myctr) {
+                _Myctr->increment();
+            }
+        }
+
+        smart_array(smart_array&& _Other) noexcept
+            : _Myptr(_Other._Myptr), _Mysize(_Other._Mysize), _Myctr(_Other._Myctr) {
+            _Other._Myptr  = nullptr;
+            _Other._Mysize = 0;
+            _Other._Myctr  = nullptr;
+        }
+
+        ~smart_array() noexcept {
+            _Release();
+        }
+
+        smart_array& operator=(const smart_array& _Other) noexcept {
+            smart_array(_Other).swap(*this);
+            return *this;
+        }
+
+        smart_array& operator=(smart_array&& _Other) noexcept {
+            smart_array(::std::move(_Other)).swap(*this);
+            return *this;
+        }
+
+        smart_array& operator=(unique_smart_array<_Ty>&& _Sarr) noexcept {
+            smart_array(::std::move(_Sarr)).swap(*this);
+            return *this;
+        }
+
+        explicit operator bool() const noexcept {
+            return _Myptr != nullptr;
+        }
+
+        element_type& operator*() const noexcept {
+            // the behavior is undefined if the stored pointer is null
+            return *_Myptr;
+        }
+
+        pointer operator->() const noexcept {
+            return _Myptr;
+        }
+
+        element_type& operator[](const size_t _Idx) const {
+            if (_Idx >= _Mysize) {
+                resource_overrun::raise();
+            }
+
+            return _Myptr[_Idx];
+        }
+
+        pointer get() const noexcept {
+            return _Myptr;
+        }
+
+        long use_count() const noexcept {
+            return _Myctr ? _Myctr->use_count() : 0;
+        }
+
+        bool unique() const noexcept {
+            return use_count() == 1;
+        }
+
+        void reset() noexcept {
+            smart_array().swap(*this);
+        }
+
+        void reset(pointer _New_ptr, const size_t _New_size) {
+            smart_array(_New_ptr, _New_size).swap(*this);
+        }
+
+        void swap(smart_array& _Other) noexcept {
+            ::std::swap(_Myptr, _Other._Myptr);
+            ::std::swap(_Mysize, _Other._Mysize);
+            ::std::swap(_Myctr, _Other._Myctr);
+        }
+
+    private:
+        void _Release() noexcept {
+            if (_Myctr) {
+                if (_Myctr->decrement() == 0) {
+                    ::mjx::delete_object_array(_Myptr, _Mysize);
+                    ::mjx::delete_object(_Myctr);
+                    _Myptr  = nullptr;
+                    _Mysize = 0;
+                    _Myctr  = nullptr;
+                }
+            }
+        }
+
+        pointer _Myptr;
+        size_t _Mysize;
+        reference_counter* _Myctr;
+    };
+
+    template <class _Ty>
+    inline bool operator==(const smart_array<_Ty>& _Left, const smart_array<_Ty>& _Right) noexcept {
+        return _Left.get() == _Right.get();
+    }
+
+    template <class _Ty>
+    inline bool operator==(const smart_array<_Ty>& _Left, nullptr_t) noexcept {
+        return !_Left;
+    }
+
+    template <class _Ty>
+    inline bool operator==(nullptr_t, const smart_array<_Ty>& _Right) noexcept {
+        return !_Right;
+    }
+
+    template <class _Ty>
+    inline bool operator!=(const smart_array<_Ty>& _Left, const smart_array<_Ty>& _Right) noexcept {
+        return _Left.get() != _Right.get();
+    }
+
+    template <class _Ty>
+    inline bool operator!=(const smart_array<_Ty>& _Left, nullptr_t) noexcept {
+        return static_cast<bool>(_Left);
+    }
+
+    template <class _Ty>
+    inline bool operator!=(nullptr_t, const smart_array<_Ty>& _Right) noexcept {
+        return static_cast<bool>(_Right);
+    }
+
+    template <class _Ty>
+    inline smart_array<_Ty> make_smart_array(const size_t _Size) {
+        return smart_array<_Ty>(::mjx::allocate_object_array<_Ty>(_Size), _Size);
+    }
 } // namespace mjx
 
 #endif // _MJMEM_SMART_POINTER_HPP_
