@@ -14,14 +14,6 @@ namespace mjx {
         throw allocation_failure();
     }
 
-    pool_exhausted::pool_exhausted() noexcept {}
-
-    pool_exhausted::~pool_exhausted() noexcept {}
-
-    void pool_exhausted::raise() {
-        throw pool_exhausted();
-    }
-
     allocation_limit_exceeded::allocation_limit_exceeded() noexcept {}
 
     allocation_limit_exceeded::~allocation_limit_exceeded() noexcept {}
