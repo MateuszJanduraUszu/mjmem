@@ -198,7 +198,7 @@ namespace mjx {
         const size_type _Blocks = _Required_block_count(_Count);
         pointer _Ptr            = _Blocks == 1 ? _Allocate_block() : _Allocate_n_blocks(_Blocks);
         if (!_Ptr) { // not enough memory, raise an exception
-            pool_exhausted::raise();
+            allocation_failure::raise();
         }
 
         _Mymap._Free -= _Blocks;

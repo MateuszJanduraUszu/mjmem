@@ -168,7 +168,7 @@ namespace mjx {
     pool_allocator::pointer pool_allocator::allocate(const size_type _Count) {
         pointer _Ptr = _Allocate(_Count);
         if (!_Ptr) { // not enough memory, raise an exception
-            pool_exhausted::raise();
+            allocation_failure::raise();
         }
 
         return _Ptr;
