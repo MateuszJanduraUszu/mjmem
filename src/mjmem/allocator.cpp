@@ -28,10 +28,6 @@ namespace mjx {
         return _Left.is_equal(_Right);
     }
 
-    bool operator!=(const allocator& _Left, const allocator& _Right) noexcept {
-        return !_Left.is_equal(_Right);
-    }
-
     void set_allocator(allocator& _New_al) noexcept {
         mjmem_impl::_Global_alloc::_Instance()._Set(_New_al);
     }

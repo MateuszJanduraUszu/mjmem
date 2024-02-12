@@ -110,8 +110,4 @@ namespace mjx {
     bool operator==(const pool_resource& _Left, const pool_resource& _Right) {
         return _Left.data() == _Right.data() && _Left.size() == _Right.size();
     }
-
-    bool operator!=(const pool_resource& _Left, const pool_resource& _Right) {
-        return !(_Left == _Right);
-    }
 } // namespace mjx
