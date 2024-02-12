@@ -74,11 +74,6 @@ namespace mjx {
         return true;
     }
 
-    template <class _Ty>
-    inline bool operator!=(const object_allocator<_Ty>&, const object_allocator<_Ty>&) noexcept {
-        return false;
-    }
-
     template <class _Ty, class... _Types>
     inline _Ty* create_object(_Types&&... _Args) {
         object_allocator<_Ty> _Al;
@@ -119,14 +114,14 @@ namespace mjx {
     }
 
     template <class _Alloc>
-    using _Enable_if_allocator = ::std::enable_if_t<::std::is_base_of_v<allocator, _Alloc>, int>;
+    concept compatible_allocator = ::std::is_base_of_v<allocator, _Alloc>;
 
-    template <class _Ty, class _Alloc, class... _Types, _Enable_if_allocator<_Alloc> = 0>
+    template <class _Ty, compatible_allocator _Alloc, class... _Types>
     inline _Ty* create_object_using_allocator(_Alloc& _Al, _Types&&... _Args) {
         return ::new (static_cast<void*>(_Al.allocate(sizeof(_Ty)))) _Ty(::std::forward<_Types>(_Args)...);
     }
 
-    template <class _Ty, class _Alloc, _Enable_if_allocator<_Alloc> = 0>
+    template <class _Ty, compatible_allocator _Alloc>
     inline void delete_object_using_allocator(
         _Ty* const _Obj, _Alloc& _Al) noexcept(::std::is_nothrow_destructible_v<_Ty>) {
         if (_Obj) {
@@ -138,12 +133,12 @@ namespace mjx {
         }
     }
 
-    template <class _Ty, class _Alloc, _Enable_if_allocator<_Alloc> = 0>
+    template <class _Ty, compatible_allocator _Alloc>
     inline _Ty* allocate_object_array_using_allocator(const size_t _Count, _Alloc& _Al) {
         return static_cast<_Ty*>(_Al.allocate(_Count * sizeof(_Ty)));
     }
 
-    template <class _Ty, class _Alloc, _Enable_if_allocator<_Alloc> = 0>
+    template <class _Ty, compatible_allocator _Alloc>
     inline void delete_object_array_using_allocator(
         _Ty* const _Objects, const size_t _Count, _Alloc& _Al) noexcept(::std::is_nothrow_destructible_v<_Ty>) {
         if (_Objects && _Count > 0) {
