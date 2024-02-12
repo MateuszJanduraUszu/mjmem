@@ -1,6 +1,6 @@
 # MJMEM
 
-MJMEM is an internal module designed for use in future projects. It is written in C++17.
+MJMEM is an internal module designed for use in future projects. It is written in C++20.
 
 ## Setup
 
@@ -37,7 +37,7 @@ based on your requirements:
 ## Compatibility
 
 MJMEM is compatible with all versions of Windows.
-Additionally, the project requires support for C++17.
+Additionally, the project requires support for C++20.
 
 ## Questions and support
 
