@@ -20,7 +20,7 @@ namespace mjx {
         template <bool _Shared>
         class _Lock_guard { // RAII class for SRWLOCK
         public:
-            _Lock_guard(void* _Lock) noexcept : _Mylock(static_cast<SRWLOCK*>(_Lock)) {
+            constexpr _Lock_guard(void* const _Lock) noexcept : _Mylock(static_cast<SRWLOCK*>(_Lock)) {
                 if constexpr (_Shared) {
                     ::AcquireSRWLockShared(_Mylock);
                 } else {
@@ -28,7 +28,7 @@ namespace mjx {
                 }
             }
 
-            ~_Lock_guard() noexcept {
+            constexpr ~_Lock_guard() noexcept {
                 if constexpr (_Shared) {
                     ::ReleaseSRWLockShared(_Mylock);
                 } else {
