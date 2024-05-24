@@ -1,0 +1,46 @@
+{
+    "version": 3,
+    "cmakeMinimumRequired": {
+        "major": 3,
+        "minor": 21,
+        "patch": 0
+    },
+    "configurePresets": [
+        {
+            "name": "base",
+            "hidden": true,
+            "generator": "Visual Studio 17 2022",
+            "binaryDir": "${sourceDir}/build/${presetName}"
+        },
+        {
+            "name": "x64",
+            "inherits": "base",
+            "description": "x64 Visual Studio 2022 Configuration",
+            "architecture": {
+                "strategy": "set",
+                "value": "x64"
+            }
+        },
+        {
+            "name": "x86",
+            "inherits": "base",
+            "description": "x86 Visual Studio 2022 Configuration",
+            "architecture": {
+                "strategy": "set",
+                "value": "Win32"
+            }
+        }
+    ],
+    "buildPresets": [
+        {
+            "name": "x64",
+            "description": "Build x64 MJMEM",
+            "configurePreset": "x64"
+        },
+        {
+            "name": "x86",
+            "description": "Build x86 MJMEM",
+            "configurePreset": "x86"
+        }
+    ]
+}
