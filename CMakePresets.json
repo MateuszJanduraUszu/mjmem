@@ -19,6 +19,9 @@
             "architecture": {
                 "strategy": "set",
                 "value": "x64"
+            },
+            "cacheVariables": {
+                "MJMEM_PLATFORM_ARCH": "x64"
             }
         },
         {
@@ -28,6 +31,9 @@
             "architecture": {
                 "strategy": "set",
                 "value": "Win32"
+            },
+            "cacheVariables": {
+                "MJMEM_PLATFORM_ARCH": "x86"
             }
         }
     ],
