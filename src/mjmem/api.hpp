@@ -7,9 +7,9 @@
 #ifndef _MJMEM_API_HPP_
 #define _MJMEM_API_HPP_
 
-#ifdef MJMEM_EXPORTS
+#ifdef _MJMEM_BUILD
 #define _MJMEM_API __declspec(dllexport)
-#else // ^^^ MJMEM_EXPORTS ^^^ / vvv !MJMEM_EXPORTS vvv
+#else // ^^^ _MJMEM_BUILD ^^^ / vvv !_MJMEM_BUILD vvv
 #define _MJMEM_API __declspec(dllimport)
-#endif // MJMEM_EXPORTS
+#endif // _MJMEM_BUILD
 #endif // _MJMEM_API_HPP_
