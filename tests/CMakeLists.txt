@@ -32,7 +32,4 @@ function(add_isolated_test test_name test_path)
     copy_files_required_for_test(${test_name})
 endfunction()
 
-# Currently, there are no tests compatible with the current build system,
-# and the old ones are being removed due to changes in the build system.
-# However, additional tests will be added while working on the next issue
-# to enhance test coverage.
+add_isolated_test(smart_array "src/smart_array/test.cpp")
