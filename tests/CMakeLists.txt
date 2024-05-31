@@ -33,3 +33,4 @@ function(add_isolated_test test_name test_path)
 endfunction()
 
 add_isolated_test(smart_array "src/smart_array/test.cpp")
+add_isolated_test(smart_ptr "src/smart_ptr/test.cpp")
