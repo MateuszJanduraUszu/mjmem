@@ -32,6 +32,7 @@ function(add_isolated_test test_name test_path)
     copy_files_required_for_test(${test_name})
 endfunction()
 
+add_isolated_test(allocators_compatibility "src/allocators_compatibility/test.cpp")
 add_isolated_test(pool_resource "src/pool_resource/test.cpp")
 add_isolated_test(smart_array "src/smart_array/test.cpp")
 add_isolated_test(smart_ptr "src/smart_ptr/test.cpp")
