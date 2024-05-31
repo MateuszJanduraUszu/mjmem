@@ -34,3 +34,4 @@ endfunction()
 
 add_isolated_test(smart_array "src/smart_array/test.cpp")
 add_isolated_test(smart_ptr "src/smart_ptr/test.cpp")
+add_isolated_test(unique_smart_array "src/unique_smart_array/test.cpp")
