@@ -28,10 +28,8 @@ function(add_isolated_benchmark benchmark_name benchmark_path)
         "${CMAKE_SOURCE_DIR}/src"
         "${benchmark_SOURCE_DIR}/include"
     )
-    target_link_libraries(${benchmark_name} PRIVATE benchmark::benchmark Shlwapi)
+    target_link_libraries(${benchmark_name} PRIVATE benchmark::benchmark mjmem Shlwapi)
     copy_files_required_for_benchmark(${benchmark_name})
 endfunction()
 
-# Currently, there are no benchmarks available for the existing build system.
-# However, additional benchmarks will be developed and added while working on
-# the upcoming tasks to improve the performance evaluation coverage.
+add_isolated_benchmark(benchmark_block_allocator "src/block_allocator/benchmark.cpp")
