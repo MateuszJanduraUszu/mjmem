@@ -48,7 +48,7 @@ target_compile_definitions(mjmem PRIVATE _MJMEM_BUILD=1)
 target_compile_features(mjmem PRIVATE cxx_std_20)
 target_include_directories(mjmem PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
-if(INSTALL_MJMEM)
+if(MJMEM_INSTALL_LIBRARY)
     if(NOT DEFINED CMAKE_INSTALL_PREFIX OR CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
         # set the install prefix to the default path
         set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/rules/mjmem" CACHE PATH "Path to install directory" FORCE)
