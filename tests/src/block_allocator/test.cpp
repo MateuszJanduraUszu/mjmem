@@ -22,8 +22,9 @@ namespace mjx {
         pool_resource _Res(128);
         block_allocator _Al(_Res, 16);
         EXPECT_THROW(_Al.allocate(129), allocation_failure);
-        _Al.allocate(64); // allocate 4 blocks (each 16 bytes)
+        void* const _Ptr = _Al.allocate(64); // allocate 4 blocks (each 16 bytes)
         EXPECT_THROW(_Al.allocate(100), allocation_failure); // 4 blocks available, while 7 required
+        _Al.deallocate(_Ptr, 64);
     }
     
     TEST(block_allocator, max_size) {
