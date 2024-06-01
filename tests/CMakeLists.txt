@@ -32,7 +32,12 @@ function(add_isolated_test test_name test_path)
     copy_files_required_for_test(${test_name})
 endfunction()
 
-# Currently, there are no tests compatible with the current build system,
-# and the old ones are being removed due to changes in the build system.
-# However, additional tests will be added while working on the next issue
-# to enhance test coverage.
+add_isolated_test(allocators_compatibility "src/allocators_compatibility/test.cpp")
+add_isolated_test(block_allocator "src/block_allocator/test.cpp")
+add_isolated_test(global_allocator "src/global_allocator/test.cpp")
+add_isolated_test(pool_allocator "src/pool_allocator/test.cpp")
+add_isolated_test(pool_resource "src/pool_resource/test.cpp")
+add_isolated_test(smart_array "src/smart_array/test.cpp")
+add_isolated_test(smart_ptr "src/smart_ptr/test.cpp")
+add_isolated_test(unique_smart_array "src/unique_smart_array/test.cpp")
+add_isolated_test(unique_smart_ptr "src/unique_smart_ptr/test.cpp")
