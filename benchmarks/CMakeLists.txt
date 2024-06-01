@@ -33,3 +33,4 @@ function(add_isolated_benchmark benchmark_name benchmark_path)
 endfunction()
 
 add_isolated_benchmark(benchmark_block_allocator "src/block_allocator/benchmark.cpp")
+add_isolated_benchmark(benchmark_pool_allocator "src/pool_allocator/benchmark.cpp")
