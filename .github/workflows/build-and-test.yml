@@ -21,6 +21,10 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
 
+      - name: Update submodules
+        run: |
+          git submodule update --init --recursive
+
       - name: Configure project
         run: |
           cmake --preset=${{ matrix.arch }} -DMJMEM_BUILD_BENCHMARKS=ON -DMJMEM_BUILD_TESTS=ON -DMJMEM_INSTALL_LIBRARY=ON
