@@ -11,6 +11,9 @@ on:
       
 jobs:
   build-and-test:
+    # Note: As pull requests are required before merging, workflows already run during review.
+    #       Thus, 'main' branch pushes are skipped.
+    if: ${{ github.ref_name != 'main' }}
     runs-on: windows-latest
     strategy:
       matrix:
