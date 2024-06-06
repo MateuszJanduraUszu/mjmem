@@ -7,7 +7,7 @@ Modifies the global allocator.
 ## Syntax
 
 ```cpp
-_MJMEM_API void set_allocator(allocator& _New_al) noexcept;
+void set_allocator(allocator& _New_al) noexcept;
 ```
 
 ## Parameters
@@ -16,11 +16,11 @@ _MJMEM_API void set_allocator(allocator& _New_al) noexcept;
 
 ## Return value
 
-The function does not return any value.
+(none)
 
 ## Exceptions
 
-The function does not throw any exceptions.
+(none)
 
 ## Remarks
 

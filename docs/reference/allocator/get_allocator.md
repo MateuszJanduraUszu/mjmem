@@ -7,12 +7,12 @@ Retrieves a reference to the global allocator.
 ## Syntax
 
 ```cpp
-_MJMEM_API allocator& get_allocator() noexcept;
+allocator& get_allocator() noexcept;
 ```
 
 ## Parameters
 
-The function does not take any parameters.
+(none)
 
 ## Return value
 
@@ -20,7 +20,7 @@ The function returns a reference to the global allocator. It is guaranteed to su
 
 ## Exceptions
 
-The function does not throw any exceptions.
+(none)
 
 ## Remarks
 
