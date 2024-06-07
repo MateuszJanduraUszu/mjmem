@@ -12,8 +12,8 @@ bool operator==(const allocator& _Left, const allocator& _Right) noexcept;
 
 ## Parameters
 
-* `_Left`: A left-side allocator to compare.
-* `_Right`: A right-side allocator to compare.
+- `_Left`: A left-side allocator to compare.
+- `_Right`: A right-side allocator to compare.
 
 ## Return value
 
