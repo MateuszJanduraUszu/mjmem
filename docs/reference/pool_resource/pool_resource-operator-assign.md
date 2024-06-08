@@ -26,14 +26,17 @@ Returns a reference to the resource that `_Other` was assigned to.
 
 ## Remarks
 
-The copying process does not copy the original memory block but rather allocates a new memory block of the same size, then copies the contents stored in the original block. The moving process transfers ownership of the memory block from `_Other`. Both versions call [destroy()](pool_resource-destroy.md) before copying/moving.
+The copying process does not copy the original memory block but rather allocates a new memory block of the same size, then copies 
+the contents stored in the original block. The moving process transfers ownership of the memory block from `_Other`. Both versions call 
+[destroy](pool_resource-destroy.md) before copying/moving.
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 

@@ -24,14 +24,15 @@ Returns true if the resource is empty; otherwise, returns false.
 
 ## Remarks
 
-The resource is considered empty when it does not own any memory block or its size is zero. To destroy the resource, call [destroy()](pool_resource-destroy.md).
+The resource is considered empty when it does not own any memory block or its size is zero. To destroy the resource, call [destroy](pool_resource-destroy.md).
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 

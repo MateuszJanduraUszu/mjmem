@@ -38,10 +38,11 @@ explicit pool_resource(const size_type _Size);
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 

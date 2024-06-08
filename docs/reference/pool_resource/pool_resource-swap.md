@@ -24,14 +24,16 @@ void swap(pool_resource& _Other) noexcept;
 
 ## Remarks
 
-The function swaps two resources, resulting in the left-side resource owning the right-side's resource and vice versa. Both the data and the size are swapped.
+The function swaps two resources, resulting in the left-side resource owning the right-side's resource and vice versa. Both the data and 
+the size are swapped.
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 

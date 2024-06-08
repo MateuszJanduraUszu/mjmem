@@ -25,17 +25,20 @@ Returns true if the resource contains the entire memory block specified by `_Blo
 
 ## Remarks
 
-The function checks if the entire memory block specified by `_Block` and `_Size` is contained within the resource's memory range. In other words, it verifies that both the beginning and the end of the memory block fall within the address range managed by the resource. The following conditions must evaluate to true for the function to return true:
+The function checks if the entire memory block specified by `_Block` and `_Size` is contained within the resource's memory range. In 
+other words, it verifies that both the beginning and the end of the memory block fall within the address range managed by the resource. 
+The following conditions must evaluate to true for the function to return true:
 
 - `_Block >= data()`
 - `_Block + _Size <= data() + size()`
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 

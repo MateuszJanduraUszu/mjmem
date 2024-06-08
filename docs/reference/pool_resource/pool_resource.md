@@ -65,16 +65,17 @@ public:
 
 ## Remarks
 
-The `pool_resource` class is used by stateful allocators to provide a working resource. It is important to note that the copying process
-does not exactly replicate the memory block; instead, it allocates a new block of the same size and copies the stored data. This
+The `pool_resource` class is used by stateful allocators to provide a working resource. It is important to note that the copying process 
+does not exactly replicate the memory block; instead, it allocates a new block of the same size and copies the stored data. This 
 behavior ensures that the original and copied objects are independent.
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 

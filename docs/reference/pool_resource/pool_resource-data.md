@@ -26,14 +26,16 @@ const_pointer data() const noexcept;
 
 ## Remarks
 
-The function retrieves a pointer to the managed resource. If the resource is empty, it returns a null pointer. It offers read-write and read-only variants to enable usage of the resource in both mutable and constant contexts.
+The function retrieves a pointer to the managed resource. If the resource is empty, it returns a null pointer. It offers read-write and
+read-only variants to enable usage of the resource in both mutable and constant contexts.
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 

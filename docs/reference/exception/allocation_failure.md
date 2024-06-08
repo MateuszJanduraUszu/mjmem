@@ -32,15 +32,16 @@ public:
 
 ## Remarks
 
-The `allocation_failure` class is not intended for copying, moving, or assigning. It serves as a type for catching allocation failure
+The `allocation_failure` class is not intended for copying, moving, or assigning. It serves as a type for catching allocation failure 
 exceptions.
 
 ## Requirements
 
-| Requirement     | Value             |
-|-----------------|-------------------|
-| Include header  | `<exception.hpp>` |
-| Library version | `1.0.0` or newer  |
+| Requirement             | Value             |
+|-------------------------|-------------------|
+| Include header          | `<exception.hpp>` |
+| Minimum library version | `1.0.0`           |
+| Maximum library version | `N/A`             |
 
 ## See also
 

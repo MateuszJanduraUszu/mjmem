@@ -28,10 +28,11 @@ The constructor initializes a new `allocation_limit_exceeded` object without per
 
 ## Requirements
 
-| Requirement     | Value             |
-|-----------------|-------------------|
-| Include header  | `<exception.hpp>` |
-| Library version | `1.0.0` or newer  |
+| Requirement             | Value             |
+|-------------------------|-------------------|
+| Include header          | `<exception.hpp>` |
+| Minimum library version | `1.0.0`           |
+| Maximum library version | `N/A`             |
 
 ## See also
 

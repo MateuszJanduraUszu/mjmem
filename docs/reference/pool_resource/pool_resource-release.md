@@ -24,15 +24,16 @@ Returns a pointer to the released resource. If the resource is empty, the return
 
 ## Remarks
 
-The function releases the stored memory block and sets the resource size to zero. Before calling this function, ensure that you have
-retrieved the resource size using [size()](pool_resource-size.md).
+The function releases the stored memory block and sets the resource size to zero. Before calling this function, ensure that you have 
+retrieved the resource size using [size](pool_resource-size.md).
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 

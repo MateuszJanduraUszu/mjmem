@@ -25,15 +25,16 @@ Returns true if the two resources are equal; otherwise, returns false.
 
 ## Remarks
 
-Two `pool_resource` objects are considered equal if they manage the same memory block of the same size. This behavior is equivalent to
+Two `pool_resource` objects are considered equal if they manage the same memory block of the same size. This behavior is equivalent to 
 `_Left.data() == _Right.data() && _Left.size() == _Right.size()`.
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 

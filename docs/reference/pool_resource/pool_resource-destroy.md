@@ -24,14 +24,16 @@ void destroy() noexcept;
 
 ## Remarks
 
-The function first deallocates the stored memory block, then sets the resource size to zero. After this, [empty()](pool_resource-empty.md) always returns true.
+The function first deallocates the stored memory block, then sets the resource size to zero. After this, [empty()](pool_resource-empty.md) 
+always returns true.
 
 ## Requirements
 
-| Requirement     | Value                 |
-|-----------------|-----------------------|
-| Include header  | `<pool_resource.hpp>` |
-| Library version | `1.0.0` or newer      |
+| Requirement             | Value                 |
+|-------------------------|-----------------------|
+| Include header          | `<pool_resource.hpp>` |
+| Minimum library version | `1.0.0`               |
+| Maximum library version | `N/A`                 |
 
 ## See also
 
