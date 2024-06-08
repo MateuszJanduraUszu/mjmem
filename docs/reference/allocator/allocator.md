@@ -53,14 +53,16 @@ bool operator==(const allocator& _Left, const allocator& _Right) noexcept;
 
 ## Remarks
 
-The `allocator` class is designed to maintain the abstraction of allocators, enabling the use of various types of allocators without resorting to generic programming.
+The `allocator` class is designed to maintain the abstraction of allocators, enabling the use of various types of allocators without 
+resorting to generic programming.
 
 ## Requirements
 
-| Requirement     | Value             |
-|-----------------|-------------------|
-| Include header  | `<allocator.hpp>` |
-| Library version | `1.0.0` or newer  |
+| Requirement             | Value             |
+|-------------------------|-------------------|
+| Include header          | `<allocator.hpp>` |
+| Minimum library version | `1.0.0`           |
+| Maximum library version | `N/A`             |
 
 ## See also
 

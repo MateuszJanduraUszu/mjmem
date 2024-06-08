@@ -28,10 +28,11 @@ By default, the global allocator is a [dynamic_allocator](dynamic_allocator.md).
 
 ## Requirements
 
-| Requirement     | Value             |
-|-----------------|-------------------|
-| Include header  | `<allocator.hpp>` |
-| Library version | `1.0.0` or higher |
+| Requirement             | Value             |
+|-------------------------|-------------------|
+| Include header          | `<allocator.hpp>` |
+| Minimum library version | `1.0.0`           |
+| Maximum library version | `N/A`             |
 
 ## See also
 
