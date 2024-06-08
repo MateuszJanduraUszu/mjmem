@@ -12,8 +12,8 @@ void deallocate(pointer _Ptr, const size_type _Count) noexcept override;
 
 ## Parameters
 
-- `_Ptr`: A pointer to the memory block.
-- `_Count`: The size of the memory block.
+- `_Ptr`: A pointer to the memory block to deallocate.
+- `_Count`: The size of the memory block in bytes.
 
 ## Return value
 

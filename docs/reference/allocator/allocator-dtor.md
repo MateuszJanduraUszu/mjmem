@@ -2,7 +2,7 @@
 
 ## Description
 
-Destroys the allocator.
+Destroys an `allocator` object.
 
 ## Syntax
 
