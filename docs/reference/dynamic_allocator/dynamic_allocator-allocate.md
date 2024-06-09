@@ -16,7 +16,7 @@ pointer allocate(const size_type _Count) override;
 
 ## Return value
 
-Returns a pointer to the allocated block if successful; otherwise, returns a null pointer.
+Returns a pointer to the allocated memory block if successful; otherwise, returns a null pointer.
 
 ## Exceptions
 
