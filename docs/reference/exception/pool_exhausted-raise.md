@@ -1,8 +1,8 @@
-# `resource_overrun::raise`
+# `pool_exhausted::raise`
 
 ## Description
 
-Raises a `resource_overrun` exception.
+Raises a `pool_exhausted` exception.
 
 ## Syntax
 
@@ -20,13 +20,13 @@ Raises a `resource_overrun` exception.
 
 ## Exceptions
 
-Throws `resource_overrun`.
+Throws `pool_exhausted`.
 
 ## Remarks
 
 The function is designed to throw its type for consistency and to avoid defining additional functions with similar behavior. Its behavior is 
-equivalent to `throw resource_overrun()`. The use of the **noreturn** attribute indicates that the function does not return to the 
-execution path.
+equivalent to `throw pool_exhausted()`. The use of the **noreturn** attribute indicates that the function does not return to the execution 
+path.
 
 ## Requirements
 
@@ -34,8 +34,8 @@ execution path.
 |-------------------------|-------------------|
 | Include header          | `<exception.hpp>` |
 | Minimum library version | `1.0.0`           |
-| Maximum library version | `N/A`             |
+| Maximum library version | `1.0.0`           |
 
 ## See also
 
-- [resource_overrun](resource_overrun.md)
+- [pool_exhausted](pool_exhausted.md)

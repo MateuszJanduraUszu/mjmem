@@ -48,6 +48,14 @@ public:
 - [max_size](block_allocator-max_size.md)
 - [is_equal](block_allocator-is_equal.md)
 
+## Member constants
+
+(none)
+
+## Non-member functions
+
+(none)
+
 ## Remarks
 
 The allocator operates on user-specified fixed-size blocks. This type of allocator is especially useful when working on the same 

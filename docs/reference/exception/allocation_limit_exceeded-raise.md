@@ -20,7 +20,7 @@ Raises an `allocation_limit_exceeded` exception.
 
 ## Exceptions
 
-The function throws an `allocation_limit_exceeded` exception.
+Throws `allocation_limit_exceeded`.
 
 ## Remarks
 

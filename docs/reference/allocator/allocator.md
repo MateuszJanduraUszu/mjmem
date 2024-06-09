@@ -47,6 +47,10 @@ bool operator==(const allocator& _Left, const allocator& _Right) noexcept;
 - [(destructor)](allocator-dtor.md)
 - [operator=](allocator-operator-assign.md)
 
+## Member constants
+
+(none)
+
 ## Non-member functions
 
 - [operator==](allocator-operator-cmp.md)

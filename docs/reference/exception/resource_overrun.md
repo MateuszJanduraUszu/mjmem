@@ -26,6 +26,10 @@ public:
 - [(destructor)](resource_overrun-dtor.md)
 - [raise](resource_overrun-raise.md)
 
+## Member constants
+
+(none)
+
 ## Non-member functions
 
 (none)
@@ -47,3 +51,4 @@ exceptions.
 
 - [allocation_failure](allocation_failure.md)
 - [allocation_limit_exceeded](allocation_limit_exceeded.md)
+- [pool_exhausted](pool_exhausted.md)

@@ -59,6 +59,10 @@ public:
 - [release](pool_resource-release.md)
 - [destroy](pool_resource-destroy.md)
 
+## Member constants
+
+(none)
+
 ## Non-member functions
 
 - [operator==](pool_resource-operator-cmp.md)

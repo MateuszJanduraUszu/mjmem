@@ -50,6 +50,14 @@ public:
 - [max_size](dynamic_allocator-max_size.md)
 - [is_equal](dynamic_allocator-is_equal.md)
 
+## Member constants
+
+(none)
+
+## Non-member functions
+
+(none)
+
 ## Remarks
 
 The allocator is stateless, which means it has no associated state like an underlying resource. It uses allocation and deallocation

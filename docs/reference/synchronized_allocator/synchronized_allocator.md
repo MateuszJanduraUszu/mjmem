@@ -48,6 +48,14 @@ public:
 - [max_size](synchronized_allocator-max_size.md)
 - [is_equal](synchronized_allocator-is_equal.md)
 
+## Member constants
+
+(none)
+
+## Non-member functions
+
+(none)
+
 ## Remarks
 
 The allocator uses a Slim Read/Write Lock (SRW Lock) to manage access to the associated allocator. It can acquire either read-only or 

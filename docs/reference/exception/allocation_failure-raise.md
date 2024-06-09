@@ -20,7 +20,7 @@ Raises an `allocation_failure` exception.
 
 ## Exceptions
 
-The function throws an `allocation_failure` exception.
+Throws `allocation_failure`.
 
 ## Remarks
 

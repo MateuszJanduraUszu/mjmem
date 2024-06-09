@@ -57,6 +57,10 @@ public:
 |----------------------|-------------------------------|----------------------------|
 | unbounded_block_size | Indicates no allocation limit | static_cast<size_type>(-1) |
 
+## Non-member functions
+
+(none)
+
 ## Remarks
 
 The allocator operates on a user-provided preallocated memory block stored in the associated resource. It employs a sorted 
