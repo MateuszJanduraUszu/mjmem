@@ -2,7 +2,7 @@
 
 ## Description
 
-Defines a stateful fixed-size block allocator associated with a [pool_resource](../pool_resource/pool_resource.md).
+Defines a stateful fixed-size block allocator associated with a [resource](../pool_resource/pool_resource.md).
 
 ## Syntax
 

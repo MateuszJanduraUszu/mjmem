@@ -2,7 +2,7 @@
 
 ## Description
 
-Constructs a new `block_allocator` object.
+Creates a new `block_allocator` object.
 
 ## Syntax
 
@@ -12,7 +12,7 @@ block_allocator(pool_resource& _Resource, const size_type _Block_size);
 
 ## Parameters
 
-- `_Resource`: A reference to the associated resource.
+- `_Resource`: A reference to the resource to associate with.
 - `_Block_size`: The requested block size.
 
 ## Return value
