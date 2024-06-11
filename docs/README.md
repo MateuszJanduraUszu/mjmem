@@ -21,14 +21,17 @@ Navigate through the neatly categorized sections to gain insights into the diffe
 
 - [pool_resource](reference/pool_resource/pool_resource.md)
 
-### Allocator-aware memory management
+### Object management
 
 - [allocate_object_array](reference/object_allocator/allocate_object_array.md)
-- [allocate_object_array_using_allocator](reference/object_allocator/allocate_object_array_using_allocator.md)
 - [create_object](reference/object_allocator/create_object.md)
-- [create_object_using_allocator](reference/object_allocator/create_object_using_allocator.md)
 - [delete_object](reference/object_allocator/delete_object.md)
 - [delete_object_array](reference/object_allocator/delete_object_array.md)
+
+### Allocator-aware object management
+
+- [allocate_object_array_using_allocator](reference/object_allocator/allocate_object_array_using_allocator.md)
+- [create_object_using_allocator](reference/object_allocator/create_object_using_allocator.md)
 - [delete_object_array_using_allocator](reference/object_allocator/delete_object_array_using_allocator.md)
 - [delete_object_using_allocator](reference/object_allocator/delete_object_using_allocator.md)
 
