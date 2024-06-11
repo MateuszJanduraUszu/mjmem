@@ -13,7 +13,7 @@ dynamic_allocator& operator=(dynamic_allocator&& _Other) noexcept;
 
 ## Parameters
 
-- `_Other`: An allocator to assign from.
+- `_Other`: The allocator to assign from.
 
 ## Return value
 

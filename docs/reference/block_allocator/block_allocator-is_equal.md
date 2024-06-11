@@ -12,7 +12,7 @@ bool is_equal(const allocator& _Other) const noexcept override;
 
 ## Parameters
 
-- `_Other`: An allocator to compare with.
+- `_Other`: The allocator to compare with.
 
 ## Return value
 

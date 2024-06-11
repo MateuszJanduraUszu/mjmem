@@ -13,7 +13,7 @@ pointer allocate_aligned(const size_type _Count, cons size_type _Align) override
 ## Parameters
 
 - `_Count`: The number of bytes.
-- `_Align`: The specified alignment.
+- `_Align`: The requested alignment.
 
 ## Return value
 

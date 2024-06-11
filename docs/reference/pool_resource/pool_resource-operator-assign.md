@@ -13,7 +13,7 @@ pool_resource& operator=(pool_resource&& _Other) noexcept;
 
 ## Parameters
 
-- `_Other`: A resource to assign from.
+- `_Other`: The resource to assign from.
 
 ## Return value
 

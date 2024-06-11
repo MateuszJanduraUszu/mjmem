@@ -12,8 +12,8 @@ bool operator==(const pool_resource& _Left, const pool_resource& _Right);
 
 ## Parameters
 
-- `_Left`: A left-side resource to compare.
-- `_Right`: A right-side resource to compare.
+- `_Left`: The left-side resource to compare.
+- `_Right`: The right-side resource to compare.
 
 ## Return value
 

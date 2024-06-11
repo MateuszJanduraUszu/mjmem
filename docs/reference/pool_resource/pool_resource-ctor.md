@@ -15,8 +15,8 @@ explicit pool_resource(const size_type _Size);
 
 ## Parameters
 
-- `_Other`: A resource to copy or move from.
-- `_Size`: Requested size of the new resource.
+- `_Other`: The resource to copy/move from.
+- `_Size`: The requested size of the new resource.
 
 ## Return value
 

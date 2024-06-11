@@ -14,7 +14,7 @@ allocator(allocator&& _Other) noexcept;
 
 ## Parameters
 
-* `_Other`: Another allocator to construct with.
+* `_Other`: The allocator to construct with.
 
 ## Return value
 

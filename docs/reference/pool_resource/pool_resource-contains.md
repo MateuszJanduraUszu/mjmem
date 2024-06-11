@@ -29,8 +29,10 @@ The function checks if the entire memory block specified by `_Block` and `_Size`
 other words, it verifies that both the beginning and the end of the memory block fall within the address range managed by the resource. 
 The following conditions must evaluate to true for the function to return true:
 
-- `_Block >= data()`
-- `_Block + _Size <= data() + size()`
+```cpp
+_Block >= data()
+_Block + _Size <= data() + size()
+```
 
 ## Requirements
 

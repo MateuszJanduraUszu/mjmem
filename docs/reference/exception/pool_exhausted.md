@@ -2,7 +2,7 @@
 
 ## Description
 
-> **Removed**: This class has been removed from the library since version 1.0.1.
+> **Important**: This class has been deprecated and removed from the library since version 1.0.1.
 
 Defines an exception that is raised when a pool is exhausted.
 

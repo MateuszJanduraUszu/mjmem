@@ -14,7 +14,7 @@ dynamic_allocator(dynamic_allocator&& _Other) noexcept;
 
 ## Parameters
 
-- `_Other`: An allocator to copy/move from.
+- `_Other`: The allocator to copy/move from.
 
 ## Return value
 
