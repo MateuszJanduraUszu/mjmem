@@ -22,7 +22,7 @@ Returns the created pair.
 
 ## Exceptions
 
-May throw a specific exception during members construction.
+May throw a specific exception if the member construction fails.
 
 ## Remarks
 

@@ -24,7 +24,7 @@ void destroy() noexcept;
 
 ## Remarks
 
-The function first deallocates the stored memory block, then sets the resource size to zero. After this, [empty()](pool_resource-empty.md) 
+The function first deallocates the stored memory block, then sets the resource size to zero. After this, [empty](pool_resource-empty.md) 
 always returns true.
 
 ## Requirements

@@ -2,7 +2,7 @@
 
 ## Description
 
-Creates a `pool_resource` object.
+Creates a new `pool_resource` object.
 
 ## Syntax
 

@@ -21,7 +21,7 @@ Returns the created smart pointer.
 
 ## Exceptions
 
-May throw a specific exception during memory allocation or object construction.
+May throw a specific exception if the allocation or reference counter construction fails.
 
 ## Remarks
 

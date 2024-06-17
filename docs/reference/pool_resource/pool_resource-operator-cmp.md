@@ -25,8 +25,11 @@ Returns true if the two resources are equal; otherwise, returns false.
 
 ## Remarks
 
-Two `pool_resource` objects are considered equal if they manage the same memory block of the same size. This behavior is equivalent to 
-`_Left.data() == _Right.data() && _Left.size() == _Right.size()`.
+Two `pool_resource` objects are considered equal if they manage the same memory block of the same size. The function is equivalent to:
+
+```cpp
+_Left.data() == _Right.data() && _Left.size() == _Right.size();
+```
 
 ## Requirements
 
