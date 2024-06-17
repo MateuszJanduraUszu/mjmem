@@ -39,6 +39,7 @@ Navigate through the neatly categorized sections to gain insights into the diffe
 
 - [allocation_failure](reference/exception/allocation_failure.md)
 - [allocation_limit_exceeded](reference/exception/allocation_limit_exceeded.md)
+- [pool_exhausted](reference/exception/pool_exhausted.md)
 - [resource_overrun](reference/exception/resource_overrun.md)
 
 ### Global state
@@ -114,6 +115,7 @@ For quick access to specific classes or functions, refer to the alphabetical ind
 ### P
 
 - [pool_allocator](reference/pool_allocator/pool_allocator.md)
+- [pool_exhausted](reference/exception/pool_exhausted.md)
 - [pool_resource](reference/pool_resource/pool_resource.md)
 
 ### R
