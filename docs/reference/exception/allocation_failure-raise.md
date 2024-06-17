@@ -24,9 +24,12 @@ Throws `allocation_failure`.
 
 ## Remarks
 
-The function is designed to throw its type for consistency and to avoid defining additional functions with similar behavior. Its behavior is 
-equivalent to `throw allocation_failure()`. The use of the **noreturn** attribute indicates that the function does not return to the 
-execution path.
+The function is designed to throw its type for consistency and to avoid defining additional functions with similar behavior. The use of the 
+**noreturn** attribute indicates that the function does not return to the execution path. It is equivalent to:
+
+```cpp
+throw allocation_failure();
+```
 
 ## Requirements
 
