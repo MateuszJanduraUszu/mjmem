@@ -28,8 +28,6 @@ public:
     virtual size_type max_size() const noexcept                                      = 0;
     virtual bool is_equal(const allocator& _Other) const noexcept                    = 0;
 };
-
-bool operator==(const allocator& _Left, const allocator& _Right) noexcept;
 ```
 
 ## Member types
