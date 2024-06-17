@@ -8,7 +8,7 @@ Deletes an object.
 
 ```cpp
 template <class _Ty>
-void delete_object(_Ty* const _Obj) noexcept(<expr>)
+void delete_object(_Ty* const _Obj) noexcept(<expr>);
 ```
 
 ## Parameters

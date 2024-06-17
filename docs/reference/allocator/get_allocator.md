@@ -16,7 +16,7 @@ allocator& get_allocator() noexcept;
 
 ## Return value
 
-The function returns a reference to the global allocator. It is guaranteed to succeed.
+Returns a reference to the global allocator.
 
 ## Exceptions
 
@@ -24,7 +24,7 @@ The function returns a reference to the global allocator. It is guaranteed to su
 
 ## Remarks
 
-By default, the global allocator is a [dynamic_allocator](dynamic_allocator.md). If you wish to modify it, you can use the [set_allocator](set_allocator.md) function.
+By default, the global allocator is a [dynamic_allocator](../dynamic_allocator/dynamic_allocator.md). If you wish to modify it, you can use the [set_allocator](set_allocator.md) function.
 
 ## Requirements
 
