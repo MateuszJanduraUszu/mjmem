@@ -2,7 +2,7 @@
 
 ## Description
 
-Destroys an `resource_overrun` object.
+Destroys a `resource_overrun` object.
 
 ## Syntax
 
@@ -24,7 +24,7 @@ Destroys an `resource_overrun` object.
 
 ## Remarks
 
-The destructor destroys an `resource_overrun` object without performing any specific actions.
+The destructor destroys a `resource_overrun` object without performing any specific actions.
 
 ## Requirements
 
