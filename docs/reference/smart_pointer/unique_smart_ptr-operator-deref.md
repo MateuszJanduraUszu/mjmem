@@ -24,7 +24,7 @@ May throw a specific exception if the dereference fails.
 
 ## Remarks
 
-The function dereferences the stored pointer. It is undefined behavior if the stored pointer is null. The operator is marked as 
+The function dereferences the stored pointer. The behavior is undefined if the stored pointer is null. The operator is marked as 
 **noexcept** if the following expression evaluates to true:
 
 ```cpp

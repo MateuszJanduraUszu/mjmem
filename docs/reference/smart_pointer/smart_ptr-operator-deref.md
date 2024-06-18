@@ -24,7 +24,7 @@ Returns a reference to the object that the pointer points to.
 
 ## Remarks
 
-The function dereferences the stored pointer. It is undefined behavior if the stored pointer is null. The function is equivalent to:
+The function dereferences the stored pointer. The behavior is undefined if the stored pointer is null. It is equivalent to:
 
 ```cpp
 *get();
