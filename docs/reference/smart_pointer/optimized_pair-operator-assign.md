@@ -21,7 +21,7 @@ Returns a reference to the pair that `_Other` was assigned to.
 
 ## Exceptions
 
-May throw a specific exception during assignment.
+May throw a specific exception if the assignment fails.
 
 ## Remarks
 

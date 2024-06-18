@@ -22,7 +22,7 @@ Returns a pointer to the created object.
 
 ## Exceptions
 
-May throw a specific exception during memory allocation or object construction.
+May throw a specific exception if the allocation or object construction fails.
 
 ## Remarks
 

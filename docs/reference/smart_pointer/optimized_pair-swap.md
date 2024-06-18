@@ -20,7 +20,7 @@ void swap(optimized_pair& _Other) noexcept(<expr>);
 
 ## Exceptions
 
-May throw a specific exception during construction or assignment.
+May throw a specific exception if the construction or assignment fails.
 
 ## Remarks
 

@@ -35,7 +35,7 @@ public:
     object_allocator& operator=(object_allocator&&) noexcept      = default;
 
     template <class _Other>
-    object_allocator& operator=(const object_allocator<_Other>& _Other);
+    object_allocator& operator=(const object_allocator<_Other>& _Other) noexcept;
 
     pointer allocate(const size_type _Count);
     pointer allocate_aligned(const size_type _Count, const size_type _Align);

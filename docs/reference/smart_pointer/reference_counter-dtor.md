@@ -24,7 +24,7 @@ Destroys a `reference_counter` object.
 
 ## Remarks
 
-Even though the constructor stores the number of references, the destructor is trivial, meaning it doesn't perform any specific actions.
+Even though the constructor stores the number of references, the destructor is trivial, meaning it does not perform any specific actions.
 
 ## Requirements
 

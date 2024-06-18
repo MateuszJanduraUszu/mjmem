@@ -7,9 +7,9 @@ Creates a new `object_allocator` object.
 ## Syntax
 
 ```cpp
-object_allocator() noexcept = default;
+object_allocator() noexcept                        = default;
 object_allocator(const object_allocator&) noexcept = default;
-object_allocator(object_allocator&&) noexcept = default;
+object_allocator(object_allocator&&) noexcept      = default;
 
 template <class _Other>
 object_allocator(const object_allocator<_Other>& _Al) noexcept;
@@ -17,7 +17,7 @@ object_allocator(const object_allocator<_Other>& _Al) noexcept;
 
 ## Parameters
 
-- `_Al`: An allocator to construct with.
+- `_Al`: The allocator to construct with.
 
 ## Return value
 
@@ -29,7 +29,7 @@ object_allocator(const object_allocator<_Other>& _Al) noexcept;
 
 ## Remarks
 
-Since the allocator is stateless, the construction is trivial; therefore, the constructors don't perform specific actions.
+Since the allocator is stateless, the construction is trivial; therefore, the constructors do not perform specific actions.
 
 ## Requirements
 

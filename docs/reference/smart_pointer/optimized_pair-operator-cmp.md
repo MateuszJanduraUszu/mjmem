@@ -22,7 +22,7 @@ Returns true if the two pairs are equal; otherwise, returns false.
 
 ## Exceptions
 
-May throw a specific type during comparison.
+May throw a specific exception if the comparison fails.
 
 ## Remarks
 
