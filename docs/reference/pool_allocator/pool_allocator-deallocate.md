@@ -26,7 +26,7 @@ void deallocate(pointer _Ptr, const size_type _Count) noexcept override;
 ## Remarks
 
 When called, the allocator first checks if the memory block comes from the associated resource. If so, it either creates a new list node to 
-represent the deallocated block or merges it with an adjacent block if contiguous/ Otherwise, there is no visible result.
+represent the deallocated block or merges it with an adjacent block if contiguous. Otherwise, there is no visible result.
 
 ## Requirements
 

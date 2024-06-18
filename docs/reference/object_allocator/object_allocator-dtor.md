@@ -24,7 +24,7 @@ Destroys an `object_allocator` object.
 
 ## Remarks
 
-Since the allocator is stateless, it doesn't perform any cleanup actions. Therefore, the destructor is trivial.
+Since the allocator is stateless, it does not perform any cleanup actions. Therefore, the destructor is trivial.
 
 ## Requirements
 

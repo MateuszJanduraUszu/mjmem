@@ -29,7 +29,7 @@ The allocator effectively calls the global allocator's `allocate_aligned`. Howev
 value is adjusted by multiplying it by the size of the selected type. The call is equivalent to:
 
 ```cpp
-get_allocator().allocate_aligned(_Count * sizeof(_Ty), _Align);
+static_cast<pointer>(get_allocator().allocate_aligned(_Count * sizeof(_Ty), _Align));
 ```
 
 ## Requirements

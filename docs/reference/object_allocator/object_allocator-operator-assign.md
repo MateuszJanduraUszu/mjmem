@@ -16,7 +16,7 @@ object_allocator& operator=(const object_allocator<_Other>& _Al) noexcept;
 
 ## Parameters
 
-- `_Al`: An allocator to assign from.
+- `_Al`: The allocator to assign from.
 
 ## Return value
 
@@ -28,7 +28,7 @@ Returns a reference to the allocator that `_Al` was assigned to.
 
 ## Remarks
 
-Since the allocator is stateless, it doesn't perform any assignments. Therefore, the assign operator is trivial.
+Since the allocator is stateless, it does not perform any assignments. Therefore, the assign operator is trivial.
 
 ## Requirements
 

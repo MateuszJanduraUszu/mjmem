@@ -28,7 +28,7 @@ The allocator effectively calls the global allocator's `allocate`. However, sinc
 adjusted by multiplying it by the size of the selected type. The call is equivalent to:
 
 ```cpp
-get_allocator().allocate(_Count * sizeof(_Ty));
+static_cast<pointer>(get_allocator().allocate(_Count * sizeof(_Ty)));
 ```
 
 ## Requirements
