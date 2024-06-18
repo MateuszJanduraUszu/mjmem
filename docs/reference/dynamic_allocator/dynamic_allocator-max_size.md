@@ -24,8 +24,17 @@ Returns the maximum supported allocation size.
 
 ## Remarks
 
-The maximum supported allocation size is the one which will fit in `size_type`, equivalent to `static_cast<size_type>(-1)` or 
-`std::numeric_limits<size_type>::max()`.
+The maximum supported allocation size is the largest value that can be represented by `size_type`. It is equivalent to:
+
+```cpp
+static_cast<size_type>(-1);
+```
+
+or
+
+```cpp
+std::numeric_limits<size_type>::max();
+```
 
 ## Requirements
 

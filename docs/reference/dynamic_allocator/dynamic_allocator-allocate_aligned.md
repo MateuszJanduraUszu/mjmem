@@ -7,7 +7,7 @@ Allocates a requested number of bytes aligned to the requested alignment.
 ## Syntax
 
 ```cpp
-pointer allocate_aligned(const size_type _Count, cons size_type _Align) override;
+pointer allocate_aligned(const size_type _Count, const size_type _Align) override;
 ```
 
 ## Parameters
