@@ -2,7 +2,7 @@
 
 ## Description
 
-Creates a new allocator instance.
+Creates a new `allocator` instance.
 
 ## Syntax
 

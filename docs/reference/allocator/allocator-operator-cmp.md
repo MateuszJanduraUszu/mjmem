@@ -25,7 +25,7 @@ Returns true if the two allocators are equal; otherwise, returns false.
 
 ## Remarks
 
-The function effectively calls `_Left.is_equal(_Right)` to compare two allocators. It is likely that `is_equal()` is overridden by a derived class.
+The function effectively calls `_Left.is_equal(_Right)` to compare two allocators. It is likely that `is_equal` is overridden by a derived class.
 
 ## Requirements
 

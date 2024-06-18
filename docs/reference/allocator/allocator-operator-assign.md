@@ -17,7 +17,7 @@ allocator& operator=(allocator&& _Other) noexcept;
 
 ## Return value
 
-Returns a reference to the allocator that was assigned to.
+Returns a reference to the allocator that `_Other` was assigned to.
 
 ## Exceptions
 
