@@ -42,4 +42,4 @@ jobs:
 
       - name: Run tests
         run: |
-          ctest --test-dir build/${{ matrix.arch }} --output-on-failure -C ${{ matrix.config }}
+          ctest --test-dir build/${{ matrix.arch }}/tests --output-on-failure -C ${{ matrix.config }}
