@@ -14,7 +14,7 @@ function(copy_files_required_for_test test_name)
     # copy all required files to the output directory of the specified test
     add_custom_command(TARGET ${test_name} POST_BUILD
         COMMAND ${CMAKE_COMMAND} -E copy
-        "${CMAKE_BINARY_DIR}/mjmem/$<CONFIG>/mjmem.dll"
+        "$<TARGET_FILE:mjmem>"
         "$<TARGET_FILE_DIR:${test_name}>"
     )
 endfunction()
@@ -24,7 +24,7 @@ function(add_isolated_test test_name test_path)
     add_executable(${test_name} ${test_path})
     target_compile_features(${test_name} PRIVATE cxx_std_20)
     target_include_directories(${test_name} PRIVATE
-        "${CMAKE_SOURCE_DIR}/src"
+        "${CMAKE_CURRENT_SOURCE_DIR}/../src"
         "${gtest_SOURCE_DIR}/include"
     )
     target_link_libraries(${test_name} PRIVATE gtest gtest_main mjmem)
