@@ -26,7 +26,7 @@ Follow these steps to build and install MJMEM on your system:
 
 4. Build and optionally install the project.
 
-    - To build tests, benchmarks, or install the library, consider setting `MJMEM_BUILD_BENCHMARKS`, `MJMEM_BUILD_TESTS`, and `MJMEM_INSTALL_LIBRARY` options, respectively.
+    - To build tests, benchmarks, or install the library, consider setting the `MJMEM_BUILD_BENCHMARKS`, `MJMEM_BUILD_TESTS`, and `MJMEM_INSTALL_LIBRARY` options, respectively.
     - Invoke `cmake --preset=<preset> [options...]`.
     - Build the project with `cmake --build build/<arch> --preset=<preset> --config <config>`.
     - To install the library, invoke `cmake --install build/<arch> --config <config>`.
