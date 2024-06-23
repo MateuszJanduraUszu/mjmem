@@ -2,14 +2,14 @@
 
 The MJMEM library is a memory management toolset designed as a module for future MJX projects.
 
-- [Changelog][] tracks all changed made in each release.
+- [Changelog][] tracks all changes made in each release.
 - [License][] defines the legal rights regarding the use of this library.
 
 # Build steps
 
 Follow these steps to build and install MJMEM on your system:
 
-1. Install required tools.
+1. Install the required tools.
 
     - Download and install [CMake][] 3.21.0 or later.
     - Ensure you have a compatible compiler that supports C++20.
@@ -24,7 +24,7 @@ Follow these steps to build and install MJMEM on your system:
     - Supported architectures are defined in `CMakePresets.json`. The architecture is automatically selected when specifying a preset.
     - Only `Debug` and `Release` configurations are supported.
 
-4. Build and optionally install the project.
+4. Build and, optionally, install the project.
 
     - To build tests, benchmarks, or install the library, consider setting the `MJMEM_BUILD_BENCHMARKS`, `MJMEM_BUILD_TESTS`, and `MJMEM_INSTALL_LIBRARY` options, respectively.
     - Invoke `cmake --preset=<preset> [options...]`.
@@ -87,12 +87,13 @@ Replace the placeholders with the appropriate values for your project.
 
 # Compatibility
 
-The MJMEM library is designed to work with Windows 10 and above. While it is optimized for these versions, it may also be compatible with older Windows versions. However, official support is focused on Windows 10 and newer versions.
+The MJMEM library is designed to work with Windows 10 and above. While it is optimized for these versions, it may also be 
+compatible with older Windows versions. However, official support is focused on Windows 10 and newer versions.
 
 # Questions and support
 
-If you have any questions, encouter issues, or need assistance with the MJMEM, feel free to reach out. You can contact me through the 
-[issues][] section or via [email][].
+If you have any questions, encounter issues, or need assistance with the MJMEM, feel free to reach out. You can contact me through 
+the [issues][] section or via [email][].
 
 # License
 
