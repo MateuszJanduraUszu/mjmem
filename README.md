@@ -1,9 +1,9 @@
-# MJX Memory Module (MJMEM) ![Status Badge](https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test.yml/badge.svg)
+# MJX Memory Module (MJMEM) [![Status Badge][status-badge-image]][status-badge-link]
 
 The MJMEM library is a memory management toolset designed as a module for future MJX projects.
 
-- [Changelog](CHANGELOG.md) tracks all changed made in each release.
-- [License](LICENSE) defines the legal rights regarding the use of this library.
+- [Changelog][] tracks all changed made in each release.
+- [License][] defines the legal rights regarding the use of this library.
 
 # Build steps
 
@@ -11,7 +11,7 @@ Follow these steps to build and install MJMEM on your system:
 
 1. Install required tools.
 
-    - Download and install [CMake](https://cmake.org/download) 3.21.0 or later.
+    - Download and install [CMake][] 3.21.0 or later.
     - Ensure you have a compatible compiler that supports C++20.
 
 2. Clone the repository.
@@ -92,10 +92,18 @@ The MJMEM library is designed to work with Windows 10 and above. While it is opt
 # Questions and support
 
 If you have any questions, encouter issues, or need assistance with the MJMEM, feel free to reach out. You can contact me through the 
-[issues](https://github.com/MateuszJanduraUszu/mjmem/issues) section or via [email](mailto:mjandura03@gmail.com).
+[issues][] section or via [email][].
 
 # License
 
 Copyright © Mateusz Jandura.
 
 SPDX-License-Identifier: Apache-2.0
+
+[status-badge-image]: https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test.yml/badge.svg
+[status-badge-link]: https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test.yml
+[Changelog]: CHANGELOG.md
+[License]: LICENSE
+[CMake]: https://cmake.org/download
+[issues]: https://github.com/MateuszJanduraUszu/mjmem/issues
+[email]: mailto:mjandura03@gmail.com
