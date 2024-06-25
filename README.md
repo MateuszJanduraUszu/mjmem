@@ -4,6 +4,7 @@ The MJMEM library is a memory management toolset designed as a module for future
 
 - [Changelog][] tracks all changes made in each release.
 - [License][] defines the legal rights regarding the use of this library.
+- [Documentation][] describes all functions and classes included in this library.
 
 # Build steps
 
@@ -105,6 +106,7 @@ SPDX-License-Identifier: Apache-2.0
 [status-badge-link]: https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test.yml
 [Changelog]: CHANGELOG.md
 [License]: LICENSE
+[Documentation]: docs/README.md
 [CMake]: https://cmake.org/download
 [issues]: https://github.com/MateuszJanduraUszu/mjmem/issues
 [email]: mailto:mjandura03@gmail.com
