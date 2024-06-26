@@ -17,7 +17,7 @@ namespace mjx {
     }
 
     void test_out_of_bounds(const uint64_t _Major, const uint64_t _Minor, const uint64_t _Patch) noexcept {
-        // Note: This test assumes that one or more of the version numbers is out of bounds, resulting
+        // Note: This test assumes that one or more of the version numbers are out of bounds, resulting
         //       in an invalid version encoding. Even if at least one number can be successfully decoded,
         //       the test asserts that not all numbers are successfully decoded.
         const uint64_t _Version   = _MJX_ENCODE_VERSION(_Major, _Minor, _Patch);

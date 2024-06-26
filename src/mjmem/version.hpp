@@ -9,7 +9,7 @@
 #include <cstdint>
 
 // Note: Encodes a version number from major, minor, and patch components into a 64-bit integer.
-//       The major version consumes 16 bits, while the minor and patch each consume 24 bits.
+//       The major version consumes 16 bits, while the minor and patch versions each consume 24 bits.
 #define _MJX_ENCODE_VERSION(_Major, _Minor, _Patch) ((static_cast<uint64_t>(_Major) << 48ULL)  \
                                                     | (static_cast<uint64_t>(_Minor) << 24ULL) \
                                                     | static_cast<uint64_t>(_Patch))
