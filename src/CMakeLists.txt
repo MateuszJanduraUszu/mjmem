@@ -16,6 +16,7 @@ set(MJMEM_INC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/pool_resource.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/smart_pointer.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/synchronized_allocator.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/version.hpp"
 )
 set(MJMEM_SRC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/allocator.cpp"
