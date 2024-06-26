@@ -17,7 +17,7 @@
 // decodes the major, minor, and patch version numbers from a 64-bit encoded version
 #define _MJX_DECODE_VERSION_MAJOR(_Version) ((static_cast<uint64_t>(_Version) & 0xFFFF'0000'0000'0000ULL) >> 48ULL)
 #define _MJX_DECODE_VERSION_MINOR(_Version) ((static_cast<uint64_t>(_Version) & 0x0000'FFFF'FF00'0000ULL) >> 24ULL)
-#define _MJX_DECODE_VERSION_PATCH(_Version) ((static_cast<uint64_t>(_Version) & 0x0000'0000'00FF'FFFFULL)
+#define _MJX_DECODE_VERSION_PATCH(_Version) (static_cast<uint64_t>(_Version) & 0x0000'0000'00FF'FFFFULL)
 
 // defines the latest MJMEM library version, synchronized with the version specified in 'res/mjmem.rc'
 #define _MJMEM_VERSION_MAJOR 2
