@@ -408,10 +408,10 @@ namespace mjx {
         smart_ptr(nullptr_t) noexcept : _Myptr(nullptr), _Myctr(nullptr) {}
 
         explicit smart_ptr(pointer _Ptr)
-            : _Myptr(_Ptr), _Myctr(::mjx::create_object<reference_counter>()) {}
+            : _Myptr(_Ptr), _Myctr(::mjx::create_object<reference_counter>(1)) {}
 
         smart_ptr(unique_smart_ptr<_Ty>&& _Sptr)
-            : _Myptr(_Sptr.release()), _Myctr(::mjx::create_object<reference_counter>()) {}
+            : _Myptr(_Sptr.release()), _Myctr(::mjx::create_object<reference_counter>(1)) {}
 
         smart_ptr(const smart_ptr& _Other) noexcept : _Myptr(_Other._Myptr), _Myctr(_Other._Myctr) {
             if (_Myctr) {
@@ -523,13 +523,13 @@ namespace mjx {
         smart_array(nullptr_t) noexcept : _Myptr(nullptr), _Mysize(0), _Myctr(nullptr) {}
 
         smart_array(pointer _Ptr, const size_t _Size)
-            : _Myptr(_Ptr), _Mysize(_Size), _Myctr(::mjx::create_object<reference_counter>()) {}
+            : _Myptr(_Ptr), _Mysize(_Size), _Myctr(::mjx::create_object<reference_counter>(1)) {}
 
         smart_array(unique_smart_array<_Ty>&& _Sarr) : _Myptr(nullptr), _Mysize(0), _Myctr(nullptr) {
             const auto& _Array = _Sarr.release();
             _Myptr             = _Array.ptr;
             _Mysize            = _Array.size;
-            _Myctr             = ::mjx::create_object<reference_counter>();
+            _Myctr             = ::mjx::create_object<reference_counter>(1);
         }
 
         smart_array(const smart_array& _Other) noexcept
