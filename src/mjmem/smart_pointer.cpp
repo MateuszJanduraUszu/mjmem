@@ -6,7 +6,7 @@
 #include <mjmem/smart_pointer.hpp>
 
 namespace mjx {
-    reference_counter::reference_counter() noexcept : _Myrefs(1) {}
+    reference_counter::reference_counter() noexcept : _Myrefs(0) {}
 
     reference_counter::reference_counter(const long _Refs) noexcept : _Myrefs(_Refs) {}
 
