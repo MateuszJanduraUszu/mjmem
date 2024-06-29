@@ -41,7 +41,7 @@ namespace mjx {
         size_type max_size() const noexcept override;
 
         // compares for equality with another allocator
-        bool is_equal(const allocator& _Al) const noexcept override;
+        bool is_equal(const allocator& _Other) const noexcept override;
 
         // returns the number of free blocks
         size_type free_blocks() const noexcept;
