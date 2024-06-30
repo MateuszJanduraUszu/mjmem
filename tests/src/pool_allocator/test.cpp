@@ -51,7 +51,10 @@ namespace mjx {
         pool_resource _Res1(128);
         pool_allocator _Al0(_Res0);
         pool_allocator _Al1(_Res1);
+        pool_allocator _Al2(_Res1, 64);
         EXPECT_NE(_Al0, _Al1);
+        EXPECT_NE(_Al0, _Al2);
+        EXPECT_NE(_Al1, _Al2);
     }
 
     TEST(pool_allocator, predefined_allocators_inequality) {

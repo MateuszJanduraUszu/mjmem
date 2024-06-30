@@ -16,6 +16,12 @@ namespace mjx {
         EXPECT_EQ(_Al.max_size(), static_cast<dynamic_allocator::size_type>(-1));
     }
 
+    TEST(dynamic_allocator, allocators_equality) {
+        dynamic_allocator _Al0;
+        dynamic_allocator _Al1;
+        EXPECT_EQ(_Al0, _Al1);
+    }
+
     TEST(dynamic_allocator, predefined_allocators_inequality) {
         pool_resource _Res(128);
         block_allocator _Block_al(_Res, 16);

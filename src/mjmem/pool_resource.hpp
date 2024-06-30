@@ -54,14 +54,14 @@ namespace mjx {
         // copies other resource
         void _Copy_resource(const_pointer _Data, const size_type _Size);
         
-        // steals other resource
-        void _Steal_resource(pointer& _Data, size_type& _Size) noexcept;
+        // moves other resource
+        void _Move_resource(pointer& _Data, size_type& _Size) noexcept;
 
         pointer _Mydata;
         size_type _Mysize;
     };
 
-    _MJMEM_API bool operator==(const pool_resource& _Left, const pool_resource& _Right);
+    _MJMEM_API bool operator==(const pool_resource& _Left, const pool_resource& _Right) noexcept;
 } // namespace mjx
 
 #endif // _MJMEM_POOL_RESOURCE_HPP_
