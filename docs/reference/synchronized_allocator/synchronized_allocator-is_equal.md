@@ -24,7 +24,8 @@ Returns true if the two allocators are equal; otherwise, returns false.
 
 ## Remarks
 
-The function internally calls the associated allocator's `is_equal` function in a locked context, ensuring thread-safe access.
+The function internally calls the associated allocator's `is_equal` function in a locked context, ensuring thread-safe access. Note that 
+`_Other` must be castable from [allocator](../allocator/allocator.md) to `synchronized_allocator`; otherwise, it always returns false.
 
 ## Requirements
 

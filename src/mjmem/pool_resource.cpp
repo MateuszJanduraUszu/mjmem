@@ -15,7 +15,7 @@ namespace mjx {
     }
 
     pool_resource::pool_resource(pool_resource&& _Other) noexcept : _Mydata(nullptr), _Mysize(0) {
-        _Steal_resource(_Other._Mydata, _Other._Mysize);
+        _Move_resource(_Other._Mydata, _Other._Mysize);
     }
 
     pool_resource::pool_resource(const size_type _Size) : _Mydata(nullptr), _Mysize(0) {
@@ -40,7 +40,7 @@ namespace mjx {
     pool_resource& pool_resource::operator=(pool_resource&& _Other) noexcept {
         if (this != ::std::addressof(_Other)) {
             destroy();
-            _Steal_resource(_Other._Mydata, _Other._Mysize);
+            _Move_resource(_Other._Mydata, _Other._Mysize);
         }
 
         return *this;
@@ -53,7 +53,7 @@ namespace mjx {
         ::memcpy(_Mydata, _Data, _Size);
     }
 
-    void pool_resource::_Steal_resource(pointer& _Data, size_type& _Size) noexcept {
+    void pool_resource::_Move_resource(pointer& _Data, size_type& _Size) noexcept {
         _Mydata = _Data;
         _Mysize = _Size;
         _Data   = nullptr;
@@ -61,7 +61,7 @@ namespace mjx {
     }
 
     bool pool_resource::empty() const noexcept {
-        return !_Mydata && _Mysize == 0;
+        return _Mydata == nullptr && _Mysize == 0;
     }
 
     pool_resource::pointer pool_resource::data() noexcept {
@@ -107,7 +107,7 @@ namespace mjx {
         }
     }
 
-    bool operator==(const pool_resource& _Left, const pool_resource& _Right) {
+    bool operator==(const pool_resource& _Left, const pool_resource& _Right) noexcept {
         return _Left.data() == _Right.data() && _Left.size() == _Right.size();
     }
 } // namespace mjx

@@ -4,9 +4,12 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <gtest/gtest.h>
+#include <mjmem/block_allocator.hpp>
+#include <mjmem/dynamic_allocator.hpp>
 #include <mjmem/exception.hpp>
 #include <mjmem/pool_allocator.hpp>
 #include <mjmem/pool_resource.hpp>
+#include <mjmem/synchronized_allocator.hpp>
 
 namespace mjx {
     TEST(pool_allocator, allocate) {
@@ -48,6 +51,20 @@ namespace mjx {
         pool_resource _Res1(128);
         pool_allocator _Al0(_Res0);
         pool_allocator _Al1(_Res1);
+        pool_allocator _Al2(_Res1, 64);
         EXPECT_NE(_Al0, _Al1);
+        EXPECT_NE(_Al0, _Al2);
+        EXPECT_NE(_Al1, _Al2);
+    }
+
+    TEST(pool_allocator, predefined_allocators_inequality) {
+        pool_resource _Res(128);
+        block_allocator _Block_al(_Res, 16);
+        dynamic_allocator _Dynamic_al;
+        pool_allocator _Pool_al(_Res);
+        synchronized_allocator _Sync_al(_Dynamic_al);
+        EXPECT_NE(_Pool_al, _Block_al);
+        EXPECT_NE(_Pool_al, _Dynamic_al);
+        EXPECT_NE(_Pool_al, _Sync_al);
     }
 } // namespace mjx

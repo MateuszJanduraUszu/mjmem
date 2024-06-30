@@ -192,8 +192,10 @@ namespace mjx {
         return _Mymax;
     }
 
-    bool pool_allocator::is_equal(const allocator& _Al) const noexcept {
-        return _Myres == static_cast<const pool_allocator&>(_Al)._Myres;
+    bool pool_allocator::is_equal(const allocator& _Other) const noexcept {
+        // cast to a pointer to avoid a bad_cast exception
+        const pool_allocator* const _Other_ptr = dynamic_cast<const pool_allocator*>(::std::addressof(_Other));
+        return _Other_ptr ? _Myres == _Other_ptr->_Myres && _Mymax == _Other_ptr->_Mymax : false;
     }
 
     pool_allocator::size_type pool_allocator::free_blocks() const noexcept {

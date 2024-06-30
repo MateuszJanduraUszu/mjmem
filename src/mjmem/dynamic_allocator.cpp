@@ -55,7 +55,8 @@ namespace mjx {
         return static_cast<size_type>(-1);
     }
 
-    bool dynamic_allocator::is_equal(const allocator&) const noexcept {
-        return true; // always equal
+    bool dynamic_allocator::is_equal(const allocator& _Other) const noexcept {
+        // cast to a pointer to avoid a bad_cast exception
+        return dynamic_cast<const dynamic_allocator*>(::std::addressof(_Other)) != nullptr;
     }
 } // namespace mjx

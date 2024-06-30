@@ -5,6 +5,7 @@
 
 #include <mjmem/impl/utils.hpp>
 #include <mjmem/synchronized_allocator.hpp>
+#include <type_traits>
 
 namespace mjx {
     synchronized_allocator::synchronized_allocator(allocator& _Al) noexcept
@@ -34,7 +35,14 @@ namespace mjx {
     }
 
     bool synchronized_allocator::is_equal(const allocator& _Other) const noexcept {
+        // cast to a pointer to avoid a bad_cast exception
+        const synchronized_allocator* const _Other_ptr =
+            dynamic_cast<const synchronized_allocator*>(::std::addressof(_Other));
+        if (!_Other_ptr) {
+            return false;
+        }
+
         mjmem_impl::_Lock_guard<true> _Guard(&_Mylock);
-        return _Mywrapped.is_equal(_Other);
+        return _Mywrapped.is_equal(_Other_ptr->_Mywrapped);
     }
 } // namespace mjx

@@ -74,7 +74,8 @@ namespace mjx {
     };
 
     TEST(global_allocator, use_custom_allocator) {
-        size_t _Counter = 0;
+        constexpr size_t _Expected_counter = 5;
+        size_t _Counter                    = 0;
         custom_allocator _Al;
         _Al.set_counter(_Counter);
         ::mjx::set_allocator(_Al);
@@ -86,7 +87,7 @@ namespace mjx {
         _Global.deallocate(nullptr, 0);
         _Global.max_size();
         _Global.is_equal(_Al);
-        EXPECT_EQ(_Counter, 5);
+        EXPECT_EQ(_Counter, _Expected_counter);
     }
 
     TEST(global_allocator, use_predefined_allocator) {

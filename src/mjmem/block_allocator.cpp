@@ -227,6 +227,8 @@ namespace mjx {
     }
 
     bool block_allocator::is_equal(const allocator& _Other) const noexcept {
-        return _Myres == static_cast<const block_allocator&>(_Other)._Myres;
+        // cast to a pointer to avoid a bad_cast exception
+        const block_allocator* const _Other_ptr = dynamic_cast<const block_allocator*>(::std::addressof(_Other));
+        return _Other_ptr ? _Myres == _Other_ptr->_Myres && _Myblock == _Other_ptr->_Myblock : false;
     }
 } // namespace mjx

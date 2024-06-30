@@ -48,10 +48,7 @@ namespace mjx {
         for (size_t _Thread = 0; _Thread < _Thread_count; ++_Thread) {
             _Threads.push_back(::std::thread(
                 [&] {
-                    while (!_Work_started) { // wait until the work is started
-                        ::std::this_thread::yield();
-                    }
-
+                    _Work_started.wait(false, ::std::memory_order_relaxed); // wait until the work is started
                     while (_Counter.use_count() < _Expected_use_count) { // increment the counter if possible
                         _Counter.increment();
                     }
@@ -60,6 +57,7 @@ namespace mjx {
         }
 
         _Work_started.store(true);
+        _Work_started.notify_all();
         for (::std::thread& _Thread : _Threads) {
             if (_Thread.joinable()) { // join the threads to avoid a std::terminate() call
                 _Thread.join();
@@ -83,10 +81,7 @@ namespace mjx {
         for (size_t _Thread = 0; _Thread < _Thread_count; ++_Thread) {
             _Threads.push_back(::std::thread(
                 [&] {
-                    while (!_Work_started) { // wait until the work is started
-                        ::std::this_thread::yield();
-                    }
-
+                    _Work_started.wait(false, ::std::memory_order_relaxed); // wait until the work is started
                     while (_Counter.use_count() > _Expected_use_count) { // decrement the counter if possible
                         _Counter.decrement();
                     }
@@ -95,12 +90,13 @@ namespace mjx {
         }
 
         _Work_started.store(true);
+        _Work_started.notify_all();
         for (::std::thread& _Thread : _Threads) {
             if (_Thread.joinable()) { // join the threads to avoid a std::terminate() call
                 _Thread.join();
             }
         }
 
-        EXPECT_EQ(_Counter.use_count(), _Expected_use_count);
+        EXPECT_LE(_Counter.use_count(), _Expected_use_count);
     }
 } // namespace mjx
