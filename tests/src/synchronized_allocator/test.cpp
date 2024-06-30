@@ -89,6 +89,8 @@ namespace mjx {
         size_t _Counter                    = 0;
         wrapped_allocator _Wrapped;
         _Wrapped.set_counter(_Counter);
+
+        // call all allocator methods, each call should increment the counter
         synchronized_allocator _Al(_Wrapped);
         _Al.allocate(0);
         _Al.allocate_aligned(0, 0);
