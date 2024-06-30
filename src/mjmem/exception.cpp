@@ -22,6 +22,16 @@ namespace mjx {
         throw allocation_limit_exceeded();
     }
 
+#if !_MJMEM_VERSION_SUPPORTED(1, 0, 1)
+    pool_exhausted::pool_exhausted() noexcept {}
+
+    pool_exhausted::~pool_exhausted() noexcept {}
+
+    void pool_exhausted::raise() {
+        throw pool_exhausted();
+    }
+#endif // !_MJMEM_VERSION_SUPPORTED(1, 0, 1)
+
     resource_overrun::resource_overrun() noexcept {}
 
     resource_overrun::~resource_overrun() noexcept {}
