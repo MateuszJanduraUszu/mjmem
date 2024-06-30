@@ -22,11 +22,19 @@ namespace mjx {
 
         ~wrapped_allocator() noexcept override {}
 
-        wrapped_allocator& operator=(const wrapped_allocator&) noexcept {
+        wrapped_allocator& operator=(const wrapped_allocator& _Other) noexcept {
+            if (this != ::std::addressof(_Other)) {
+                _Myctr = _Other._Myctr;
+            }
+            
             return *this;
         }
 
-        wrapped_allocator& operator=(wrapped_allocator&&) noexcept {
+        wrapped_allocator& operator=(wrapped_allocator&& _Other) noexcept {
+            if (this != ::std::addressof(_Other)) {
+                _Myctr = _Other._Myctr;
+            }
+            
             return *this;
         }
         
