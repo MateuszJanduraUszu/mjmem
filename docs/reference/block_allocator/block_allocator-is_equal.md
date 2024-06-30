@@ -24,7 +24,7 @@ Returns true if the two allocators are equal; otherwise, returns false.
 
 ## Remarks
 
-The two allocators are considered equal when they use the same resource. Note that `_Other` must be castable from 
+The two allocators are considered equal when they use the same resource and block size. Note that `_Other` must be castable from 
 [allocator](../allocator/allocator.md) to `block_allocator`; otherwise, it always returns false.
 
 ## Requirements
