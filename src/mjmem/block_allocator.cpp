@@ -14,8 +14,11 @@ namespace mjx {
     block_allocator::block_allocator(pool_resource& _Resource, const size_type _Block_size)
         : _Myres(_Resource), _Myblock(_Block_size), _Mymap() {
 #ifdef _DEBUG
-        _INTERNAL_ASSERT(
-            _Resource.size() % _Block_size == 0, "resource size must be a multiple of block size");
+        // Note: The _Block_size must always be less than or equal to '_Resource.size()'.
+        //       Although not explicitly checked, the assertion below will catch any issues.
+        //       In the expression 'x % y', where 'x < y', the result is always 'y - x',
+        //       which will fail the assertion, expecting the remainder to be 0.
+        _INTERNAL_ASSERT(_Resource.size() % _Block_size == 0, "resource size must be a multiple of block size");
 #endif // _DEBUG
         _Setup_bitmap();
     }
@@ -41,8 +44,7 @@ namespace mjx {
         return _Size <= _Small_buffer_size ? _Buf : _Ptr;
     }
 
-    block_allocator::size_type
-        block_allocator::_Bitmap::_Bits_per_last_word(const size_type _Max) const noexcept {
+    block_allocator::size_type block_allocator::_Bitmap::_Bits_per_last_word(const size_type _Max) const noexcept {
         return _Bits_per_word - ((_Size * _Bits_per_word) % _Max);
     }
 
@@ -198,15 +200,18 @@ namespace mjx {
         const size_type _Blocks = _Required_block_count(_Count);
         pointer _Ptr            = _Blocks == 1 ? _Allocate_block() : _Allocate_n_blocks(_Blocks);
         if (!_Ptr) { // not enough memory, raise an exception
+#if _MJMEM_VERSION_SUPPORTED(1, 0, 1)
             allocation_failure::raise();
+#else // ^^^ _MJMEM_VERSION_SUPPORTED(1, 0, 1) ^^^ / vvv !_MJMEM_VERSION_SUPPORTED(1, 0, 1) vvv
+            pool_exhausted::raise();
+#endif // _MJMEM_VERSION_SUPPORTED(1, 0, 1)
         }
 
         _Mymap._Free -= _Blocks;
         return _Ptr;
     }
 
-    block_allocator::pointer
-        block_allocator::allocate_aligned(const size_type _Count, const size_type _Align) {
+    block_allocator::pointer block_allocator::allocate_aligned(const size_type _Count, const size_type _Align) {
 #ifdef _DEBUG
         _INTERNAL_ASSERT(mjmem_impl::_Is_pow_of_2(_Align), "alignment must be a power of 2");
 #endif // _DEBUG

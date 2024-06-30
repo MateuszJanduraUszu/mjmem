@@ -14,8 +14,7 @@ namespace mjx {
         : _Myres(_Resource), _Mymax((::std::min)(_Max_block_size, _Resource.size())), _Mylist() {
 #ifdef _DEBUG
         if (_Mymax != unbounded_block_size) { // maximum block size specified, validate it
-            _INTERNAL_ASSERT(
-                _Myres.size() >= _Mymax, "maximum block size cannot exceed the total pool resource size")
+            _INTERNAL_ASSERT(_Myres.size() >= _Mymax, "maximum block size cannot exceed the total pool resource size");
         }
 #endif // _DEBUG
 
@@ -168,7 +167,11 @@ namespace mjx {
     pool_allocator::pointer pool_allocator::allocate(const size_type _Count) {
         pointer _Ptr = _Allocate(_Count);
         if (!_Ptr) { // not enough memory, raise an exception
+#if _MJMEM_VERSION_SUPPORTED(1, 0, 1)
             allocation_failure::raise();
+#else // ^^^ _MJMEM_VERSION_SUPPORTED(1, 0, 1) ^^^ / vvv !_MJMEM_VERSION_SUPPORTED(1, 0, 1) vvv
+            pool_exhausted::raise();
+#endif // _MJMEM_VERSION_SUPPORTED(1, 0, 1)
         }
 
         return _Ptr;

@@ -7,6 +7,7 @@
 #ifndef _MJMEM_EXCEPTION_HPP_
 #define _MJMEM_EXCEPTION_HPP_
 #include <mjmem/api.hpp>
+#include <mjmem/version.hpp>
 
 namespace mjx {
     class _MJMEM_API allocation_failure {
@@ -26,6 +27,17 @@ namespace mjx {
         // raises allocation limit exceeded exception
         [[noreturn]] static void raise();
     };
+
+#if !_MJMEM_VERSION_SUPPORTED(1, 0, 1)
+    class _MJMEM_API pool_exhausted {
+    public:
+        pool_exhausted() noexcept;
+        ~pool_exhausted() noexcept;
+
+        // raises pool exhausted exception
+        [[noreturn]] static void raise();
+    };
+#endif // !_MJMEM_VERSION_SUPPORTED(1, 0, 1)
 
     class _MJMEM_API resource_overrun {
     public:
