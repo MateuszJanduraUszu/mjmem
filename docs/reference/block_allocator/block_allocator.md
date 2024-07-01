@@ -47,6 +47,8 @@ public:
 - [deallocate](block_allocator-deallocate.md)
 - [max_size](block_allocator-max_size.md)
 - [is_equal](block_allocator-is_equal.md)
+- [block_size](block_allocator-block_size.md)
+- [resource](block_allocator-resource.md)
 
 ## Member constants
 

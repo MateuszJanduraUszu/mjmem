@@ -41,6 +41,12 @@ namespace mjx {
         // compares for equality with another allocator
         bool is_equal(const allocator& _Other) const noexcept override;
 
+        // returns the allocation block size
+        size_type block_size() const noexcept;
+
+        // returns the associated resource
+        const pool_resource& resource() const noexcept;
+
     private:
         // setups the bitmap
         void _Setup_bitmap();
