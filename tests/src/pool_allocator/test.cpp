@@ -39,6 +39,15 @@ namespace mjx {
         EXPECT_EQ(_Al.max_size(), _Res.size());
     }
 
+    TEST(pool_allocator, resource) {
+        pool_resource _Res0(128);
+        pool_resource _Res1(256);
+        pool_allocator _Al0(_Res0);
+        pool_allocator _Al1(_Res1);
+        EXPECT_EQ(_Al0.resource(), _Res0);
+        EXPECT_EQ(_Al1.resource(), _Res1);
+    }
+
     TEST(pool_allocator, allocators_equality) {
         pool_resource _Res(128);
         pool_allocator _Al0(_Res);

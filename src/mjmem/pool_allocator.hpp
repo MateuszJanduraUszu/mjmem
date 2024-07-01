@@ -46,6 +46,9 @@ namespace mjx {
         // returns the number of free blocks
         size_type free_blocks() const noexcept;
 
+        // returns the associated resource
+        const pool_resource& resource() const noexcept;
+
     private:
         // allocates uninitialized storage
         pointer _Allocate(const size_type _Count);
