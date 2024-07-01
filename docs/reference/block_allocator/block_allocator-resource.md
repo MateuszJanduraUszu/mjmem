@@ -16,7 +16,7 @@ const pool_resource& resource() const noexcept;
 
 ## Return value
 
-Returns the associated resource.
+Returns a read-only reference to the associated resource.
 
 ## Exceptions
 
@@ -24,7 +24,7 @@ Returns the associated resource.
 
 ## Remarks
 
-The function returns the associated [resource](../pool_resource/pool_resource.md), which is a preallocated memory block managed by 
+The function retrieves the associated [resource](../pool_resource/pool_resource.md), which is a preallocated memory block managed by 
 the allocator for quick fixed-size allocations. 
 
 ## Requirements
