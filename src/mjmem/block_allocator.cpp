@@ -236,4 +236,12 @@ namespace mjx {
         const block_allocator* const _Other_ptr = dynamic_cast<const block_allocator*>(::std::addressof(_Other));
         return _Other_ptr ? _Myres == _Other_ptr->_Myres && _Myblock == _Other_ptr->_Myblock : false;
     }
+
+    block_allocator::size_type block_allocator::block_size() const noexcept {
+        return _Myblock;
+    }
+
+    const pool_resource& block_allocator::resource() const noexcept {
+        return _Myres;
+    }
 } // namespace mjx
