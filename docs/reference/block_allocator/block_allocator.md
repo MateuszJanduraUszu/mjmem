@@ -26,6 +26,8 @@ public:
     void deallocate(pointer _Ptr, const size_type _Count) noexcept override;
     size_type max_size() const noexcept override;
     bool is_equal(const allocator& _Other) const noexcept override;
+    size_type block_size() const noexcept;
+    const pool_resource& resource() const noexcept;
 };
 ```
 

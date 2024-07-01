@@ -28,6 +28,7 @@ public:
     void deallocate(pointer _Ptr, const size_type _Count) noexcept override;
     size_type max_size() const noexcept override;
     bool is_equal(const allocator& _Other) const noexcept override;
+    const pool_resource& resource() const noexcept;
 };
 ```
 
@@ -50,6 +51,7 @@ public:
 - [max_size](pool_allocator-max_size.md)
 - [is_equal](pool_allocator-is_equal.md)
 - [free_blocks](pool_allocator-free_blocks.md)
+- [resource](pool_allocator-resource.md)
 
 ## Member constants
 

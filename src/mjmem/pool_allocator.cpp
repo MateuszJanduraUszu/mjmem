@@ -204,4 +204,8 @@ namespace mjx {
     pool_allocator::size_type pool_allocator::free_blocks() const noexcept {
         return _Mylist._Size();
     }
+
+    const pool_resource& pool_allocator::resource() const noexcept {
+        return _Myres;
+    }
 } // namespace mjx
