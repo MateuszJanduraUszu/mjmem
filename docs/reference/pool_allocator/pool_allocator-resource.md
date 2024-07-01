@@ -24,7 +24,8 @@ Returns a read-only reference to the associated resource.
 
 ## Remarks
 
-The function retrieves the associated [resource](../pool_resource/pool_resource.md), which is a preallocated memory block managed by the allocator for quick variable-size allocations.
+The function retrieves the associated [resource](../pool_resource/pool_resource.md), which is a preallocated memory block managed by 
+the allocator for quick variable-size allocations.
 
 ## Requirements
 
