@@ -9,6 +9,7 @@
 #include <atomic>
 #include <mjmem/exception.hpp>
 #include <mjmem/object_allocator.hpp>
+#include <mjmem/version.hpp>
 #include <type_traits>
 #include <utility>
 
@@ -293,6 +294,7 @@ namespace mjx {
         unique_smart_array(const unique_smart_array&)            = delete;
         unique_smart_array& operator=(const unique_smart_array&) = delete;
 
+#if !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
         element_type& operator*() const noexcept {
             return *_Myptr;
         }
@@ -300,6 +302,7 @@ namespace mjx {
         pointer operator->() const noexcept {
             return _Myptr;
         }
+#endif // !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
 
         element_type& operator[](const size_t _Idx) const {
             if (_Idx >= _Mysize) {
@@ -569,6 +572,7 @@ namespace mjx {
             return _Myptr != nullptr;
         }
 
+#if !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
         element_type& operator*() const noexcept {
             // the behavior is undefined if the stored pointer is null
             return *_Myptr;
@@ -577,6 +581,7 @@ namespace mjx {
         pointer operator->() const noexcept {
             return _Myptr;
         }
+#endif // !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
 
         element_type& operator[](const size_t _Idx) const {
             if (_Idx >= _Mysize) {
