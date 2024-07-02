@@ -197,6 +197,10 @@ namespace mjx {
     }
 
     block_allocator::pointer block_allocator::allocate(const size_type _Count) {
+        if (_Count == 0) { // no allocation, do nothing
+            return nullptr;
+        }
+
         const size_type _Blocks = _Required_block_count(_Count);
         pointer _Ptr            = _Blocks == 1 ? _Allocate_block() : _Allocate_n_blocks(_Blocks);
         if (!_Ptr) { // not enough memory, raise an exception
@@ -219,11 +223,13 @@ namespace mjx {
     }
 
     void block_allocator::deallocate(pointer _Ptr, const size_type _Count) noexcept {
-        const size_type _Blocks = _Required_block_count(_Count);
-        if (_Myres.contains(_Ptr, _Blocks * _Myblock)) { // _Ptr allocated from the associated resource
-            _Mymap._Zero_bits((static_cast<unsigned char*>(_Ptr)
-                - static_cast<unsigned char*>(_Myres.data())) / _Myblock, _Blocks);
-            _Mymap._Free += _Blocks;
+        if (_Ptr && _Count > 0) {
+            const size_type _Blocks = _Required_block_count(_Count);
+            if (_Myres.contains(_Ptr, _Blocks * _Myblock)) { // _Ptr allocated from the associated resource
+                _Mymap._Zero_bits((static_cast<unsigned char*>(_Ptr)
+                    - static_cast<unsigned char*>(_Myres.data())) / _Myblock, _Blocks);
+                _Mymap._Free += _Blocks;
+            }
         }
     }
 

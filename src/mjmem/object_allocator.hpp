@@ -71,7 +71,7 @@ namespace mjx {
 
     template <class _Ty>
     inline bool operator==(const object_allocator<_Ty>&, const object_allocator<_Ty>&) noexcept {
-        return true;
+        return true; // always equal
     }
 
     template <class _Ty, class... _Types>

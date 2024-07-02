@@ -154,7 +154,7 @@ namespace mjx {
         ++_Mysize;
     }
 
-    pool_allocator::pointer pool_allocator::_Allocate(const size_type _Count) {
+    pool_allocator::pointer pool_allocator::_Allocate(const size_type _Count) noexcept {
         if (_Count > _Mymax) { // requested too much memory, break
             return nullptr;
         }
@@ -165,6 +165,10 @@ namespace mjx {
     }
 
     pool_allocator::pointer pool_allocator::allocate(const size_type _Count) {
+        if (_Count == 0) { // no allocation, do nothing
+            return nullptr;
+        }
+
         pointer _Ptr = _Allocate(_Count);
         if (!_Ptr) { // not enough memory, raise an exception
 #if _MJMEM_VERSION_SUPPORTED(1, 0, 1)
@@ -185,10 +189,13 @@ namespace mjx {
     }
 
     void pool_allocator::deallocate(pointer _Ptr, const size_type _Count) noexcept {
-        if (_Myres.contains(_Ptr, _Count)) { // _Ptr allocated from the associated resource
-            _Mylist._Release_block(
-                static_cast<unsigned char*>(_Ptr) - static_cast<unsigned char*>(_Myres.data()), _Count);
+        if (_Ptr && _Count > 0) {
+            if (_Myres.contains(_Ptr, _Count)) { // _Ptr allocated from the associated resource
+                _Mylist._Release_block(
+                    static_cast<unsigned char*>(_Ptr) - static_cast<unsigned char*>(_Myres.data()), _Count);
+            }
         }
+
     }
 
     pool_allocator::size_type pool_allocator::max_size() const noexcept {
