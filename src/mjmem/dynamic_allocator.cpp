@@ -26,6 +26,10 @@ namespace mjx {
     }
 
     dynamic_allocator::pointer dynamic_allocator::allocate(const size_type _Count) {
+        if (_Count == 0) { // no allocation, do nothing
+            return nullptr;
+        }
+
         void* const _Ptr = ::operator new(_Count, ::std::nothrow);
         if (!_Ptr) { // allocation failed, raise an exception
             allocation_failure::raise();
@@ -34,8 +38,11 @@ namespace mjx {
         return _Ptr;
     }
 
-    dynamic_allocator::pointer
-        dynamic_allocator::allocate_aligned(const size_type _Count, const size_type _Align) {
+    dynamic_allocator::pointer dynamic_allocator::allocate_aligned(const size_type _Count, const size_type _Align) {
+        if (_Count == 0) { // no allocation, do nothing
+            return nullptr;
+        }
+
 #ifdef _DEBUG
         _INTERNAL_ASSERT(mjmem_impl::_Is_pow_of_2(_Align), "alignment must be a power of 2");
 #endif // _DEBUG
@@ -48,7 +55,9 @@ namespace mjx {
     }
 
     void dynamic_allocator::deallocate(pointer _Ptr, const size_type _Count) noexcept {
-        ::operator delete(_Ptr, _Count);
+        if (_Ptr && _Count > 0) {
+            ::operator delete(_Ptr, _Count);
+        }
     }
 
     dynamic_allocator::size_type dynamic_allocator::max_size() const noexcept {

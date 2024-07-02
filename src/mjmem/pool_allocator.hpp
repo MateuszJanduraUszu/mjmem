@@ -51,7 +51,7 @@ namespace mjx {
 
     private:
         // allocates uninitialized storage
-        pointer _Allocate(const size_type _Count);
+        pointer _Allocate(const size_type _Count) noexcept;
 
         struct _List_node {
             _List_node* _Next = nullptr;

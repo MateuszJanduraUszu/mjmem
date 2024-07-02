@@ -9,10 +9,11 @@
 #include <atomic>
 #include <mjmem/allocator.hpp>
 #include <mjmem/dynamic_allocator.hpp>
+#include <type_traits>
 
 namespace mjx {
     namespace mjmem_impl {
-        class _Global_alloc { // singleton class that stores global allocator
+        class _Global_alloc { // singleton class that stores the global allocator
         public:
             ~_Global_alloc() noexcept {}
 
@@ -25,11 +26,11 @@ namespace mjx {
             }
 
             allocator& _Get() noexcept {
-                return *_Myal.load();
+                return *_Myal.load(::std::memory_order_relaxed);
             }
 
             void _Set(allocator& _New_al) noexcept {
-                _Myal.store(&_New_al);
+                _Myal.store(::std::addressof(_New_al), ::std::memory_order_relaxed);
             }
 
         private:

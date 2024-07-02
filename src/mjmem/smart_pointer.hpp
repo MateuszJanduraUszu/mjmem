@@ -30,6 +30,8 @@ namespace mjx {
             && ::std::is_nothrow_move_constructible_v<_Ty2>)
             : _Myval(::std::move(_Val1)), _Ty2(::std::move(_Val2)) {}
 
+        ~optimized_pair() noexcept {}
+
         optimized_pair(const optimized_pair&) = default;
         optimized_pair(optimized_pair&&)      = default;
 
@@ -149,8 +151,7 @@ namespace mjx {
     };
 
     template <class _Ty1, class _Ty2>
-    inline bool operator==(
-        const optimized_pair<_Ty1, _Ty2>& _Left, const optimized_pair<_Ty1, _Ty2>& _Right) {
+    inline bool operator==(const optimized_pair<_Ty1, _Ty2>& _Left, const optimized_pair<_Ty1, _Ty2>& _Right) {
         return _Left.first() == _Right.first() && _Left.second() == _Right.second();
     }
 
@@ -355,8 +356,7 @@ namespace mjx {
     };
 
     template <class _Ty>
-    inline bool operator==(
-        const unique_smart_array<_Ty>& _Left, const unique_smart_array<_Ty>& _Right) noexcept {
+    inline bool operator==(const unique_smart_array<_Ty>& _Left, const unique_smart_array<_Ty>& _Right) noexcept {
         return _Left.get() == _Right.get();
     }
 
@@ -438,7 +438,7 @@ namespace mjx {
             return *this;
         }
 
-        smart_ptr& operator=(unique_smart_ptr<_Ty>&& _Sptr) noexcept {
+        smart_ptr& operator=(unique_smart_ptr<_Ty>&& _Sptr) {
             smart_ptr(::std::move(_Sptr)).swap(*this);
             return *this;
         }
@@ -560,7 +560,7 @@ namespace mjx {
             return *this;
         }
 
-        smart_array& operator=(unique_smart_array<_Ty>&& _Sarr) noexcept {
+        smart_array& operator=(unique_smart_array<_Ty>&& _Sarr) {
             smart_array(::std::move(_Sarr)).swap(*this);
             return *this;
         }
