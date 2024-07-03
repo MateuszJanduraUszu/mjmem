@@ -26,7 +26,9 @@ Returns a read-only reference to the first element of the stored array.
 
 ## Remarks
 
-The function returns the first element of the stored array. The behavior is undefined if the stored array is null. It is equivalent to:
+The function returns the first element of the stored array. The behavior is undefined if the stored array is null. Unlike 
+[unique_smart_ptr::operator*](unique_smart_ptr-operator-deref.md), this function does not dereference the pointer because the class 
+stores an array, not a pointer to an object. The operator is defined for consistency with smart pointers. It is equivalent to:
 
 ```cpp
 *get();

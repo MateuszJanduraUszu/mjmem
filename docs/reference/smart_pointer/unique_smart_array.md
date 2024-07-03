@@ -31,8 +31,11 @@ public:
     unique_smart_array(const unique_smart_array&)            = delete;
     unique_smart_array& operator=(const unique_smart_array&) = delete;
 
+#if !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
     element_type& operator*() const noexcept;
     pointer operator->() const noexcept;
+#endif // !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
+
     element_type& operator[](const size_t _Idx) const;
     explicit operator bool() const noexcept;
     pointer get() const noexcept;
