@@ -2,6 +2,8 @@
 
 ## Description
 
+> **Important**: This function has been deprecated and removed from the library since version 2.0.0.
+
 Retrieves the first element of the stored array.
 
 ## Syntax
@@ -24,7 +26,9 @@ Returns a read-only reference to the first element of the stored array.
 
 ## Remarks
 
-The function returns the first element of the stored array. The behavior is undefined if the stored array is null. It is equivalent to:
+The function returns the first element of the stored array. The behavior is undefined if the stored array is null. Unlike 
+[unique_smart_ptr::operator*](unique_smart_ptr-operator-deref.md), this function does not dereference the pointer because the class 
+stores an array, not a pointer to an object. The operator is defined for consistency with smart pointers. It is equivalent to:
 
 ```cpp
 *get();
@@ -36,7 +40,7 @@ The function returns the first element of the stored array. The behavior is unde
 |-------------------------|-----------------------|
 | Include header          | `<smart_pointer.hpp>` |
 | Minimum library version | `1.0.1`               |
-| Maximum library version | `N/A`                 |
+| Maximum library version | `1.0.2`               |
 
 ## See also
 

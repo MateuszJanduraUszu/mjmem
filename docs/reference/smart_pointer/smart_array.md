@@ -26,8 +26,11 @@ public:
     smart_array& operator=(smart_array&& _Other) noexcept;
     smart_array& operator=(unique_smart_array<_Ty>&& _Sarr);
 
+#if !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
     explicit operator bool() const noexcept;
     element_type& operator*() const noexcept;
+#endif // !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
+
     pointer operator->() const noexcept;
     element_type& operator[](const size_t _Idx) const;
     pointer get() const noexcept;
