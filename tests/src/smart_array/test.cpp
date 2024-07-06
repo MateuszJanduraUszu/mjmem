@@ -65,9 +65,9 @@ namespace mjx {
     }
 
     TEST(smart_array, size) {
-        constexpr size_t _Size        = 16;
-        unique_smart_array<int> _Uarr = ::mjx::make_unique_smart_array<int>(16);
-        EXPECT_EQ(_Uarr.size(), _Size);
+        constexpr size_t _Size = 16;
+        smart_array<int> _Arr  = ::mjx::make_smart_array<int>(_Size);
+        EXPECT_EQ(_Arr.size(), _Size);
     }
 
     TEST(smart_array, reset) {
