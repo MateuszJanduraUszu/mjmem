@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <mjmem/smart_pointer.hpp>
+#if _MJMEM_VERSION_SUPPORTED(1, 0, 1)
 
 namespace mjx {
     reference_counter::reference_counter() noexcept : _Myrefs(0) {}
@@ -28,3 +29,5 @@ namespace mjx {
         return _Myrefs.load(::std::memory_order_relaxed) == 1;
     }
 } // namespace mjx
+
+#endif // _MJMEM_VERSION_SUPPORTED(1, 0, 1)

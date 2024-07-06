@@ -46,8 +46,10 @@ namespace mjx {
         // returns the number of free blocks
         size_type free_blocks() const noexcept;
 
+#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
         // returns the associated resource
         const pool_resource& resource() const noexcept;
+#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 
     private:
         // allocates uninitialized storage

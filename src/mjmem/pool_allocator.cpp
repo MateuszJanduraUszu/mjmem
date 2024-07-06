@@ -212,7 +212,9 @@ namespace mjx {
         return _Mylist._Size();
     }
 
+#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
     const pool_resource& pool_allocator::resource() const noexcept {
         return _Myres;
     }
+#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 } // namespace mjx

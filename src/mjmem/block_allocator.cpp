@@ -243,6 +243,7 @@ namespace mjx {
         return _Other_ptr ? _Myres == _Other_ptr->_Myres && _Myblock == _Other_ptr->_Myblock : false;
     }
 
+#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
     block_allocator::size_type block_allocator::block_size() const noexcept {
         return _Myblock;
     }
@@ -250,4 +251,5 @@ namespace mjx {
     const pool_resource& block_allocator::resource() const noexcept {
         return _Myres;
     }
+#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 } // namespace mjx

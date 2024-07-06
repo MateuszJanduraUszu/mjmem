@@ -6,10 +6,11 @@
 #pragma once
 #ifndef _MJMEM_SMART_POINTER_HPP_
 #define _MJMEM_SMART_POINTER_HPP_
+#include <mjmem/version.hpp>
+#if _MJMEM_VERSION_SUPPORTED(1, 0, 1)
 #include <atomic>
 #include <mjmem/exception.hpp>
 #include <mjmem/object_allocator.hpp>
-#include <mjmem/version.hpp>
 #include <type_traits>
 #include <utility>
 
@@ -651,4 +652,5 @@ namespace mjx {
     }
 } // namespace mjx
 
+#endif // _MJMEM_VERSION_SUPPORTED(1, 0, 1)
 #endif // _MJMEM_SMART_POINTER_HPP_
