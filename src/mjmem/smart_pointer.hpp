@@ -596,6 +596,12 @@ namespace mjx {
             return _Myptr;
         }
 
+#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
+        size_t size() const noexcept {
+            return _Mysize;
+        }
+#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
+
         long use_count() const noexcept {
             return _Myctr ? _Myctr->use_count() : 0;
         }

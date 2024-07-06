@@ -34,6 +34,11 @@ public:
     pointer operator->() const noexcept;
     element_type& operator[](const size_t _Idx) const;
     pointer get() const noexcept;
+
+#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
+    size_t size() const noexcept;
+#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
+    
     long use_count() const noexcept;
     bool unique() const noexcept;
     void reset() noexcept;
@@ -59,6 +64,7 @@ public:
 - [operator->](smart_array-operator-arrow.md)
 - [operator[]](smart_array-operator-subscript.md)
 - [get](smart_array-get.md)
+- [size](smart_array-size.md)
 - [use_count](smart_array-use_count.md)
 - [unique](smart_array-unique.md)
 - [reset](smart_array-reset.md)

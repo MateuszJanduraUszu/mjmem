@@ -64,6 +64,12 @@ namespace mjx {
         EXPECT_TRUE(_Sarr.unique());
     }
 
+    TEST(smart_array, size) {
+        constexpr size_t _Size        = 16;
+        unique_smart_array<int> _Uarr = ::mjx::make_unique_smart_array<int>(16);
+        EXPECT_EQ(_Uarr.size(), _Size);
+    }
+
     TEST(smart_array, reset) {
         smart_array<int> _Arr0 = ::mjx::make_smart_array<int>(16);
         EXPECT_EQ(_Arr0.use_count(), 1);
