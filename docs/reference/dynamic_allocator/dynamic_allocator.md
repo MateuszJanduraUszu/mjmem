@@ -7,7 +7,7 @@ Defines a stateless allocator that relies on memory management provided by the o
 ## Syntax
 
 ```cpp
-class dynamic_allocator {
+class dynamic_allocator : public allocator {
 public:
     using value_type      = allocator::value_type;
     using size_type       = allocator::size_type;

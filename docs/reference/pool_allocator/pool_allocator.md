@@ -7,7 +7,7 @@ Defines a variable-size block allocator associated with a [resource](../pool_res
 ## Syntax
 
 ```cpp
-class pool_allocator {
+class pool_allocator : public allocator {
 public:
     using value_type      = allocator::value_type;
     using size_type       = allocator::size_type;
@@ -28,7 +28,10 @@ public:
     void deallocate(pointer _Ptr, const size_type _Count) noexcept override;
     size_type max_size() const noexcept override;
     bool is_equal(const allocator& _Other) const noexcept override;
+
+#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
     const pool_resource& resource() const noexcept;
+#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 };
 ```
 
@@ -66,7 +69,7 @@ public:
 ## Remarks
 
 The allocator operates on a user-provided preallocated memory block stored in the associated resource. It employs a sorted 
-doubly-linked list of free blocks to store information about available blocks.
+singly-linked list of free blocks to store information about available blocks.
 
 ## Requirements
 

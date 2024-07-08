@@ -7,7 +7,7 @@ Defines an allocator that manages access to the associated allocator in a multit
 ## Syntax
 
 ```cpp
-class synchronized_allocator {
+class synchronized_allocator : public allocator {
 public:
     using value_type      = allocator::value_type;
     using size_type       = allocator::size_type;

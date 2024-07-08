@@ -25,9 +25,9 @@ Returns a pointer to the allocated memory block if successful; otherwise, return
 
 ## Remarks
 
-When the function is called, it searches the list of free blocks for one that is at least the requested number of bytes. Since the list is 
-sorted, the smallest suitable block is selected. If the selected block is the same size as the requested number of bytes, the node is 
-deleted from the list. Otherwise, the node's offset and size are updated to reflect the allocation.
+When the function is called, it searches the list of free blocks for one that is at least the requested number of bytes. If the selected block 
+is the same size as the requested number of bytes, the node is deleted from the list. Otherwise, the node's offset and size are updated to 
+reflect the allocation.
 
 ## Requirements
 

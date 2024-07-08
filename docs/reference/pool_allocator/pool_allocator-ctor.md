@@ -25,7 +25,7 @@ Throws [allocation_failure](../exception/allocation_failure.md) if the allocatio
 
 ## Remarks
 
-Since the allocator is stateful, it must be initialized first. During initialization, a sorted doubly-linked list of free blocks is created. Initially, 
+Since the allocator is stateful, it must be initialized first. During initialization, a sorted singly-linked list of free blocks is created. Initially, 
 the list contains only one free block, which represents the entire memory block from the associated resource.
 
 ## Requirements

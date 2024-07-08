@@ -7,7 +7,7 @@ Defines a stateful fixed-size block allocator associated with a [resource](../po
 ## Syntax
 
 ```cpp
-class block_allocator {
+class block_allocator : public allocator {
 public:
     using value_type      = allocator::value_type;
     using size_type       = allocator::size_type;
@@ -26,8 +26,11 @@ public:
     void deallocate(pointer _Ptr, const size_type _Count) noexcept override;
     size_type max_size() const noexcept override;
     bool is_equal(const allocator& _Other) const noexcept override;
+
+#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
     size_type block_size() const noexcept;
     const pool_resource& resource() const noexcept;
+#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 };
 ```
 
