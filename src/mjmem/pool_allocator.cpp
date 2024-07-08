@@ -92,7 +92,7 @@ namespace mjx {
     }
 
     void pool_allocator::_Free_block_list::_Insert_node(_List_node* const _New_node) noexcept {
-        if (!_Myhead || _Myhead->_Off >= _New_node->_Off) { // insert before the head
+        if (!_Myhead || _Myhead->_Off > _New_node->_Off) { // insert before the head
             _New_node->_Next = _Myhead;
             _Myhead          = _New_node;
             return;
