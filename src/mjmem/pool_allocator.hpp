@@ -52,22 +52,10 @@ namespace mjx {
 #endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 
     private:
-        // allocates uninitialized storage
-        pointer _Allocate(const size_type _Count) noexcept;
-
-        struct _List_node {
-            _List_node* _Next = nullptr;
-            _List_node* _Prev = nullptr;
-            size_type _Off    = 0;
-            size_type _Size   = 0;
-
-            ~_List_node() noexcept = default;
-        };
-
-        class _List { // sorted list of free blocks
+        class _Free_block_list { // sorted list of free blocks
         public:        
-            _List() noexcept;
-            ~_List() noexcept;
+            _Free_block_list() noexcept;
+            ~_Free_block_list() noexcept;
 
             // returns the list size
             size_type _Size() const noexcept;
@@ -79,36 +67,60 @@ namespace mjx {
             void _Release_block(const size_type _Off, const size_type _Size);
 
         private:
-            // creates a new node
-            static _List_node* _Create_node();
+            struct _List_node {
+                _List_node* _Next = nullptr;
+                size_type _Off    = 0;
+                size_type _Size   = 0;
 
-            // deallocates the specified node
-            static void _Deallocate_node(_List_node* const _Node) noexcept;
+                ~_List_node() noexcept = default;
 
-            // breaks connection between nodes connected with _Node
-            void _Unlink_node(_List_node* const _Node) noexcept;
+                // creates a new node
+                static _List_node* _Create();
 
-            // unlinks and deallocates an existing node
-            void _Delete_node(_List_node* const _Node) noexcept;
+                // deletes an existing node
+                static void _Delete(_List_node* const _Node) noexcept;
+            };
+
+            // breaks connection between nodes connected with _Node (_Node's parent provided)
+            void _Unlink_node_directly(_List_node* const _Prev, _List_node* const _Node) noexcept;
+
+            // breaks connection between nodes connected with _Node (_Node's parent not provided)
+            void _Unlink_node_indirectly(_List_node* const _Node) noexcept;
+
+            // unlinks and deallocates an existing node (_Node's parent provided)
+            void _Delete_node_directly(_List_node* const _Prev, _List_node* const _Node) noexcept;
+
+            // unlinks and deallocates an existing node (_Node's parent not provided)
+            void _Delete_node_indirectly(_List_node* const _Node) noexcept;
 
             // inserts a new node
             void _Insert_node(_List_node* const _New_node) noexcept;
 
-            // inserts an existing node again to keep list sorted
-            void _Reinsert_node(_List_node* const _Node) noexcept;
+            // tries to merge the specified block with the previous block if they are contiguous
+            bool _Merge_contiguous_block_before(_List_node* const _Prev, _List_node* const _Node,
+                const size_type _Off, const size_type _Size) noexcept;
 
-            // tries to merge the specified block to the existing one
+            // tries to merge the specified block with the next block if they are contiguous
+            bool _Merge_contiguous_block_after(
+                _List_node* const _Node, const size_type _Off, const size_type _Size) noexcept;
+
+            // tries to merge the specified block with existing blocks if they are contiguous
             bool _Merge_block(const size_type _Off, const size_type _Size) noexcept;
 
+            // releases a block whose offset is zero
+            void _Release_block_zero(const size_type _Size);
+
             _List_node* _Myhead; // pointer to the first node
-            _List_node* _Mytail; // pointer to the last node
             size_type _Mysize; // total number of nodes
         };
 
+        // allocates uninitialized storage
+        pointer _Allocate(const size_type _Count) noexcept;
+
         pool_resource& _Myres;
         size_type _Mymax; // maximum number of bytes possible to allocate
-#pragma warning(suppress : 4251) // C4251: _List needs to have dll-interface
-        _List _Mylist;
+#pragma warning(suppress : 4251) // C4251: _Free_block_list needs to have dll-interface
+        _Free_block_list _Mylist;
     };
 } // namespace mjx
 
