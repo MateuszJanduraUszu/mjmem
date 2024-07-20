@@ -6,8 +6,6 @@
 #pragma once
 #ifndef _MJMEM_SMART_POINTER_HPP_
 #define _MJMEM_SMART_POINTER_HPP_
-#include <mjmem/version.hpp>
-#if _MJMEM_VERSION_SUPPORTED(1, 0, 1)
 #include <atomic>
 #include <mjmem/exception.hpp>
 #include <mjmem/object_allocator.hpp>
@@ -295,16 +293,6 @@ namespace mjx {
         unique_smart_array(const unique_smart_array&)            = delete;
         unique_smart_array& operator=(const unique_smart_array&) = delete;
 
-#if !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
-        element_type& operator*() const noexcept {
-            return *_Myptr;
-        }
-
-        pointer operator->() const noexcept {
-            return _Myptr;
-        }
-#endif // !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
-
         element_type& operator[](const size_t _Idx) const {
             if (_Idx >= _Mysize) {
                 resource_overrun::raise();
@@ -573,17 +561,6 @@ namespace mjx {
             return _Myptr != nullptr;
         }
 
-#if !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
-        element_type& operator*() const noexcept {
-            // the behavior is undefined if the stored pointer is null
-            return *_Myptr;
-        }
-
-        pointer operator->() const noexcept {
-            return _Myptr;
-        }
-#endif // !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
-
         element_type& operator[](const size_t _Idx) const {
             if (_Idx >= _Mysize) {
                 resource_overrun::raise();
@@ -596,11 +573,9 @@ namespace mjx {
             return _Myptr;
         }
 
-#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
         size_t size() const noexcept {
             return _Mysize;
         }
-#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 
         long use_count() const noexcept {
             return _Myctr ? _Myctr->use_count() : 0;
@@ -658,5 +633,4 @@ namespace mjx {
     }
 } // namespace mjx
 
-#endif // _MJMEM_VERSION_SUPPORTED(1, 0, 1)
 #endif // _MJMEM_SMART_POINTER_HPP_

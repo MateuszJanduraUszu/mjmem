@@ -94,11 +94,7 @@ namespace mjx {
         const size_type _Blocks = _Least_block_count(_Count);
         pointer _Ptr            = _Allocate_blocks(_Blocks);
         if (!_Ptr) { // not enough free space, raise an exception
-#if _MJMEM_VERSION_SUPPORTED(1, 0, 1)
             allocation_failure::raise();
-#else // ^^^ _MJMEM_VERSION_SUPPORTED(1, 0, 1) ^^^ / vvv !_MJMEM_VERSION_SUPPORTED(1, 0, 1) vvv
-            pool_exhausted::raise();
-#endif // _MJMEM_VERSION_SUPPORTED(1, 0, 1)
         }
 
         _Mymap._Free -= _Blocks; // update the number of free blocks
@@ -134,7 +130,6 @@ namespace mjx {
         return _Other_ptr ? _Myres == _Other_ptr->_Myres && _Myblock == _Other_ptr->_Myblock : false;
     }
 
-#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
     block_allocator::size_type block_allocator::block_size() const noexcept {
         return _Myblock;
     }
@@ -142,5 +137,4 @@ namespace mjx {
     const pool_resource& block_allocator::resource() const noexcept {
         return _Myres;
     }
-#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 } // namespace mjx

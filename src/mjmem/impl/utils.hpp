@@ -61,6 +61,12 @@ namespace mjx {
             // retrieve the offset used to create a new address from the base address
             return static_cast<const unsigned char*>(_Address) - static_cast<const unsigned char*>(_Base_address);
         }
+
+        inline bool _Is_memory_block_in_address_range(const void* const _Range_begin,
+            const void* const _Range_end, const void* const _Block_begin, const void* const _Block_end) noexcept {
+            // check whether the memory block is within the address range
+            return _Block_begin >= _Range_begin && _Block_end <= _Range_end;
+        }
     } // namespace mjmem_impl
 } // namespace mjx
 

@@ -113,7 +113,6 @@ namespace mjx {
         }
     }
 
-#if _MJMEM_VERSION_SUPPORTED(1, 0, 2)
     template <class _Alloc>
     concept compatible_allocator = ::std::is_base_of_v<allocator, _Alloc>;
 
@@ -152,7 +151,6 @@ namespace mjx {
             _Al.deallocate(_Objects, _Count * sizeof(_Ty));
         }
     }
-#endif // _MJMEM_VERSION_SUPPORTED(1, 0, 2)
 } // namespace mjx
 
 #endif // _MJMEM_OBJECT_ALLOCATOR_HPP_

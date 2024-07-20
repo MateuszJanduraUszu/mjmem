@@ -43,10 +43,8 @@ namespace mjx {
         // compares for equality with another allocator
         bool is_equal(const allocator& _Other) const noexcept override;
 
-#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
         // returns the associated resource
         const pool_resource& resource() const noexcept;
-#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 
     private:
         class _Free_block_list { // sorted list of free blocks

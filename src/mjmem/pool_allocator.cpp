@@ -241,11 +241,7 @@ namespace mjx {
 
         pointer _Ptr = _Allocate(_Count);
         if (!_Ptr) { // not enough memory, raise an exception
-#if _MJMEM_VERSION_SUPPORTED(1, 0, 1)
             allocation_failure::raise();
-#else // ^^^ _MJMEM_VERSION_SUPPORTED(1, 0, 1) ^^^ / vvv !_MJMEM_VERSION_SUPPORTED(1, 0, 1) vvv
-            pool_exhausted::raise();
-#endif // _MJMEM_VERSION_SUPPORTED(1, 0, 1)
         }
 
         return _Ptr;
@@ -287,9 +283,7 @@ namespace mjx {
         return _Other_ptr ? _Myres == _Other_ptr->_Myres && _Mymax == _Other_ptr->_Mymax : false;
     }
 
-#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
     const pool_resource& pool_allocator::resource() const noexcept {
         return _Myres;
     }
-#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 } // namespace mjx
