@@ -21,7 +21,7 @@ namespace mjx {
         //       which will fail the assertion, expecting the remainder to be 0.
         _INTERNAL_ASSERT(_Resource.size() % _Block_size == 0, "resource size must be a multiple of block size");
 #endif // _DEBUG
-        _Setup_bitmap();
+        _Init_bitmap();
     }
 
     block_allocator::~block_allocator() noexcept {}
@@ -45,7 +45,7 @@ namespace mjx {
         return _Size <= _Small_buffer_size ? _Buf : _Ptr;
     }
 
-    void block_allocator::_Setup_bitmap() {
+    void block_allocator::_Init_bitmap() {
         using _Word_type       = _Bitmap::_Word_type;
         using _Traits          = mjmem_impl::_Word_traits<_Word_type>;
         const size_type _Bits  = _Total_block_count(); // required number of bits

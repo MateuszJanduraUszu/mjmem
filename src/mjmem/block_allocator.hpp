@@ -50,8 +50,8 @@ namespace mjx {
 #endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 
     private:
-        // setups the bitmap
-        void _Setup_bitmap();
+        // initializes the bitmap
+        void _Init_bitmap();
 
         // returns the least number of blocks that can hold _Bytes bytes
         size_type _Least_block_count(const size_type _Bytes) const noexcept;
