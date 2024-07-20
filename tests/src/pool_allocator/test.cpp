@@ -126,7 +126,10 @@ namespace mjx {
             _Blocks.erase(_Blocks.begin() + _Idx);
         }
 
-        // verify that all blocks have been consolidated into a single large block
-        EXPECT_EQ(_Al.free_blocks(), 1);
+        // verify that all blocks have been consolidated into a single large block,
+        // allowing allocation of the entire block
+        void* _Ptr = _Al.allocate(128);
+        EXPECT_NE(_Ptr, nullptr);
+        _Al.deallocate(_Ptr, 128);
     }
 } // namespace mjx

@@ -43,9 +43,6 @@ namespace mjx {
         // compares for equality with another allocator
         bool is_equal(const allocator& _Other) const noexcept override;
 
-        // returns the number of free blocks
-        size_type free_blocks() const noexcept;
-
 #if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
         // returns the associated resource
         const pool_resource& resource() const noexcept;

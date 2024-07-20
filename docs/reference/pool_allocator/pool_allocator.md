@@ -29,6 +29,10 @@ public:
     size_type max_size() const noexcept override;
     bool is_equal(const allocator& _Other) const noexcept override;
 
+#if !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
+    size_type free_blocks() const noexcept;
+#endif // !_MJMEM_VERSION_SUPPORTED(2, 0, 0)
+
 #if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
     const pool_resource& resource() const noexcept;
 #endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)

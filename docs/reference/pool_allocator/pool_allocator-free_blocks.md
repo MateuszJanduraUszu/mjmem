@@ -2,6 +2,8 @@
 
 ## Description
 
+> **Important**: This function has been deprecated and removed from the library since version 2.0.0.
+
 Retrieves the number of free blocks.
 
 ## Syntax
@@ -33,7 +35,7 @@ of free blocks.
 |-------------------------|------------------------|
 | Include header          | `<pool_allocator.hpp>` |
 | Minimum library version | `1.0.0`                |
-| Maximum library version | `N/A`                  |
+| Maximum library version | `1.0.2`                |
 
 ## See also
 
