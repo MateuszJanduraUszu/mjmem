@@ -287,10 +287,6 @@ namespace mjx {
         return _Other_ptr ? _Myres == _Other_ptr->_Myres && _Mymax == _Other_ptr->_Mymax : false;
     }
 
-    pool_allocator::size_type pool_allocator::free_blocks() const noexcept {
-        return _Mylist._Size();
-    }
-
 #if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
     const pool_resource& pool_allocator::resource() const noexcept {
         return _Myres;
