@@ -33,6 +33,7 @@ function(add_isolated_test test_name test_path)
 endfunction()
 
 add_isolated_test(test_allocators_compatibility "src/allocators_compatibility/test.cpp")
+add_isolated_test(test_bitops "src/bitops/test.cpp")
 add_isolated_test(test_block_allocator "src/block_allocator/test.cpp")
 add_isolated_test(test_dynamic_allocator "src/dynamic_allocator/test.cpp")
 add_isolated_test(test_global_allocator "src/global_allocator/test.cpp")

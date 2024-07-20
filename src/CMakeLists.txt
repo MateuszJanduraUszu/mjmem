@@ -29,6 +29,7 @@ set(MJMEM_SRC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/synchronized_allocator.cpp"
 )
 set(MJMEM_IMPL_FILES
+    "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/impl/bitops.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/impl/global_allocator.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/impl/main.cpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/impl/tinywin.hpp"

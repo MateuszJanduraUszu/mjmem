@@ -231,7 +231,7 @@ namespace mjx {
 
         const size_type _Off = _Mylist._Reserve_block(_Count);
         return _Off != static_cast<size_type>(-1)
-            ? static_cast<pointer>(static_cast<unsigned char*>(_Myres.data()) + _Off) : nullptr;
+            ? mjmem_impl::_Adjust_address_by_offset(_Myres.data(), _Off) : nullptr;
     }
 
     pool_allocator::pointer pool_allocator::allocate(const size_type _Count) {
@@ -261,8 +261,7 @@ namespace mjx {
     void pool_allocator::deallocate(pointer _Ptr, const size_type _Count) noexcept {
         if (_Myres.contains(_Ptr, _Count)) { // _Ptr allocated from the associated resource
             try {
-                _Mylist._Release_block(
-                    static_cast<unsigned char*>(_Ptr) - static_cast<unsigned char*>(_Myres.data()), _Count);
+                _Mylist._Release_block(mjmem_impl::_Calculate_offset_from_address(_Myres.data(), _Ptr), _Count);
             } catch (...) {
                 // Note: Since deallocate() must be 'noexcept', it cannot throw any exceptions internally.
                 //       In debug mode, _INTERNAL_ASSERT provides helpful feedback by reporting the failure.

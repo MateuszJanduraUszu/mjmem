@@ -6,7 +6,6 @@
 #pragma once
 #ifndef _MJMEM_BITMAP_ALLOCATOR_HPP_
 #define _MJMEM_BITMAP_ALLOCATOR_HPP_
-#include <climits>
 #include <mjmem/allocator.hpp>
 #include <mjmem/api.hpp>
 #include <mjmem/pool_resource.hpp>
@@ -55,50 +54,35 @@ namespace mjx {
         void _Setup_bitmap();
 
         // returns the least number of blocks that can hold _Bytes bytes
-        size_type _Required_block_count(const size_type _Bytes) const noexcept;
+        size_type _Least_block_count(const size_type _Bytes) const noexcept;
 
-        // returns the greatest number of blocks possible to allocate
-        size_type _Max_blocks() const noexcept;
+        // returns the total number of blocks
+        size_type _Total_block_count() const noexcept;
 
-        // allocates exactly one block
-        pointer _Allocate_block() noexcept;
+        // allocates the requested number of blocks
+        pointer _Allocate_blocks(const size_type _Count) noexcept;
 
-        // allocates _Count blocks
-        pointer _Allocate_n_blocks(const size_type _Count) noexcept;
-
-        struct _Bitmap { // stores array of words
-            using _Word_type = unsigned char; // 1-byte element, can store state of 8 blocks
+        struct _Bitmap { // stores an array of words
+            using _Word_type = unsigned char; // 1-byte element, can store the state of 8 blocks
+            
+            // the maximum size for a small buffer, equal to a pointer to maintain
+            // union size and alignment same as a pointer
+            static constexpr size_type _Small_buffer_size = sizeof(void*);
             
             _Bitmap() noexcept;
             ~_Bitmap() noexcept;
 
-            // returns the bitmap as a word array
+            // returns the stored words
             _Word_type* _Get_words() noexcept;
             const _Word_type* _Get_words() const noexcept;
-
-            // returns the number of bits in the last word
-            size_type _Bits_per_last_word(const size_type _Max) const noexcept;
-
-            // finds the first occurence of _Count free bits
-            size_type _Find_zero_bits(const size_type _Count, const size_type _Max) const noexcept;
-
-            // sets _Count bits starting from _Off bit
-            void _Set_bits(size_type _Off, size_type _Count) noexcept;
-
-            // zeros _Count bits starting from _Off bit
-            void _Zero_bits(size_type _Off, size_type _Count) noexcept;
-
-            static constexpr size_type _Bits_per_word     = sizeof(_Word_type) * CHAR_BIT;
-            static constexpr _Word_type _All_bits_set     = (1 << _Bits_per_word) - 1;
-            static constexpr size_type _Small_buffer_size = sizeof(void*);
 
             union {
                 _Word_type _Buf[_Small_buffer_size]; // buffer for small bitmaps
                 _Word_type* _Ptr; // pointer to heap-allocated buffer for larger bitmaps
             };
 
-            size_type _Size;
-            size_type _Free; // number of free bits
+            size_type _Size; // number of words
+            size_type _Free; // number of zero bits (free blocks)
         };
 
         pool_resource& _Myres;
