@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <cstring>
+#include <mjmem/impl/utils.hpp>
 #include <mjmem/pool_resource.hpp>
 #include <utility>
 
@@ -81,9 +82,9 @@ namespace mjx {
             return false;
         }
 
-        const unsigned char* const _Block_end      = static_cast<const unsigned char*>(_Block) + _Size;
-        const unsigned char* const _Root_block_end = static_cast<const unsigned char*>(_Mydata) + _Mysize;
-        return _Block >= _Mydata && _Block_end <= _Root_block_end;
+        const_pointer _Block_end = mjmem_impl::_Adjust_address_by_offset(_Block, _Size);
+        const_pointer _Range_end = mjmem_impl::_Adjust_address_by_offset(_Mydata, _Mysize);
+        return mjmem_impl::_Is_memory_block_in_address_range(_Mydata, _Range_end, _Block, _Block_end);
     }
 
     void pool_resource::swap(pool_resource& _Other) noexcept {

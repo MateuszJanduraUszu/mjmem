@@ -4,12 +4,11 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #pragma once
-#ifndef _MJMEM_BITMAP_ALLOCATOR_HPP_
-#define _MJMEM_BITMAP_ALLOCATOR_HPP_
+#ifndef _MJMEM_BLOCK_ALLOCATOR_HPP_
+#define _MJMEM_BLOCK_ALLOCATOR_HPP_
 #include <mjmem/allocator.hpp>
 #include <mjmem/api.hpp>
 #include <mjmem/pool_resource.hpp>
-#include <mjmem/version.hpp>
 
 namespace mjx {
     class _MJMEM_API block_allocator : public allocator { // fixed-size block allocator
@@ -41,13 +40,11 @@ namespace mjx {
         // compares for equality with another allocator
         bool is_equal(const allocator& _Other) const noexcept override;
 
-#if _MJMEM_VERSION_SUPPORTED(2, 0, 0)
         // returns the allocation block size
         size_type block_size() const noexcept;
 
         // returns the associated resource
         const pool_resource& resource() const noexcept;
-#endif // _MJMEM_VERSION_SUPPORTED(2, 0, 0)
 
     private:
         // initializes the bitmap
@@ -92,4 +89,4 @@ namespace mjx {
     };
 } // namespace mjx
 
-#endif // _MJMEM_BITMAP_ALLOCATOR_HPP_
+#endif // _MJMEM_BLOCK_ALLOCATOR_HPP_
