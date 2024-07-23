@@ -6,8 +6,8 @@
 #pragma once
 #ifndef _MJMEM_POOL_RESOURCE_HPP_
 #define _MJMEM_POOL_RESOURCE_HPP_
+#include <mjmem/allocator.hpp>
 #include <mjmem/api.hpp>
-#include <mjmem/dynamic_allocator.hpp>
 
 namespace mjx {
     class _MJMEM_API pool_resource { // memory block that serves as a pool resource
