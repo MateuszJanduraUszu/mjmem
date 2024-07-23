@@ -267,8 +267,8 @@ namespace mjx {
 
 #ifdef _DEBUG
         const mjmem_impl::_Memory_block _Block = {_Ptr, _Count};
-        if (!_Myabl->_Is_block_registered(_Block)) { // block not registered, break
-            return;
+        if (!_Myabl->_Is_block_registered(_Block)) { // block not registered, report an error
+            _REPORT_ERROR("attempt to deallocate a non-allocated block");
         }
 #endif // _DEBUG
 
