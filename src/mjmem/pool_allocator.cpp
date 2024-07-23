@@ -6,6 +6,7 @@
 #include <cstdlib>
 #include <mjmem/dynamic_allocator.hpp>
 #include <mjmem/exception.hpp>
+#include <mjmem/impl/allocation_tracking.hpp>
 #include <mjmem/impl/utils.hpp>
 #include <mjmem/object_allocator.hpp>
 #include <mjmem/pool_allocator.hpp>
@@ -13,18 +14,24 @@
 
 namespace mjx {
     pool_allocator::pool_allocator(pool_resource& _Resource, const size_type _Max_block_size)
-        : _Myres(_Resource), _Mymax((::std::min)(_Max_block_size, _Resource.size())), _Mylist() {
 #ifdef _DEBUG
+        : _Myres(_Resource), _Mymax((::std::min)(_Max_block_size, _Resource.size())), _Myfbl(),
+        _Myabl(mjmem_impl::_Allocated_block_list::_Create()) {
         if (_Mymax != unbounded_block_size) { // maximum block size specified, validate it
             _INTERNAL_ASSERT(
                 _Myres.size() >= _Mymax, "maximum block size cannot exceed the total pool resource size");
         }
+#else // ^^^ _DEBUG ^^^ / vvv NDEBUG vvv
+        : _Myres(_Resource), _Mymax((::std::min)(_Max_block_size, _Resource.size())), _Myfbl() {
 #endif // _DEBUG
-
-        _Mylist._Release_block(0, _Myres.size());
+        _Myfbl._Release_block(0, _Myres.size());
     }
 
-    pool_allocator::~pool_allocator() noexcept {}
+    pool_allocator::~pool_allocator() noexcept {
+#ifdef _DEBUG
+        mjmem_impl::_Allocated_block_list::_Delete(_Myabl);
+#endif // _DEBUG
+    }
 
     pool_allocator::_Free_block_list::_Free_block_list() noexcept : _Myhead(nullptr), _Mysize(0) {}
 
@@ -171,10 +178,6 @@ namespace mjx {
         ++_Mysize;
     }
 
-    pool_allocator::size_type pool_allocator::_Free_block_list::_Size() const noexcept {
-        return _Mysize;
-    }
-
     pool_allocator::size_type pool_allocator::_Free_block_list::_Reserve_block(const size_type _Size) noexcept {
         _List_node* _Selected = nullptr;
         _List_node* _Prev     = nullptr;
@@ -229,7 +232,7 @@ namespace mjx {
             return nullptr;
         }
 
-        const size_type _Off = _Mylist._Reserve_block(_Count);
+        const size_type _Off = _Myfbl._Reserve_block(_Count);
         return _Off != static_cast<size_type>(-1)
             ? mjmem_impl::_Adjust_address_by_offset(_Myres.data(), _Off) : nullptr;
     }
@@ -244,6 +247,9 @@ namespace mjx {
             allocation_failure::raise();
         }
 
+#ifdef _DEBUG
+        _Myabl->_Register_block(mjmem_impl::_Memory_block{_Ptr, _Count});
+#endif // _DEBUG
         return _Ptr;
     }
 
@@ -255,21 +261,33 @@ namespace mjx {
     }
 
     void pool_allocator::deallocate(pointer _Ptr, const size_type _Count) noexcept {
-        if (_Myres.contains(_Ptr, _Count)) { // _Ptr allocated from the associated resource
-            try {
-                _Mylist._Release_block(mjmem_impl::_Calculate_offset_from_address(_Myres.data(), _Ptr), _Count);
-            } catch (...) {
-                // Note: Since deallocate() must be 'noexcept', it cannot throw any exceptions internally.
-                //       In debug mode, _INTERNAL_ASSERT provides helpful feedback by reporting the failure.
-                //       However, in release mode, _INTERNAL_ASSERT doesn't report any messages. Therefore,
-                //       abort() is called in release mode to terminate the program immediately, as such
-                //       failure can lead to various unexpected and unpredictable behaviors.
+        if (!_Myres.contains(_Ptr, _Count)) { // _Ptr doesn't originate from the associated resource
+            return;
+        }
+
 #ifdef _DEBUG
-                _INTERNAL_ASSERT(false, "allocation failure during block release");
-#else // ^^^ _DEBUG ^^^ / vvv NDEBUG vvv
-                ::abort();
+        const mjmem_impl::_Memory_block _Block = {_Ptr, _Count};
+        if (!_Myabl->_Is_block_registered(_Block)) { // block not registered, report an error
+            _REPORT_ERROR("attempt to deallocate a non-allocated block");
+        }
 #endif // _DEBUG
-            }
+
+        try {
+            _Myfbl._Release_block(mjmem_impl::_Calculate_offset_from_address(_Myres.data(), _Ptr), _Count);
+#ifdef _DEBUG
+            _Myabl->_Unregister_block(_Block);
+#endif // _DEBUG
+        } catch (...) {
+            // Note: Since deallocate() must be 'noexcept', it cannot throw any exceptions internally.
+            //       In debug mode, _INTERNAL_ASSERT provides helpful feedback by reporting the failure.
+            //       However, in release mode, _INTERNAL_ASSERT doesn't report any messages. Therefore,
+            //       abort() is called in release mode to terminate the program immediately, as such
+            //       failure can lead to various unexpected and unpredictable behaviors.
+#ifdef _DEBUG
+            _REPORT_ERROR("allocation failure during block release");
+#else // ^^^ _DEBUG ^^^ / vvv NDEBUG vvv
+            ::abort();
+#endif // _DEBUG
         }
     }
 

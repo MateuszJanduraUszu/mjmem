@@ -11,6 +11,12 @@
 #include <mjmem/pool_resource.hpp>
 
 namespace mjx {
+#ifdef _DEBUG
+    namespace mjmem_impl {
+        class _Allocated_block_list;
+    } // namespace mjmem_impl
+#endif // _DEBUG
+
     class _MJMEM_API pool_allocator : public allocator { // variable-size block allocator
     public:
         using value_type      = allocator::value_type;
@@ -51,9 +57,6 @@ namespace mjx {
         public:        
             _Free_block_list() noexcept;
             ~_Free_block_list() noexcept;
-
-            // returns the list size
-            size_type _Size() const noexcept;
 
             // reserves a new block
             size_type _Reserve_block(const size_type _Size) noexcept;
@@ -115,7 +118,10 @@ namespace mjx {
         pool_resource& _Myres;
         size_type _Mymax; // maximum number of bytes possible to allocate
 #pragma warning(suppress : 4251) // C4251: _Free_block_list needs to have dll-interface
-        _Free_block_list _Mylist;
+        _Free_block_list _Myfbl; // list of free blocks
+#ifdef _DEBUG
+        mjmem_impl::_Allocated_block_list* _Myabl; // list of allocated blocks (only in debug mode)
+#endif // _DEBUG
     };
 } // namespace mjx
 

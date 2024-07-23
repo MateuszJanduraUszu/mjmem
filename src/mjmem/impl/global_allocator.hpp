@@ -39,6 +39,12 @@ namespace mjx {
             dynamic_allocator _Mydef; // the default allocator that has no state or associated resource
             ::std::atomic<allocator*> _Myal; // pointer to the currently used allocator
         };
+
+        inline dynamic_allocator& _Get_internal_allocator() noexcept {
+            // retrieve the singleton dynamic_allocator used for all internal allocations
+            static dynamic_allocator _Al;
+            return _Al;
+        }
     } // namespace mjmem_impl
 } // namespace mjx
 
