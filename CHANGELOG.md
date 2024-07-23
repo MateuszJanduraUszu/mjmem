@@ -39,7 +39,7 @@ All notable changes to this project will be documented in this file.
 * Added `mjmem.rc` resource file
 * Added benchmarks to measure performance improvements
 * Integrated CMake as the build system
-* Integrated Github Workflows for CI/CD
+* Integrated GitHub Workflows for CI/CD
 * Implemented code-level versioning
 * Implemented `block_allocator::block_size()` and `block_allocator::resource()`
 * Implemented `pool_allocator::resource()`
