@@ -10,10 +10,11 @@
 #include <cstddef>
 #include <mjmem/impl/tinywin.hpp>
 
-// generic assert macro, useful in debug mode
-#define _INTERNAL_ASSERT(_Cond, _Msg)                                   \
-    if (!(_Cond)) {                                                     \
-        ::_CrtDbgReport(_CRT_ERROR, __FILE__, __LINE__, nullptr, _Msg); \
+// generic assertion macros, useful in debug mode
+#define _REPORT_ERROR(_Msg)           ::_CrtDbgReport(_CRT_ERROR, __FILE__, __LINE__, nullptr, _Msg)
+#define _INTERNAL_ASSERT(_Cond, _Msg) \
+    if (!(_Cond)) {                   \
+        _REPORT_ERROR(_Msg);          \
     }
 
 namespace mjx {

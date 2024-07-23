@@ -11,6 +11,12 @@
 #include <mjmem/pool_resource.hpp>
 
 namespace mjx {
+#ifdef _DEBUG
+    namespace mjmem_impl {
+        class _Allocated_block_list;
+    } // namespace mjmem_impl
+#endif // _DEBUG
+
     class _MJMEM_API block_allocator : public allocator { // fixed-size block allocator
     public:
         using value_type      = allocator::value_type;
@@ -86,6 +92,9 @@ namespace mjx {
         size_type _Myblock;
 #pragma warning(suppress : 4251) // C4251: _Bitmap needs to have dll-interface
         _Bitmap _Mymap;
+#ifdef _DEBUG
+        mjmem_impl::_Allocated_block_list* _Myabl; // list of allocated blocks (only in debug mode)
+#endif // _DEBUG
     };
 } // namespace mjx
 

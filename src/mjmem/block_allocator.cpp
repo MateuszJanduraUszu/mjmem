@@ -7,24 +7,32 @@
 #include <mjmem/block_allocator.hpp>
 #include <mjmem/dynamic_allocator.hpp>
 #include <mjmem/exception.hpp>
+#include <mjmem/impl/allocation_tracking.hpp>
 #include <mjmem/impl/bitops.hpp>
 #include <mjmem/impl/utils.hpp>
 #include <mjmem/object_allocator.hpp>
 
 namespace mjx {
     block_allocator::block_allocator(pool_resource& _Resource, const size_type _Block_size)
-        : _Myres(_Resource), _Myblock(_Block_size), _Mymap() {
 #ifdef _DEBUG
+        : _Myres(_Resource), _Myblock(_Block_size), _Mymap(),
+        _Myabl(mjmem_impl::_Allocated_block_list::_Create()) {
         // Note: The _Block_size must always be less than or equal to '_Resource.size()'.
         //       Although not explicitly checked, the assertion below will catch any issues.
         //       In the expression 'x % y', where 'x < y', the result is always 'y - x',
         //       which will fail the assertion, expecting the remainder to be 0.
         _INTERNAL_ASSERT(_Resource.size() % _Block_size == 0, "resource size must be a multiple of block size");
+#else // ^^^ _DEBUG ^^^ / vvv NDEBUG vvv
+        : _Myres(_Resource), _Myblock(_Block_size), _Mymap() {
 #endif // _DEBUG
         _Init_bitmap();
     }
 
-    block_allocator::~block_allocator() noexcept {}
+    block_allocator::~block_allocator() noexcept {
+#ifdef _DEBUG
+        mjmem_impl::_Allocated_block_list::_Delete(_Myabl);
+#endif // _DEBUG
+    }
 
     block_allocator::_Bitmap::_Bitmap() noexcept : _Buf{0}, _Size(0), _Free(0) {
         // starts lifetime of small buffer by default
@@ -97,6 +105,9 @@ namespace mjx {
             allocation_failure::raise();
         }
 
+#ifdef _DEBUG
+        _Myabl->_Register_block(mjmem_impl::_Memory_block{_Ptr, _Blocks * _Myblock});
+#endif // _DEBUG
         _Mymap._Free -= _Blocks; // update the number of free blocks
         return _Ptr;
     }
@@ -109,15 +120,26 @@ namespace mjx {
     }
 
     void block_allocator::deallocate(pointer _Ptr, const size_type _Count) noexcept {
-        if (_Ptr && _Count > 0) {
-            const size_type _Blocks = _Least_block_count(_Count);
-            if (_Myres.contains(_Ptr, _Blocks * _Myblock)) { // _Ptr allocated from the associated resource
-                mjmem_impl::_Word_array _Array(_Mymap._Get_words(), _Mymap._Size);
-                mjmem_impl::_Clear_bit_range(
-                    _Array, mjmem_impl::_Calculate_offset_from_address(_Myres.data(), _Ptr) / _Myblock, _Blocks);
-                _Mymap._Free += _Blocks; // update the number of free blocks
-            }
+        const size_type _Blocks = _Least_block_count(_Count);
+        const size_type _Bytes  = _Blocks * _Myblock;
+        if (!_Myres.contains(_Ptr, _Bytes)) { // _Ptr doesn't originate from the associated resource
+            return;
         }
+
+#ifdef _DEBUG
+        const mjmem_impl::_Memory_block _Block = {_Ptr, _Bytes};
+        if (!_Myabl->_Is_block_registered(_Block)) { // block not registered, break
+            return;
+        }
+#endif // _DEBUG
+
+        mjmem_impl::_Word_array _Array(_Mymap._Get_words(), _Mymap._Size);
+        mjmem_impl::_Clear_bit_range(
+            _Array, mjmem_impl::_Calculate_offset_from_address(_Myres.data(), _Ptr) / _Myblock, _Blocks);
+        _Mymap._Free += _Blocks; // update the number of free blocks
+#ifdef _DEBUG
+        _Myabl->_Unregister_block(_Block);
+#endif // _DEBUG
     }
 
     block_allocator::size_type block_allocator::max_size() const noexcept {
