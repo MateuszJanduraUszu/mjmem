@@ -36,6 +36,8 @@ All notable changes to this project will be documented in this file.
 
 * Added comprehensive documentation
 * Added this changelog
+* Added `mjmem.rc` resource file
+* Added benchmarks to measure performance improvements
 * Integrated CMake as the build system
 * Integrated Github Workflows for CI/CD
 * Implemented code-level versioning
@@ -49,6 +51,7 @@ All notable changes to this project will be documented in this file.
 * Optimized the internal list of free blocks in `pool_allocator`
 * Optimized the internal bitmap in `block_allocator`
 * Reduced the number of `dynamic_allocator` objects to improve performance
+* Ported old tests to the new build system
 
 ### **Removed**
 
