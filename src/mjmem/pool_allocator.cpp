@@ -4,9 +4,9 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <cstdlib>
-#include <mjmem/dynamic_allocator.hpp>
 #include <mjmem/exception.hpp>
 #include <mjmem/impl/allocation_tracking.hpp>
+#include <mjmem/impl/global_allocator.hpp>
 #include <mjmem/impl/utils.hpp>
 #include <mjmem/object_allocator.hpp>
 #include <mjmem/pool_allocator.hpp>
@@ -37,7 +37,7 @@ namespace mjx {
 
     pool_allocator::_Free_block_list::~_Free_block_list() noexcept {
         if (_Myhead) { // deallocate all nodes
-            dynamic_allocator _Al;
+            dynamic_allocator& _Al = mjmem_impl::_Get_internal_allocator();
             for (_List_node* _Node = _Myhead, *_Next; _Node != nullptr; _Node = _Next) {
                 _Next = _Node->_Next;
                 ::mjx::delete_object_using_allocator(_Node, _Al);
@@ -49,13 +49,11 @@ namespace mjx {
     }
 
     pool_allocator::_Free_block_list::_List_node* pool_allocator::_Free_block_list::_List_node::_Create() {
-        dynamic_allocator _Al;
-        return ::mjx::create_object_using_allocator<_List_node>(_Al);
+        return ::mjx::create_object_using_allocator<_List_node>(mjmem_impl::_Get_internal_allocator());
     }
     
     void pool_allocator::_Free_block_list::_List_node::_Delete(_List_node* const _Node) noexcept {
-        dynamic_allocator _Al;
-        ::mjx::delete_object_using_allocator(_Node, _Al);
+        ::mjx::delete_object_using_allocator(_Node, mjmem_impl::_Get_internal_allocator());
     }
 
     void pool_allocator::_Free_block_list::_Unlink_node_directly(

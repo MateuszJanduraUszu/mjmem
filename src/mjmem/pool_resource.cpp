@@ -4,6 +4,7 @@
 // SPDX-License-Identifier: Apache-2.0
 
 #include <cstring>
+#include <mjmem/impl/global_allocator.hpp>
 #include <mjmem/impl/utils.hpp>
 #include <mjmem/pool_resource.hpp>
 #include <utility>
@@ -20,8 +21,7 @@ namespace mjx {
     }
 
     pool_resource::pool_resource(const size_type _Size) : _Mydata(nullptr), _Mysize(0) {
-        dynamic_allocator _Al;
-        _Mydata = _Al.allocate(_Size);
+        _Mydata = mjmem_impl::_Get_internal_allocator().allocate(_Size);
         _Mysize = _Size;
     }
 
@@ -48,8 +48,7 @@ namespace mjx {
     }
 
     void pool_resource::_Copy_resource(const_pointer _Data, const size_type _Size) {
-        dynamic_allocator _Al;
-        _Mydata = _Al.allocate(_Size);
+        _Mydata = mjmem_impl::_Get_internal_allocator().allocate(_Size);
         _Mysize = _Size;
         ::memcpy(_Mydata, _Data, _Size);
     }
@@ -101,8 +100,7 @@ namespace mjx {
 
     void pool_resource::destroy() noexcept {
         if (_Mydata && _Mysize > 0) {
-            dynamic_allocator _Al;
-            _Al.deallocate(_Mydata, _Mysize);
+            mjmem_impl::_Get_internal_allocator().deallocate(_Mydata, _Mysize);
             _Mydata = nullptr;
             _Mysize = 0;
         }

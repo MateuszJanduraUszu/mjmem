@@ -7,7 +7,6 @@
 #ifndef _MJMEM_IMPL_ALLOCATION_TRACKING_HPP_
 #define _MJMEM_IMPL_ALLOCATION_TRACKING_HPP_
 #include <cstdlib>
-#include <mjmem/dynamic_allocator.hpp>
 #include <mjmem/impl/global_allocator.hpp>
 #include <mjmem/impl/utils.hpp>
 #include <mjmem/object_allocator.hpp>
@@ -45,12 +44,12 @@ namespace mjx {
             _Allocated_block_list& operator=(const _Allocated_block_list&) = delete;
 
             static _Allocated_block_list* _Create() {
-                // create a new list using a stateless allocator to avoid internal errors
+                // create a new list using the internal allocator
                 return ::mjx::create_object_using_allocator<_Allocated_block_list>(_Get_internal_allocator());
             }
 
             static void _Delete(_Allocated_block_list* const _List) noexcept {
-                // delete an existing list using a stateless allocator to avoid internal errors
+                // delete an existing list using the internal allocator
                 ::mjx::delete_object_using_allocator(_List, _Get_internal_allocator());
             }
 
@@ -113,12 +112,12 @@ namespace mjx {
                 _Memory_block _Block; // the stored block
 
                 static _List_node* _Create() {
-                    // create a new node using a stateless allocator to avoid internal errors
+                    // create a new node using the internal allocator
                     return ::mjx::create_object_using_allocator<_List_node>(_Get_internal_allocator());
                 }
 
                 static void _Delete(_List_node* const _Node) noexcept {
-                    // delete an existing node using a stateless allocator to avoid internal errors
+                    // delete an existing node using the internal allocator
                     return ::mjx::delete_object_using_allocator(_Node, _Get_internal_allocator());
                 }
             };

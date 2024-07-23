@@ -5,10 +5,10 @@
 
 #include <cstring>
 #include <mjmem/block_allocator.hpp>
-#include <mjmem/dynamic_allocator.hpp>
 #include <mjmem/exception.hpp>
 #include <mjmem/impl/allocation_tracking.hpp>
 #include <mjmem/impl/bitops.hpp>
+#include <mjmem/impl/global_allocator.hpp>
 #include <mjmem/impl/utils.hpp>
 #include <mjmem/object_allocator.hpp>
 
@@ -40,8 +40,7 @@ namespace mjx {
 
     block_allocator::_Bitmap::~_Bitmap() noexcept {
         if (_Size > _Small_buffer_size) { // deallocate larger buffer
-            dynamic_allocator _Al;
-            ::mjx::delete_object_array_using_allocator(_Ptr, _Size, _Al);
+            ::mjx::delete_object_array_using_allocator(_Ptr, _Size, mjmem_impl::_Get_internal_allocator());
         }
     }
 
@@ -59,9 +58,9 @@ namespace mjx {
         const size_type _Bits  = _Total_block_count(); // required number of bits
         const size_type _Words = (_Bits + _Traits::_Bits_per_word - 1) / _Traits::_Bits_per_word;
         if (_Words > _Bitmap::_Small_buffer_size) { // use larger buffer
-            dynamic_allocator _Al;
             const size_type _Bytes = _Words * sizeof(_Word_type); // number of bytes to allocate
-            _Mymap._Ptr            = static_cast<_Word_type*>(_Al.allocate(_Bytes));
+            _Mymap._Ptr            = static_cast<_Word_type*>(
+                mjmem_impl::_Get_internal_allocator().allocate(_Bytes));
             ::memset(_Mymap._Ptr, 0, _Bytes); // make sure each bit is set to 0
         }
         
