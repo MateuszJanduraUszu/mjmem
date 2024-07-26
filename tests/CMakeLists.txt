@@ -8,7 +8,7 @@ project(mjmem_tests LANGUAGES CXX)
 
 # build Google Test as a static library before building any tests
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-add_subdirectory(google-test "${CMAKE_BINARY_DIR}/google-test" EXCLUDE_FROM_ALL)
+add_subdirectory(google-test "${CMAKE_CURRENT_BINARY_DIR}/google-test" EXCLUDE_FROM_ALL)
 
 function(copy_files_required_for_test test_name)
     # copy all required files to the output directory of the specified test

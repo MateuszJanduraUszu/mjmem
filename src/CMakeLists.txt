@@ -54,7 +54,7 @@ target_include_directories(mjmem PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 if(MJMEM_INSTALL_LIBRARY)
     if(NOT DEFINED CMAKE_INSTALL_PREFIX OR CMAKE_INSTALL_PREFIX_INITIALIZED_TO_DEFAULT)
         # set the install prefix to the default path
-        set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/rules/mjmem" CACHE PATH "Path to install directory" FORCE)
+        set(CMAKE_INSTALL_PREFIX "${CMAKE_BINARY_DIR}/install" CACHE PATH "Path to install directory" FORCE)
     endif()
 
     install(TARGETS mjmem
@@ -67,5 +67,5 @@ if(MJMEM_INSTALL_LIBRARY)
         DESTINATION "cmake/mjmem"
         NAMESPACE mjx::
     )
-    install(FILES ${MJMEM_INC_FILES} DESTINATION inc)
+    install(FILES ${MJMEM_INC_FILES} DESTINATION "inc/mjmem")
 endif()
