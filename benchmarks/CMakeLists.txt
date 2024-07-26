@@ -8,7 +8,7 @@ project(mjmem_benchmarks LANGUAGES CXX)
 
 # build Google Benchmark before building any benchmarks
 set(BENCHMARK_ENABLE_TESTING OFF CACHE BOOL "" FORCE)
-add_subdirectory(google-benchmark "${CMAKE_BINARY_DIR}/google-benchmark" EXCLUDE_FROM_ALL)
+add_subdirectory(google-benchmark "${CMAKE_CURRENT_BINARY_DIR}/google-benchmark" EXCLUDE_FROM_ALL)
 
 function(copy_files_required_for_benchmark benchmark_name)
     # copy all required files to the output directory of the specified benchmark
@@ -28,7 +28,7 @@ function(add_isolated_benchmark benchmark_name benchmark_path)
         "${CMAKE_CURRENT_SOURCE_DIR}/../src"
         "${benchmark_SOURCE_DIR}/include"
     )
-    target_link_libraries(${benchmark_name} PRIVATE benchmark::benchmark mjmem Shlwapi)
+    target_link_libraries(${benchmark_name} PRIVATE benchmark mjmem Shlwapi)
     copy_files_required_for_benchmark(${benchmark_name})
 endfunction()
 

@@ -26,13 +26,13 @@ option(MJMEM_BUILD_TESTS "Build MJMEM library tests" OFF)
 option(MJMEM_INSTALL_LIBRARY "Install MJMEM library" OFF)
 
 # build the MJMEM library before building any benchmarks and tests
-add_subdirectory(src "${CMAKE_BINARY_DIR}/mjmem")
+add_subdirectory(src "${CMAKE_CURRENT_BINARY_DIR}/library")
 
 if(MJMEM_BUILD_BENCHMARKS)
-    add_subdirectory(benchmarks "${CMAKE_BINARY_DIR}/benchmarks")
+    add_subdirectory(benchmarks "${CMAKE_CURRENT_BINARY_DIR}/benchmarks")
 endif()
 
 if(MJMEM_BUILD_TESTS)
     enable_testing()
-    add_subdirectory(tests "${CMAKE_BINARY_DIR}/tests")
+    add_subdirectory(tests "${CMAKE_CURRENT_BINARY_DIR}/tests")
 endif()
