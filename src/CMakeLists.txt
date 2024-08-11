@@ -94,7 +94,7 @@ source_group("res" FILES ${MJMEM_RES_FILES})
 add_library(mjmem SHARED ${MJMEM_INC_FILES} ${MJMEM_SRC_FILES} ${MJMEM_IMPL_FILES})
 target_compile_definitions(mjmem PRIVATE _MJMEM_BUILD=1 PUBLIC ${MJX_BASE_DEFS})
 target_compile_features(mjmem PRIVATE cxx_std_20)
-target_include_directories(mjmem PUBLIC ${CMAKE_CURRENT_SOURCE_DIR})
+target_include_directories(mjmem PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 # Note: RC files are used only on Windows and are compiled with rc.exe (MSVC), windres.exe (GCC),
 #       or llvm-windres.exe (Clang). Therefore, they are included only when compiling for Windows.
