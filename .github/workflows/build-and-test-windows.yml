@@ -47,19 +47,19 @@ jobs:
         if: ${{ matrix.compiler == 'Clang' }}
         run: >
           cmake --preset=${{ matrix.arch }} -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_CXX_FLAGS='-target x86_64-pc-windows-gnu'
-            -DMJMEM_BUILD_BENCHMARKS=ON -DMJMEM_BUILD_TESTS=ON -DMJMEM_INSTALL_LIBRARY=ON
+          -DMJMEM_BUILD_BENCHMARKS=ON -DMJMEM_BUILD_TESTS=ON -DMJMEM_INSTALL_LIBRARY=ON
 
       - name: Configure project (GCC)
         if: ${{ matrix.compiler == 'GCC' }}
         run: >
           cmake --preset=${{ matrix.arch }} -DCMAKE_CXX_COMPILER=g++ -DMJMEM_BUILD_BENCHMARKS=ON
-            -DMJMEM_BUILD_TESTS=ON -DMJMEM_INSTALL_LIBRARY=ON
+          -DMJMEM_BUILD_TESTS=ON -DMJMEM_INSTALL_LIBRARY=ON
 
       - name: Configure project (MSVC)
         if: ${{ matrix.compiler == 'MSVC' }}
         run: >
           cmake --preset=${{ matrix.arch }} -DCMAKE_CXX_COMPILER=cl -DMJMEM_BUILD_BENCHMARKS=ON
-            -DMJMEM_BUILD_TESTS=ON -DMJMEM_INSTALL_LIBRARY=ON
+          -DMJMEM_BUILD_TESTS=ON -DMJMEM_INSTALL_LIBRARY=ON
 
       - name: Build project
         run: |
