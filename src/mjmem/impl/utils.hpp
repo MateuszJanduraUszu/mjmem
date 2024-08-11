@@ -6,12 +6,23 @@
 #pragma once
 #ifndef _MJMEM_IMPL_UTILS_HPP_
 #define _MJMEM_IMPL_UTILS_HPP_
-#include <crtdbg.h>
 #include <cstddef>
-#include <mjmem/impl/tinywin.hpp>
+#ifdef _MJX_WINDOWS
+#include <crtdbg.h>
+#else // ^^^ _MJX_WINDOWS ^^^ / vvv _MJX_LINUX vvv
+#include <cstdio>
+#include <cstdlib>
+#endif // _MJX_WINDOWS
 
 // generic assertion macros, useful in debug mode
-#define _REPORT_ERROR(_Msg)           ::_CrtDbgReport(_CRT_ERROR, __FILE__, __LINE__, nullptr, _Msg)
+#ifdef _MJX_WINDOWS
+#define _REPORT_ERROR(_Msg) ::_CrtDbgReport(_CRT_ERROR, __FILE__, __LINE__, nullptr, _Msg)
+#else // ^^^ _MJX_WINDOWS ^^^ / vvv _MJX_LINUX vvv
+#define _REPORT_ERROR(_Msg)                                                              \
+    ::fprintf(stderr, "%s:%d: %s: %s\n", __FILE__, __LINE__, __PRETTY_FUNCTION__, _Msg); \
+    ::abort()
+#endif // _MJX_WINDOWS
+
 #define _INTERNAL_ASSERT(_Cond, _Msg) \
     if (!(_Cond)) {                   \
         _REPORT_ERROR(_Msg);          \
@@ -19,29 +30,6 @@
 
 namespace mjx {
     namespace mjmem_impl {
-        template <bool _Shared>
-        class _Lock_guard { // RAII class for SRWLOCK
-        public:
-            constexpr _Lock_guard(void* const _Lock) noexcept : _Mylock(static_cast<SRWLOCK*>(_Lock)) {
-                if constexpr (_Shared) {
-                    ::AcquireSRWLockShared(_Mylock);
-                } else {
-                    ::AcquireSRWLockExclusive(_Mylock);
-                }
-            }
-
-            constexpr ~_Lock_guard() noexcept {
-                if constexpr (_Shared) {
-                    ::ReleaseSRWLockShared(_Mylock);
-                } else {
-                    ::ReleaseSRWLockExclusive(_Mylock);
-                }
-            }
-
-        private:
-            SRWLOCK* _Mylock;
-        };
-
         constexpr bool _Is_pow_of_2(const size_t _Value) noexcept {
             // check if the given value is a power of 2 (only one bit is set)
             return _Value > 0 && (_Value & (_Value - 1)) == 0;

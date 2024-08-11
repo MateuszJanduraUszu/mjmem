@@ -40,12 +40,22 @@ namespace mjx {
         bool is_equal(const allocator& _Other) const noexcept override;
 
     private:
-        struct _Srw_lock {
-            void* _Opaque;
-        };
-        
+        // Note: To encapsulate the internal lock type, we store the lock as raw bytes in an
+        //       appropriately-sized buffer. On Windows, SRW Lock is a simple structure with size
+        //       and alignment equivalent to void*. On Linux, pthread_rwlock_t is more complex,
+        //       requiring a larger buffer. Thus, we need to adjust the storage size and alignment
+        //       accordingly for each platform. To minimize memory usage, _Lock_size and _Lock_align
+        //       are defined specifically for each platform based on its requirements.
+#ifdef _MJX_WINDOWS
+        static constexpr size_type _Lock_size  = sizeof(void*);
+        static constexpr size_type _Lock_align = alignof(void*);
+#else // ^^^ _MJX_WINDOWS ^^^ / vvv _MJX_LINUX vvv
+        static constexpr size_type _Lock_size  = 56;
+        static constexpr size_type _Lock_align = 8;
+#endif // _MJX_WINDOWS
+
         allocator& _Mywrapped; // wrapped allocator
-        mutable _Srw_lock _Mylock;
+        mutable alignas(_Lock_align) unsigned char _Mylock[_Lock_size];
     };
 } // namespace mjx
 
