@@ -10,7 +10,7 @@
 #include <mjmem/api.hpp>
 
 namespace mjx {
-    class __declspec(novtable) _MJMEM_API allocator { // base class for all allocators
+    class _MJX_NOVTABLE _MJMEM_API allocator { // base class for all allocators
     public:
         using value_type      = void;
         using size_type       = size_t;
