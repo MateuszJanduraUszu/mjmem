@@ -37,7 +37,7 @@ namespace mjx {
 
         optimized_pair& operator=(const optimized_pair& _Other) noexcept(
             ::std::is_nothrow_copy_assignable_v<_Ty1> && ::std::is_nothrow_copy_assignable_v<_Ty2>) {
-            if (this != ::std::addressof(_Other)) {
+            if (this != &_Other) {
                 _Myval                    = _Other._Myval;
                 static_cast<_Ty2&>(*this) = static_cast<const _Ty2&>(_Other);
             }
@@ -47,7 +47,7 @@ namespace mjx {
 
         optimized_pair& operator=(optimized_pair&& _Other) noexcept(
             ::std::is_nothrow_move_assignable_v<_Ty1> && ::std::is_nothrow_move_assignable_v<_Ty2>) {
-            if (this != ::std::addressof(_Other)) {
+            if (this != &_Other) {
                 _Myval                    = ::std::move(_Other);
                 static_cast<_Ty2&>(*this) = static_cast<_Ty2&&>(_Other);
             }
@@ -105,7 +105,7 @@ namespace mjx {
 
         optimized_pair& operator=(const optimized_pair& _Other) noexcept(
             ::std::is_nothrow_copy_assignable_v<_Ty1> && ::std::is_nothrow_copy_assignable_v<_Ty2>) {
-            if (this != ::std::addressof(_Other)) {
+            if (this != &_Other) {
                 _Myval1 = _Other._Myval1;
                 _Myval2 = _Other._Myval2;
             }
@@ -115,7 +115,7 @@ namespace mjx {
 
         optimized_pair& operator=(optimized_pair&& _Other) noexcept(
             ::std::is_nothrow_move_assignable_v<_Ty1> && ::std::is_nothrow_move_assignable_v<_Ty2>) {
-            if (this != ::std::addressof(_Other)) {
+            if (this != &_Other) {
                 _Myval1 = ::std::move(_Other._Myval1);
                 _Myval2 = ::std::move(_Other._Myval2);
             }
