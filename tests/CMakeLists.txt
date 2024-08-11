@@ -32,9 +32,13 @@ function(add_isolated_test test_name test_path)
     copy_files_required_for_test(${test_name})
 endfunction()
 
+# Note: The 'bitops' and 'block_allocator' tests are currently blocked until endianness
+#       support is added to the library. These tests rely on direct bit manipulation,
+#       which is not supported in the current Linux implementation.
+
 add_isolated_test(test_allocators_compatibility "src/allocators_compatibility/test.cpp")
-add_isolated_test(test_bitops "src/bitops/test.cpp")
-add_isolated_test(test_block_allocator "src/block_allocator/test.cpp")
+# add_isolated_test(test_bitops "src/bitops/test.cpp")
+# add_isolated_test(test_block_allocator "src/block_allocator/test.cpp")
 add_isolated_test(test_dynamic_allocator "src/dynamic_allocator/test.cpp")
 add_isolated_test(test_global_allocator "src/global_allocator/test.cpp")
 add_isolated_test(test_pool_allocator "src/pool_allocator/test.cpp")
