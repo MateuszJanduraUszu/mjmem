@@ -6,6 +6,8 @@
 #include <benchmark/benchmark.h>
 #include <mjmem/impl/bitops.hpp>
 
+// the benchmarks assume the platform is little-endian
+
 namespace mjx {
     using namespace mjmem_impl;
 
@@ -1052,6 +1054,7 @@ void set_benchmark_properties(auto* const _Benchmark) {
     _Benchmark->DenseRange(1, 10)->Unit(::benchmark::TimeUnit::kNanosecond);
 }
 
+#ifdef _MJX_LITTLE_ENDIAN
 BENCHMARK(::mjx::bm_find_contiguous_zero_bits<64>)->Apply(set_benchmark_properties);
 BENCHMARK(::mjx::bm_find_contiguous_zero_bits<128>)->Apply(set_benchmark_properties);
 BENCHMARK(::mjx::bm_find_contiguous_zero_bits<256>)->Apply(set_benchmark_properties);
@@ -1060,5 +1063,6 @@ BENCHMARK(::mjx::bm_find_contiguous_zero_bits<1024>)->Apply(set_benchmark_proper
 BENCHMARK(::mjx::bm_find_contiguous_zero_bits<2048>)->Apply(set_benchmark_properties);
 BENCHMARK(::mjx::bm_find_contiguous_zero_bits<4096>)->Apply(set_benchmark_properties);
 BENCHMARK(::mjx::bm_find_contiguous_zero_bits<8192>)->Apply(set_benchmark_properties);
+#endif // _MJX_LITTLE_ENDIAN
 
 BENCHMARK_MAIN();
