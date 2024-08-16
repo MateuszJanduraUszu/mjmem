@@ -10,11 +10,11 @@
 // Note: The MJMEM module serves as the foundation for other modules. Therefore, macros are placed
 //       in the <mjmem/api.hpp> header. This approach enables sharing macros across multiple modules
 //       without concerns about missing definitions.
-#if defined(_MJX_MSVC) || (defined(_MJX_CLANG) && defined(_MJX_WINDOWS))
+#ifdef _MJX_MSVC
 #define _MJX_NOVTABLE __declspec(novtable)
-#else // ^^^ __declspec(novtable) available ^^^ / vvv __declspec(novtable) not available vvv
+#else // ^^^ _MJX_MSVC ^^^ / vvv !_MJX_MSVC vvv
 #define _MJX_NOVTABLE
-#endif // defined(_MJX_MSVC) || (defined(_MJX_CLANG) && defined(_MJX_WINDOWS))
+#endif // _MJX_MSVC
 
 #ifdef _MJX_WINDOWS
 // Windows libraries (DLLs) require an additional attribute

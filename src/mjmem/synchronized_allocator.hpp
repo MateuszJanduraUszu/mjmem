@@ -55,7 +55,7 @@ namespace mjx {
 #endif // _MJX_WINDOWS
 
         allocator& _Mywrapped; // wrapped allocator
-        mutable alignas(_Lock_align) unsigned char _Mylock[_Lock_size];
+        alignas(_Lock_align) mutable unsigned char _Mylock[_Lock_size];
     };
 } // namespace mjx
 

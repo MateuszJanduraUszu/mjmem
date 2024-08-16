@@ -56,12 +56,18 @@ else()
     message(FATAL_ERROR "Unsupported platform detected.")
 endif()
 
-# detect the compiler and set the corresponding macro, terminate if the compiler is not recognized 
+# detect the compiler and set the corresponding macro, terminate if the compiler is not recognized
+set(is_clang FALSE)
+set(is_gcc FALSE)
+set(is_msvc FALSE)
 if(CMAKE_CXX_COMPILER_ID STREQUAL "Clang")
+    set(is_clang TRUE)
     list(APPEND MJX_BASE_DEFS _MJX_CLANG=1)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "GNU")
+    set(is_gcc TRUE)
     list(APPEND MJX_BASE_DEFS _MJX_GCC=1)
 elseif(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
+    set(is_msvc TRUE)
     list(APPEND MJX_BASE_DEFS _MJX_MSVC=1)
 else()
     # unrecognized compiler, report an error and terminate
@@ -95,6 +101,23 @@ add_library(mjmem SHARED ${MJMEM_INC_FILES} ${MJMEM_SRC_FILES} ${MJMEM_IMPL_FILE
 target_compile_definitions(mjmem PRIVATE _MJMEM_BUILD=1 PUBLIC ${MJX_BASE_DEFS})
 target_compile_features(mjmem PRIVATE cxx_std_20)
 target_include_directories(mjmem PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
+set_target_properties(mjmem PROPERTIES PREFIX "") # prevent compilers from adding "lib" prefix
+if(${is_clang})
+    # add '-fsized-deallocation' flag to enable sized operator delete
+    target_compile_options(mjmem PUBLIC -fsized-deallocation)
+endif()
+
+# Note: GCC doesn't generates LIB files, as it uses its own archive files. To maintain compatibility
+#       between compilers, it must generate a LIB file. To do so, 'pexports' and 'dlltool' tools can be used,
+#       the first one to generate definition file (DEF), and the second one to generate a LIB file.
+if(${is_gcc} AND WIN32)
+    set(target_dir "$<TARGET_FILE_DIR:mjmem>")
+    add_custom_command(TARGET mjmem POST_BUILD
+        COMMAND pexports ${target_dir}/mjmem.dll > ${target_dir}/mjmem.def
+        COMMAND dlltool -d ${target_dir}/mjmem.def -l ${target_dir}/mjmem.lib
+    )
+    unset(target_dir)
+endif()
 
 # Note: RC files are used only on Windows and are compiled with rc.exe (MSVC), windres.exe (GCC),
 #       or llvm-windres.exe (Clang). Therefore, they are included only when compiling for Windows.
@@ -119,4 +142,8 @@ if(MJMEM_INSTALL_LIBRARY)
         NAMESPACE mjx::
     )
     install(FILES ${MJMEM_INC_FILES} DESTINATION "inc/mjmem")
+    if(${is_gcc} AND WIN32)
+        # copy manually generated mjmem.lib to the installation directory
+        install(FILES "$<TARGET_FILE_DIR:mjmem>/mjmem.lib" DESTINATION "bin/$<CONFIG>")
+    endif()
 endif()
