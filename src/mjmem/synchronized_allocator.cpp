@@ -5,7 +5,8 @@
 
 #include <mjmem/impl/rwlock.hpp>
 #include <mjmem/synchronized_allocator.hpp>
-#include <type_traits>
+#include <new>
+#include <utility>
 
 namespace mjx {
     synchronized_allocator::synchronized_allocator(allocator& _Al) noexcept

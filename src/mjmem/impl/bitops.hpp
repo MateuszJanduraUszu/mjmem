@@ -6,10 +6,10 @@
 #pragma once
 #ifndef _MJMEM_IMPL_BITOPS_HPP_
 #define _MJMEM_IMPL_BITOPS_HPP_
+#include <algorithm>
 #include <bit>
 #include <climits>
 #include <cstdint>
-#include <utility>
 
 namespace mjx {
     namespace mjmem_impl {
