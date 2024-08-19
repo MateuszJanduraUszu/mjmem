@@ -7,6 +7,7 @@
 #include <mjmem/exception.hpp>
 #include <mjmem/impl/utils.hpp>
 #include <new>
+#include <utility>
 
 namespace mjx {
     dynamic_allocator::dynamic_allocator() noexcept {}
@@ -29,8 +30,12 @@ namespace mjx {
         if (_Count == 0) { // no allocation, do nothing
             return nullptr;
         }
-
+        
+#ifdef _MJX_CLANG
+        void* const _Ptr = ::operator new(_Count); // 'nothrow' overload not recognized in Clang
+#else // ^^^ _MJX_CLANG ^^^ / vvv !_MJX_CLANG vvv
         void* const _Ptr = ::operator new(_Count, ::std::nothrow);
+#endif // _MJX_CLANG
         if (!_Ptr) { // allocation failed, raise an exception
             allocation_failure::raise();
         }
@@ -46,12 +51,7 @@ namespace mjx {
 #ifdef _DEBUG
         _INTERNAL_ASSERT(mjmem_impl::_Is_pow_of_2(_Align), "alignment must be a power of 2");
 #endif // _DEBUG
-        void* const _Ptr = ::operator new(mjmem_impl::_Align_value(_Count, _Align), ::std::nothrow);
-        if (!_Ptr) { // allocation failed, raise an exception
-            allocation_failure::raise();
-        }
-
-        return _Ptr;
+        return allocate(mjmem_impl::_Align_value(_Count, _Align));
     }
 
     void dynamic_allocator::deallocate(pointer _Ptr, const size_type _Count) noexcept {

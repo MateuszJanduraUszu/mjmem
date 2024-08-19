@@ -5,7 +5,6 @@
 
 #include <mjmem/allocator.hpp>
 #include <mjmem/impl/global_allocator.hpp>
-#include <mjmem/impl/utils.hpp>
 
 namespace mjx {
     allocator::allocator() noexcept {}

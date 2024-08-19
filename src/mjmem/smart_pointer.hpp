@@ -7,6 +7,7 @@
 #ifndef _MJMEM_SMART_POINTER_HPP_
 #define _MJMEM_SMART_POINTER_HPP_
 #include <atomic>
+#include <cstddef>
 #include <mjmem/exception.hpp>
 #include <mjmem/object_allocator.hpp>
 #include <type_traits>
@@ -37,7 +38,7 @@ namespace mjx {
 
         optimized_pair& operator=(const optimized_pair& _Other) noexcept(
             ::std::is_nothrow_copy_assignable_v<_Ty1> && ::std::is_nothrow_copy_assignable_v<_Ty2>) {
-            if (this != ::std::addressof(_Other)) {
+            if (this != &_Other) {
                 _Myval                    = _Other._Myval;
                 static_cast<_Ty2&>(*this) = static_cast<const _Ty2&>(_Other);
             }
@@ -47,7 +48,7 @@ namespace mjx {
 
         optimized_pair& operator=(optimized_pair&& _Other) noexcept(
             ::std::is_nothrow_move_assignable_v<_Ty1> && ::std::is_nothrow_move_assignable_v<_Ty2>) {
-            if (this != ::std::addressof(_Other)) {
+            if (this != &_Other) {
                 _Myval                    = ::std::move(_Other);
                 static_cast<_Ty2&>(*this) = static_cast<_Ty2&&>(_Other);
             }
@@ -105,7 +106,7 @@ namespace mjx {
 
         optimized_pair& operator=(const optimized_pair& _Other) noexcept(
             ::std::is_nothrow_copy_assignable_v<_Ty1> && ::std::is_nothrow_copy_assignable_v<_Ty2>) {
-            if (this != ::std::addressof(_Other)) {
+            if (this != &_Other) {
                 _Myval1 = _Other._Myval1;
                 _Myval2 = _Other._Myval2;
             }
@@ -115,7 +116,7 @@ namespace mjx {
 
         optimized_pair& operator=(optimized_pair&& _Other) noexcept(
             ::std::is_nothrow_move_assignable_v<_Ty1> && ::std::is_nothrow_move_assignable_v<_Ty2>) {
-            if (this != ::std::addressof(_Other)) {
+            if (this != &_Other) {
                 _Myval1 = ::std::move(_Other._Myval1);
                 _Myval2 = ::std::move(_Other._Myval2);
             }
@@ -169,7 +170,7 @@ namespace mjx {
 
         unique_smart_ptr() noexcept : _Myptr(nullptr) {}
 
-        unique_smart_ptr(nullptr_t) noexcept : _Myptr(nullptr) {}
+        unique_smart_ptr(::std::nullptr_t) noexcept : _Myptr(nullptr) {}
 
         explicit unique_smart_ptr(pointer _Ptr) noexcept : _Myptr(_Ptr) {}
 
@@ -187,7 +188,7 @@ namespace mjx {
             return *this;
         }
 
-        unique_smart_ptr& operator=(nullptr_t) noexcept {
+        unique_smart_ptr& operator=(::std::nullptr_t) noexcept {
             reset();
             return *this;
         }
@@ -239,7 +240,7 @@ namespace mjx {
     }
 
     template <class _Ty>
-    inline bool operator==(const unique_smart_ptr<_Ty>& _Left, nullptr_t) noexcept {
+    inline bool operator==(const unique_smart_ptr<_Ty>& _Left, ::std::nullptr_t) noexcept {
         return !_Left;
     }
 
@@ -261,7 +262,7 @@ namespace mjx {
 
         unique_smart_array() noexcept : _Myptr(nullptr), _Mysize(0) {}
 
-        unique_smart_array(nullptr_t) noexcept : _Myptr(nullptr), _Mysize(0) {}
+        unique_smart_array(::std::nullptr_t) noexcept : _Myptr(nullptr), _Mysize(0) {}
 
         unique_smart_array(pointer _Ptr, const size_t _Size) noexcept : _Myptr(_Ptr), _Mysize(_Size) {}
 
@@ -285,7 +286,7 @@ namespace mjx {
             return *this;
         }
 
-        unique_smart_array& operator=(nullptr_t) noexcept {
+        unique_smart_array& operator=(::std::nullptr_t) noexcept {
             reset();
             return *this;
         }
@@ -329,7 +330,7 @@ namespace mjx {
             _Mysize = _New_size;
         }
 
-        void reset(nullptr_t = nullptr) noexcept {
+        void reset(::std::nullptr_t = nullptr) noexcept {
             if (_Myptr) {
                 ::mjx::delete_object_array(_Myptr, _Mysize);
                 _Myptr  = nullptr;
@@ -353,7 +354,7 @@ namespace mjx {
     }
 
     template <class _Ty>
-    inline bool operator==(const unique_smart_array<_Ty>& _Left, nullptr_t) noexcept {
+    inline bool operator==(const unique_smart_array<_Ty>& _Left, ::std::nullptr_t) noexcept {
         return !_Left;
     }
 
@@ -397,7 +398,7 @@ namespace mjx {
 
         smart_ptr() noexcept : _Myptr(nullptr), _Myctr(nullptr) {}
 
-        smart_ptr(nullptr_t) noexcept : _Myptr(nullptr), _Myctr(nullptr) {}
+        smart_ptr(::std::nullptr_t) noexcept : _Myptr(nullptr), _Myctr(nullptr) {}
 
         explicit smart_ptr(pointer _Ptr)
             : _Myptr(_Ptr), _Myctr(::mjx::create_object<reference_counter>(1)) {}
@@ -495,7 +496,7 @@ namespace mjx {
     }
 
     template <class _Ty>
-    inline bool operator==(const smart_ptr<_Ty>& _Left, nullptr_t) noexcept {
+    inline bool operator==(const smart_ptr<_Ty>& _Left, ::std::nullptr_t) noexcept {
         return !_Left;
     }
 
@@ -512,7 +513,7 @@ namespace mjx {
 
         smart_array() noexcept : _Myptr(nullptr), _Mysize(0), _Myctr(nullptr) {}
 
-        smart_array(nullptr_t) noexcept : _Myptr(nullptr), _Mysize(0), _Myctr(nullptr) {}
+        smart_array(::std::nullptr_t) noexcept : _Myptr(nullptr), _Mysize(0), _Myctr(nullptr) {}
 
         smart_array(pointer _Ptr, const size_t _Size)
             : _Myptr(_Ptr), _Mysize(_Size), _Myctr(::mjx::create_object<reference_counter>(1)) {}
@@ -623,7 +624,7 @@ namespace mjx {
     }
 
     template <class _Ty>
-    inline bool operator==(const smart_array<_Ty>& _Left, nullptr_t) noexcept {
+    inline bool operator==(const smart_array<_Ty>& _Left, ::std::nullptr_t) noexcept {
         return !_Left;
     }
 

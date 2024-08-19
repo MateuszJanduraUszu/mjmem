@@ -10,15 +10,6 @@ project(mjmem_tests LANGUAGES CXX)
 set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
 add_subdirectory(google-test "${CMAKE_CURRENT_BINARY_DIR}/google-test" EXCLUDE_FROM_ALL)
 
-function(copy_files_required_for_test test_name)
-    # copy all required files to the output directory of the specified test
-    add_custom_command(TARGET ${test_name} POST_BUILD
-        COMMAND ${CMAKE_COMMAND} -E copy
-        "$<TARGET_FILE:mjmem>"
-        "$<TARGET_FILE_DIR:${test_name}>"
-    )
-endfunction()
-
 function(add_isolated_test test_name test_path)
     # create an executable for the specified test, linking against necessary libraries
     add_executable(${test_name} ${test_path})
@@ -29,7 +20,6 @@ function(add_isolated_test test_name test_path)
     )
     target_link_libraries(${test_name} PRIVATE gtest gtest_main mjmem)
     add_test(NAME ${test_name} COMMAND ${test_name})
-    copy_files_required_for_test(${test_name})
 endfunction()
 
 add_isolated_test(test_allocators_compatibility "src/allocators_compatibility/test.cpp")
@@ -46,3 +36,28 @@ add_isolated_test(test_synchronized_allocator "src/synchronized_allocator/test.c
 add_isolated_test(test_unique_smart_array "src/unique_smart_array/test.cpp")
 add_isolated_test(test_unique_smart_ptr "src/unique_smart_ptr/test.cpp")
 add_isolated_test(test_version_encoding "src/version_encoding/test.cpp")
+
+# use a custom target to combine all targets into a single one,
+# this allows only one post-build call instead of per-test copying
+add_custom_target(mjmem_and_tests ALL DEPENDS
+    mjmem
+    test_allocators_compatibility
+    test_bitops
+    test_block_allocator
+    test_dynamic_allocator
+    test_global_allocator
+    test_pool_allocator
+    test_pool_resource
+    test_reference_counter
+    test_smart_array
+    test_smart_ptr
+    test_synchronized_allocator
+    test_unique_smart_array
+    test_unique_smart_ptr
+    test_version_encoding
+)
+add_custom_command(TARGET mjmem_and_tests POST_BUILD
+    COMMAND ${CMAKE_COMMAND} -E copy_if_different
+    "$<TARGET_FILE:mjmem>"
+    "${CMAKE_CURRENT_BINARY_DIR}/$<CONFIG>" # copy to the tests' output directory
+)

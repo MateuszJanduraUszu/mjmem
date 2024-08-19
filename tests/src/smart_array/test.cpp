@@ -99,8 +99,13 @@ namespace mjx {
     TEST(smart_array, swap) {
         smart_array<char> _Arr0 = ::mjx::make_smart_array<char>(16);
         smart_array<char> _Arr1 = ::mjx::make_smart_array<char>(16);
+#if defined(_MJX_MSVC) || (defined(_MJX_CLANG) && defined(_MJX_WINDOWS))
+        ::strcpy_s(_Arr0.get(), _Arr0.size(), "_Arr0");
+        ::strcpy_s(_Arr1.get(), _Arr1.size(), "_Arr1");
+#else // ^^^ MSVC or Clang with MSVC toolchain ^^^ / vvv GCC vvv
         ::strcpy(_Arr0.get(), "_Arr0");
         ::strcpy(_Arr1.get(), "_Arr1");
+#endif // defined(_MJX_MSVC) || (defined(_MJX_CLANG) && defined(_MJX_WINDOWS))
         _Arr0.swap(_Arr1);
         EXPECT_STREQ(_Arr0.get(), "_Arr1");
         EXPECT_STREQ(_Arr1.get(), "_Arr0");

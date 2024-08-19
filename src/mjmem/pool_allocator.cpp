@@ -3,6 +3,7 @@
 // Copyright (c) Mateusz Jandura. All rights reserved.
 // SPDX-License-Identifier: Apache-2.0
 
+#include <algorithm>
 #include <cstdlib>
 #include <mjmem/exception.hpp>
 #include <mjmem/impl/allocation_tracking.hpp>
@@ -10,7 +11,6 @@
 #include <mjmem/impl/utils.hpp>
 #include <mjmem/object_allocator.hpp>
 #include <mjmem/pool_allocator.hpp>
-#include <utility>
 
 namespace mjx {
     pool_allocator::pool_allocator(pool_resource& _Resource, const size_type _Max_block_size)

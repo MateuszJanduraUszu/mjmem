@@ -30,7 +30,7 @@ namespace mjx {
     }
 
     pool_resource& pool_resource::operator=(const pool_resource& _Other) {
-        if (this != ::std::addressof(_Other)) {
+        if (this != &_Other) {
             destroy();
             _Copy_resource(_Other._Mydata, _Other._Mysize);
         }
@@ -39,7 +39,7 @@ namespace mjx {
     }
 
     pool_resource& pool_resource::operator=(pool_resource&& _Other) noexcept {
-        if (this != ::std::addressof(_Other)) {
+        if (this != &_Other) {
             destroy();
             _Move_resource(_Other._Mydata, _Other._Mysize);
         }

@@ -7,6 +7,8 @@
 #include <mjmem/block_allocator.hpp>
 #include <mjmem/pool_resource.hpp>
 
+// the benchmarks assume the platform is little-endian
+
 namespace mjx {
     inline constexpr size_t _Block_size = 16;
 
@@ -37,6 +39,7 @@ void set_benchmark_properties(auto* const _Benchmark) {
     _Benchmark->DenseRange(1, 10)->Unit(::benchmark::TimeUnit::kNanosecond);
 }
 
+#ifdef _MJX_LITTLE_ENDIAN
 BENCHMARK(::mjx::bm_allocate_block_allocator<128>)->Apply(set_benchmark_properties);
 BENCHMARK(::mjx::bm_allocate_block_allocator<256>)->Apply(set_benchmark_properties);
 BENCHMARK(::mjx::bm_allocate_block_allocator<512>)->Apply(set_benchmark_properties);
@@ -44,5 +47,6 @@ BENCHMARK(::mjx::bm_allocate_block_allocator<1024>)->Apply(set_benchmark_propert
 BENCHMARK(::mjx::bm_allocate_block_allocator<2048>)->Apply(set_benchmark_properties);
 BENCHMARK(::mjx::bm_allocate_block_allocator<4096>)->Apply(set_benchmark_properties);
 BENCHMARK(::mjx::bm_allocate_block_allocator<8192>)->Apply(set_benchmark_properties);
+#endif // _MJX_LITTLE_ENDIAN
 
 BENCHMARK_MAIN();

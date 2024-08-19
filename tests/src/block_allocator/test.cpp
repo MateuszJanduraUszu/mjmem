@@ -11,7 +11,10 @@
 #include <mjmem/pool_resource.hpp>
 #include <mjmem/synchronized_allocator.hpp>
 
+// the tests assume the platform is little-endian
+
 namespace mjx {
+#ifdef _MJX_LITTLE_ENDIAN
     TEST(block_allocator, allocate) {
         pool_resource _Res(8);
         block_allocator _Al(_Res, 2);
@@ -84,4 +87,5 @@ namespace mjx {
         EXPECT_NE(_Block_al, _Pool_al);
         EXPECT_NE(_Block_al, _Sync_al);
     }
+#endif // _MJX_LITTLE_ENDIAN
 } // namespace mjx
