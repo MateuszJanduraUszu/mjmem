@@ -10,6 +10,7 @@ set(MJMEM_INC_FILES
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/api.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/block_allocator.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/dynamic_allocator.hpp"
+    "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/endian.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/exception.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/object_allocator.hpp"
     "${CMAKE_CURRENT_SOURCE_DIR}/mjmem/pool_allocator.hpp"
@@ -89,6 +90,26 @@ elseif(CMAKE_CXX_BYTE_ORDER STREQUAL "BIG_ENDIAN")
 else()
     # failed to detect the byte order, report an error and terminate
     message(FATAL_ERROR "Byte order could not be detected.")
+endif()
+
+# detect support for 128-bit integers and set the corresponding macro (definitely not supported on MSVC)
+if(${is_clang} OR ${is_gcc})
+    # use check_cxx_source_compiles() to detect whether a program that uses 128-bit integers will compile
+    include(CheckCXXSourceCompiles)
+    check_cxx_source_compiles([=[
+        using _Int128_t  = __int128;
+        using _Uint128_t = unsigned __int128;
+        static_assert(sizeof(_Int128_t) == 16, "128-bit integer size mismatch");
+        static_assert(sizeof(_Uint128_t) == 16, "128-bit integer size mismatch");
+
+        int main() {
+            return 0;
+        }
+    ]=] int128_supported)
+    if(${int128_supported})
+        # 128-bit integers are supported, append the corresponding macro
+        list(APPEND MJX_BASE_DEFS _MJX_INT128_SUPPORTED=1)
+    endif()
 endif()
 
 # organize source files into directories for better readability

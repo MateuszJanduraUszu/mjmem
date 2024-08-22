@@ -26,6 +26,7 @@ add_isolated_test(test_allocators_compatibility "src/allocators_compatibility/te
 add_isolated_test(test_bitops "src/bitops/test.cpp")
 add_isolated_test(test_block_allocator "src/block_allocator/test.cpp")
 add_isolated_test(test_dynamic_allocator "src/dynamic_allocator/test.cpp")
+add_isolated_test(test_endian "src/endian/test.cpp")
 add_isolated_test(test_global_allocator "src/global_allocator/test.cpp")
 add_isolated_test(test_pool_allocator "src/pool_allocator/test.cpp")
 add_isolated_test(test_pool_resource "src/pool_resource/test.cpp")
@@ -45,6 +46,7 @@ add_custom_target(mjmem_and_tests ALL DEPENDS
     test_bitops
     test_block_allocator
     test_dynamic_allocator
+    test_endian
     test_global_allocator
     test_pool_allocator
     test_pool_resource
