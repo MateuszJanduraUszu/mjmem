@@ -90,6 +90,9 @@ namespace mjx {
 #endif // defined(_MJX_CLANG) || defined(_MJX_GCC)
         }
 #endif // _MJX_INT128_SUPPORTED
+
+        template <class... _Types>
+        inline constexpr bool _Always_false = false;
     } // namespace mjmem_impl
 
     template <integral _Ty>
@@ -110,7 +113,7 @@ namespace mjx {
         }
 #endif // _MJX_INT128_SUPPORTED
         else {
-            static_assert(false, "unexpected integer size");
+            static_assert(mjmem_impl::_Always_false<_Ty>, "unexpected integer size");
         }
     }
 
