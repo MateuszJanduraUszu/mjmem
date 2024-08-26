@@ -88,7 +88,7 @@ namespace mjx {
 #else // ^^^ GCC ^^^ / vvv Clang or MSVC vvv
             return (static_cast<uint128_t>(
                 _Bswap64(_Value & 0xFFFF'FFFF'FFFF'FFFF)) << 64) | _Bswap64(_Value >> 64);
-#endif // defined(_MJX_CLANG) || defined(_MJX_GCC)
+#endif // _MJX_GCC
         }
 #endif // _MJX_INT128_SUPPORTED
 
