@@ -6,6 +6,8 @@
 #pragma once
 #ifndef _MJMEM_ENDIAN_HPP_
 #define _MJMEM_ENDIAN_HPP_
+#include <mjmem/version.hpp>
+#if _MJMEM_VERSION_SUPPORTED(2, 1, 0)
 #include <concepts>
 #include <cstdint>
 #include <type_traits>
@@ -37,7 +39,7 @@ namespace mjx {
     };
 
     // Note: The functions below should be placed in an internal header as they are
-    //       part of the implementation details. However, to maintain byteswap() constexpr,
+    //       part of the implementation details. However, to maintain swap_endian() constexpr,
     //       these functions must be implemented in a public header and should not be exported.
     namespace mjmem_impl {
         constexpr uint16_t _Bswap16(const uint16_t _Value) noexcept {
@@ -91,7 +93,7 @@ namespace mjx {
         }
 #endif // _MJX_INT128_SUPPORTED
 
-        template <class... _Types>
+        template <class...>
         inline constexpr bool _Always_false = false;
     } // namespace mjmem_impl
 
@@ -154,4 +156,5 @@ namespace mjx {
     }
 } // namespace mjx
 
+#endif // _MJMEM_VERSION_SUPPORTED(2, 1, 0)
 #endif // _MJMEM_ENDIAN_HPP_
