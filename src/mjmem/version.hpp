@@ -18,7 +18,7 @@
 
 // defines the latest MJMEM library version, synchronized with the version specified in 'res/mjmem.rc'
 #define _MJMEM_VERSION_MAJOR 2ULL
-#define _MJMEM_VERSION_MINOR 0ULL
+#define _MJMEM_VERSION_MINOR 1ULL
 #define _MJMEM_VERSION_PATCH 0ULL
 #define _MJMEM_VERSION       _MJX_ENCODE_VERSION(_MJMEM_VERSION_MAJOR, _MJMEM_VERSION_MINOR, _MJMEM_VERSION_PATCH)
 

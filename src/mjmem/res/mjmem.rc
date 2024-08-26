@@ -12,7 +12,7 @@ LANGUAGE LANG_ENGLISH, SUBLANG_NEUTRAL
 #pragma code_page(65001)
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION    2, 0, 0, 0
+FILEVERSION    2, 1, 0, 0
 PRODUCTVERSION 2, 0, 0, 0
 FILEFLAGSMASK  0x3FL
 #ifdef _DEBUG
@@ -30,7 +30,7 @@ BEGIN
         BEGIN
             VALUE "CompanyName",      "Mateusz Jandura"
             VALUE "FileDescription",  "MJX Memory Module (MJMEM)"
-            VALUE "FileVersion",      "2.0.0.0"
+            VALUE "FileVersion",      "2.1.0.0"
             VALUE "InternalName",     "mjmem.dll"
             VALUE "LegalCopyright",   "Copyright © Mateusz Jandura. All rights reserved."
             VALUE "OriginalFilename", "mjmem.dll"
