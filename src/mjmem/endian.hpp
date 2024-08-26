@@ -8,7 +8,6 @@
 #define _MJMEM_ENDIAN_HPP_
 #include <mjmem/version.hpp>
 #if _MJMEM_VERSION_SUPPORTED(2, 1, 0)
-#include <concepts>
 #include <cstdint>
 #include <type_traits>
 #ifdef _MJX_MSVC

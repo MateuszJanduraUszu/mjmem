@@ -10,6 +10,16 @@
 #include <bit>
 #include <climits>
 #include <cstdint>
+#include <mjmem/endian.hpp>
+
+// Note: This implementation relies on constructing wider integers from 8-bit integers.
+//       To ensure correctness, we must enforce little-endian byte order. This guarantees
+//       that bytes are stored in memory in the same order as they appear in the array of words.
+#ifdef _MJX_LITTLE_ENDIAN
+#define _LOAD_LE(_Value) _Value
+#else // ^^^ _MJX_LITTLE_ENDIAN ^^^ / vvv _MJX_BIG_ENDIAN vvv
+#define _LOAD_LE(_Value) ::mjx::swap_endian(_Value)
+#endif // _MJX_LITTLE_ENDIAN
 
 namespace mjx {
     namespace mjmem_impl {
@@ -130,7 +140,8 @@ namespace mjx {
             using _Traits                  = _Word_traits<_Word_type>;
             const size_t _Bits_per_word    = _State._Idx + sizeof(_Word_type) == _Array._Size
                 ? _Calculate_bits_per_last_word<_Word_type>(_Array._Bits) : _Traits::_Bits_per_word;
-            const _Word_type _Word         = *reinterpret_cast<const _Word_type*>(_Array._Words + _State._Idx);
+            const _Word_type _Word         = _LOAD_LE( // _Word must be stored in little-endian order
+                *reinterpret_cast<const _Word_type*>(_Array._Words + _State._Idx));
             const _Word_type _All_bits_set = _Traits::_All_bits_set >> (_Traits::_Bits_per_word - _Bits_per_word);
             size_t _Off;
             size_t _Search;
@@ -240,7 +251,12 @@ namespace mjx {
                 _Count = (::std::min)(_State._Remaining, _Traits::_Bits_per_word);
             }
 
+#ifdef _MJX_LITTLE_ENDIAN
             _Word_type& _Word = *reinterpret_cast<_Word_type*>(_Array._Words + _State._Idx);
+#else // ^^^ _MJX_LITTLE_ENDIAN ^^^ / vvv _MJX_BIG_ENDIAN vvv
+            auto& _Words      = _Array._Words + _State._Idx;
+            _Word_type _Word  = ::mjx::swap_endian(*reinterpret_cast<const _Word_type*>(_Words));
+#endif // _MJX_LITTLE_ENDIAN
             _Word_type _Mask  = 0;
             if (_Count == _Traits::_Bits_per_word) { // modify all bits in the word
                 _Mask = _Traits::_All_bits_set;
@@ -254,7 +270,11 @@ namespace mjx {
                 _Word &= ~_Mask;
             }
 
-            _State._Remaining -= _Count; // update the number of remaining bits to modify
+#ifdef _MJX_BIG_ENDIAN
+            // on big-endian platforms, swap back to store the processed word correctly
+            *reinterpret_cast<_Word_type*>(_Words) = ::mjx::swap_endian(_Word);
+#endif // _MJX_BIG_ENDIAN
+            _State._Remaining                     -= _Count; // update the number of remaining bits to modify
         }
 
         using _Bit_range_modification_step_callback = void(*)(
