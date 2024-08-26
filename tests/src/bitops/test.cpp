@@ -7,14 +7,11 @@
 #include <gtest/gtest.h>
 #include <mjmem/impl/bitops.hpp>
 
- // the tests assume the platform is little-endian
-
 namespace mjx {
     using namespace mjmem_impl;
     
     constexpr size_t _Not_found = _Base_word_traits::_Not_found;
 
-#ifdef _MJX_LITTLE_ENDIAN
     TEST(bitops, count_trailing_zeros) {
         EXPECT_EQ(_Count_trailing_zeros<uint8_t>(0b11111111), 0);
         EXPECT_EQ(_Count_trailing_zeros<uint8_t>(0b00000010), 1);
@@ -65,5 +62,4 @@ namespace mjx {
         test_find_contiguous_zero_bits({0b10101010, 0b11111111, 0b00000000, 0b11111100}, 32, 10, 16);
         test_find_contiguous_zero_bits({0b11111111, 0b11111111, 0b11111111, 0b00011111}, 29, 3, _Not_found);
     }
-#endif // _MJX_LITTLE_ENDIAN
 } // namespace mjx
