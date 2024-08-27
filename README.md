@@ -1,4 +1,6 @@
-# MJX Memory Module (MJMEM) [![Status Badge][status-badge-image]][status-badge-link]
+# MJX Memory Module (MJMEM)
+
+[![Windows CI][windows-ci-image]][windows-ci-link] [![Linux CI][linux-ci-image]][linux-ci-link]
 
 The MJMEM library is a memory management toolset designed as a module for future MJX projects.
 
@@ -158,8 +160,10 @@ Copyright © Mateusz Jandura.
 
 SPDX-License-Identifier: Apache-2.0
 
-[status-badge-image]: https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test.yml/badge.svg
-[status-badge-link]: https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test.yml
+[windows-ci-image]: https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test-windows.yml/badge.svg
+[windows-ci-link]: https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test-windows.yml
+[linux-ci-image]: https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test-linux.yml/badge.svg
+[linux-ci-link]: https://github.com/MateuszJanduraUszu/mjmem/actions/workflows/build-and-test-linux.yml
 [Changelog]: CHANGELOG.md
 [License]: LICENSE
 [Documentation]: docs/README.md
