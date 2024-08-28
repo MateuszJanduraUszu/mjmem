@@ -63,3 +63,19 @@ All notable changes to this project will be documented in this file.
 * Fixed the default constructor for `reference_counter`
 * Fixed `is_equal()` for stateless allocators
 * Corrected `noexcept` usage for several functions
+
+## `2.1.0` (2024-08-28)
+
+### **Added**
+
+* Added support for the Linux platform
+* Added support for Clang and GCC compilers
+* Implemented endianness detection and conversion
+
+### **Changed**
+
+* Changed build generator from **Visual Studio 17 2022** to **Ninja Multi-Config**
+
+### **Fixed**
+
+* Corrected build paths in CMake scripts
