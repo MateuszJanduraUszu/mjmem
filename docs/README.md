@@ -8,6 +8,16 @@ This document serves as a comprehensive guide for all MJMEM-related classes and 
 
 Navigate through the neatly categorized sections to gain insights into the different components of MJMEM:
 
+### Endianness detection and conversion
+
+- [endian](reference/endian/endian.md)
+- [from_big_endian](reference/endian/from_big_endian.md)
+- [from_little_endian](reference/endian/from_little_endian.md)
+- [integral](reference/endian/integral.md)
+- [swap_endian](reference/endian/swap_endian.md)
+- [to_big_endian](reference/endian/to_big_endian.md)
+- [to_little_endian](reference/endian/to_little_endian.md)
+
 ### Memory allocators
 
 - [allocator](reference/allocator/allocator.md)
@@ -95,9 +105,22 @@ For quick access to specific classes or functions, refer to the alphabetical ind
 - [delete_object_using_allocator](reference/object_allocator/delete_object_using_allocator.md)
 - [dynamic_allocator](reference/dynamic_allocator/dynamic_allocator.md)
 
+### E
+
+- [endian](reference/endian/endian.md)
+
+### F
+
+- [from_big_endian](reference/endian/from_big_endian.md)
+- [from_little_endian](reference/endian/from_little_endian.md)
+
 ### G
 
 - [get_allocator](reference/allocator/get_allocator.md)
+
+### I
+
+- [integral](reference/endian/integral.md)
 
 ### M
 
@@ -128,7 +151,13 @@ For quick access to specific classes or functions, refer to the alphabetical ind
 - [set_allocator](reference/allocator/set_allocator.md)
 - [smart_array](reference/smart_pointer/smart_array.md)
 - [smart_ptr](reference/smart_pointer/smart_ptr.md)
+- [swap_endian](reference/endian/swap_endian.md)
 - [synchronized_allocator](reference/synchronized_allocator/synchronized_allocator.md)
+
+### T
+
+- [to_big_endian](reference/endian/to_big_endian.md)
+- [to_little_endian](reference/endian/to_little_endian.md)
 
 ### U
 
