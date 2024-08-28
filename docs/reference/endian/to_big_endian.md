@@ -42,5 +42,5 @@ the input value as is. If the host system is little-endian, the function convert
 - [from_big_endian](from_big_endian.md)
 - [from_little_endian](from_little_endian.md)
 - [integral](integral.md)
-- [to_little_endian](to_little_endian.md)
 - [swap_endian](swap_endian.md)
+- [to_little_endian](to_little_endian.md)

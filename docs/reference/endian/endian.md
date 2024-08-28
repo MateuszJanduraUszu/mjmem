@@ -36,6 +36,6 @@ little-endian, or `big` if the host is big-endian.
 - [from_big_endian](from_big_endian.md)
 - [from_little_endian](from_little_endian.md)
 - [integral](integral.md)
+- [swap_endian](swap_endian.md)
 - [to_big_endian](to_big_endian.md)
 - [to_little_endian](to_little_endian.md)
-- [swap_endian](swap_endian.md)

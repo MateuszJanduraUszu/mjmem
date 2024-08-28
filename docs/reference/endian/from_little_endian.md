@@ -42,6 +42,6 @@ to convert the value from little-endian format to big-endian format.
 - [endian](endian.md)
 - [from_big_endian](from_big_endian.md)
 - [integral](integral.md)
+- [swap_endian](swap_endian.md)
 - [to_big_endian](to_big_endian.md)
 - [to_little_endian](to_little_endian.md)
-- [swap_endian](swap_endian.md)
