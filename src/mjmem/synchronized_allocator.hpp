@@ -8,6 +8,7 @@
 #define _MJMEM_SYNCHRONIZED_ALLOCATOR_HPP_
 #include <mjmem/allocator.hpp>
 #include <mjmem/api.hpp>
+#include <mjmem/version.hpp>
 
 namespace mjx {
     class _MJMEM_API synchronized_allocator : public allocator { // thread-safe memory allocator
@@ -40,6 +41,7 @@ namespace mjx {
         bool is_equal(const allocator& _Other) const noexcept override;
 
     private:
+#if _MJMEM_VERSION_SUPPORTED(2, 1, 0)
         // Note: To encapsulate the internal lock type, we store the lock as raw bytes in an
         //       appropriately-sized buffer. On Windows, SRW Lock is a simple structure with size
         //       and alignment equivalent to void*. On Linux, pthread_rwlock_t is more complex,
@@ -53,9 +55,18 @@ namespace mjx {
         static constexpr size_type _Lock_size  = 56;
         static constexpr size_type _Lock_align = 8;
 #endif // _MJX_WINDOWS
+#else // ^^^ _MJMEM_VERSION_SUPPORTED(2, 1, 0) ^^^ / vvv !_MJMEM_VERSION_SUPPORTED(2, 1, 0) vvv
+        struct _Srw_lock {
+            void* _Opaque;
+        };
+#endif // _MJMEM_VERSION_SUPPORTED(2, 1, 0)
 
         allocator& _Mywrapped; // wrapped allocator
+#if _MJMEM_VERSION_SUPPORTED(2, 1, 0)
         alignas(_Lock_align) mutable unsigned char _Mylock[_Lock_size];
+#else // ^^^ _MJMEM_VERSION_SUPPORTED(2, 1, 0) ^^^ / vvv !_MJMEM_VERSION_SUPPORTED(2, 1, 0) vvv
+        mutable _Srw_lock _Mylock;
+#endif // _MJMEM_VERSION_SUPPORTED(2, 1, 0)
     };
 } // namespace mjx
 
